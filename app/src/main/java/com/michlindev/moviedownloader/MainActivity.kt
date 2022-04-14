@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
 
         // Create a storage reference from our app
-        val storage = FirebaseStorage.getInstance()
+        //val storage = FirebaseStorage.getInstance()
 
-        var storageRef = storage.reference
+        //var storageRef = storage.reference
     }
 }

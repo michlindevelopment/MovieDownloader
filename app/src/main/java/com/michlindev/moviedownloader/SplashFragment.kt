@@ -6,6 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
 class SplashFragment : Fragment() {
 
@@ -15,11 +20,21 @@ class SplashFragment : Fragment() {
 
     private lateinit var viewModel: SplashViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.splash_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val binding = DataBindingUtil.inflate<SplashFragmentBinding>(
+            inflater,R.layout.splash_fragment,container,false
+        )
+
+
+
+        binding.button.setOnClickListener {
+            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+        }
+
+        //view.findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
