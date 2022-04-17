@@ -22,10 +22,11 @@ class SplashFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val binding = DataBindingUtil.inflate<SplashFragmentBinding>(
+        /*val binding = DataBindingUtil.inflate<SplashFragmentBinding>(
             inflater,R.layout.splash_fragment,container,false
-        )
+        )*/
 
+        val binding = SplashFragmentBinding.inflate(layoutInflater)
 
 
         binding.button.setOnClickListener {
