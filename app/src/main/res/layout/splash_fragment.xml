@@ -6,7 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            type="com.michlindev.moviedownloader.SplashViewModel"
+            name="viewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
