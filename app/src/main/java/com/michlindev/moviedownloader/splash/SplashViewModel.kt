@@ -13,6 +13,7 @@ class SplashViewModel : ViewModel() {
 
     fun check() {
 
+
         Log.d("DTAG", "${Firebase.auth.currentUser}")
 
         if (Firebase.auth.currentUser == null) {
