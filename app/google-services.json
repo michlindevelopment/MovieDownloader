@@ -59,6 +59,14 @@
           }
         },
         {
+          "client_id": "496692733934-e910kckbe9j4r0jd1n71ob8v50hav4sc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.michlindev.moviedownloader.debug",
+            "certificate_hash": "4d81d2831a1359492fd5a5dbe3121f1fc8ca5198"
+          }
+        },
+        {
           "client_id": "496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com",
           "client_type": 3
         }

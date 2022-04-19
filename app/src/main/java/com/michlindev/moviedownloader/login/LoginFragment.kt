@@ -2,18 +2,23 @@ package com.michlindev.moviedownloader.login
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.LoginFragmentBinding
 
@@ -21,11 +26,43 @@ import com.michlindev.moviedownloader.databinding.LoginFragmentBinding
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by activityViewModels()
+    private lateinit var firebaseAuth: FirebaseAuth
 
     private val resultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+
+        Log.d("DTAG", "$result")
+
         if (result.resultCode == Activity.RESULT_OK) {
             // parse result and perform action
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+            try {
+                val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    // UpdateUI(account)
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task2 ->
+                        if (task2.isSuccessful) {
+                            /*SavedPreference.setEmail(this,account.email.toString())
+                            SavedPreference.setUsername(this,account.displayName.toString())
+*/
+                            Firebase.auth.currentUser?.uid
+
+                            Log.d("DTAG", "UID: ${task2.result.user?.uid}")
+                            Log.d("DTAG", account.email.toString())
+                            Log.d("DTAG", account.displayName.toString())
+                            Log.d("DTAG", account.id.toString())
+                            Log.d("DTAG", "isSuccessful")
+                        }
+                    }
+
+
+                }
+            } catch (e: ApiException) {
+                Log.d("DTAG", "exception: $e")
+            }
         }
     }
 
@@ -36,44 +73,15 @@ class LoginFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-
-        /*var signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    // Your server's client ID, not your Android client ID.
-                    .setServerClientId(getString(R.string.default_web_client_id))
-                    // Only show accounts previously used to sign in.
-                    .setFilterByAuthorizedAccounts(true)
-                    .build()
-            )
-            .build()*/
-
-
         binding.signInButton.setOnClickListener {
-
-           val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail().build()
 
             val mSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+            firebaseAuth = FirebaseAuth.getInstance()
 
             val signIntent = mSignInClient.signInIntent
-            //startActivityForResult(signIntent, 10)
-
-
-
-
-            //val signInIntent = mGoogleSignInClient.signInIntent
             resultLauncher.launch(signIntent)
-
-
-
-           /* var resultLauncher = registerForActivityResult(signIntent) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-
-                }
-            }*/
-
         }
 
         return binding.root
