@@ -28,9 +28,7 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by activityViewModels()
     private lateinit var firebaseAuth: FirebaseAuth
 
-    private val resultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
         Log.d("DTAG", "$result")
 
@@ -45,9 +43,7 @@ class LoginFragment : Fragment() {
                     val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                     firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task2 ->
                         if (task2.isSuccessful) {
-                            /*SavedPreference.setEmail(this,account.email.toString())
-                            SavedPreference.setUsername(this,account.displayName.toString())
-*/
+
                             Firebase.auth.currentUser?.uid
 
                             Log.d("DTAG", "UID: ${task2.result.user?.uid}")
@@ -73,7 +69,7 @@ class LoginFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        binding.signInButton.setOnClickListener {
+       /* binding.signInButton.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail().build()
 
@@ -82,7 +78,7 @@ class LoginFragment : Fragment() {
 
             val signIntent = mSignInClient.signInIntent
             resultLauncher.launch(signIntent)
-        }
+        }*/
 
         return binding.root
     }
