@@ -14,6 +14,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "496692733934-b2uia5hbr2k8376g0t452p1mlhs12p0r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.michlindev.moviedownloader",
+            "certificate_hash": "9a1c8fa2bdd3e3dde4dc5a79f6d7453eb00c43d9"
+          }
+        },
+        {
+          "client_id": "496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCShYPGIutfC4WFNEwQ-Z3s1LxDkEdVb9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496692733934:android:01630eb7009a48bef450ff",
+        "android_client_info": {
+          "package_name": "com.michlindev.moviedownloader.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496692733934-9ovber40t7so6f2rrgegba5uka416sv6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.michlindev.moviedownloader.debug",
+            "certificate_hash": "9285cdb732ad7b7078ac9d7bf01a5efb70f268cb"
+          }
+        },
+        {
           "client_id": "496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com",
           "client_type": 3
         }
