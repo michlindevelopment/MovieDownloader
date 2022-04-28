@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader
+package com.michlindev.moviedownloader.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.michlindev.moviedownloader.R
 
 class MovieListFragment : Fragment() {
 

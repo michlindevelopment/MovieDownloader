@@ -11,15 +11,15 @@ class MovieDownloader : Application() {
     }
 
     companion object {
-        private var instance: MovieDownloader? = null
+        private lateinit var instance: MovieDownloader
 
         fun applicationContext() : Context {
-            return instance!!.applicationContext
+            return instance.applicationContext
         }
     }
 
     override fun onCreate() {
         super.onCreate()
-        val context: Context = applicationContext()
+        //val context: Context = applicationContext()
     }
 }

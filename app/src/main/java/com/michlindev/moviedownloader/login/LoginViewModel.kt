@@ -12,21 +12,9 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel : ViewModel() {
 
-    var singleLiveEvent = SingleLiveEvent<Any>()
+    //var singleLiveEvent = SingleLiveEvent<Any>()
     var signIn = SingleLiveEvent<Any>()
-    private val repo = LoginModel
-
-    /*fun signIn() {
-        //do some shit
-        CoroutineScope(Dispatchers.IO).launch {
-            repo.signIn()
-            DLog.d("Resumed")
-
-            withContext(Dispatchers.Main) {
-                singleLiveEvent.call()
-            }
-        }
-    }*/
+    //private val repo = LoginModel
 
     fun signIn() {
         signIn.call()

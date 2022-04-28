@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader
+package com.michlindev.moviedownloader.main
 
 import androidx.lifecycle.ViewModel
 

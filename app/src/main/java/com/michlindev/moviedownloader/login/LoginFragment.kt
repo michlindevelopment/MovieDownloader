@@ -31,8 +31,11 @@ class LoginFragment : Fragment() {
                 val res = LoginModel.signIn(result)
                 //TODO add if true
                 DLog.d("Res: $res")
-                withContext(Dispatchers.Main) {
-                    findNavController().navigate(R.id.action_loginFragment_to_movieListFragment)
+
+                if (res == true) {
+                    withContext(Dispatchers.Main) {
+                        findNavController().navigate(R.id.action_loginFragment_to_movieListFragment)
+                    }
                 }
             }
         }
