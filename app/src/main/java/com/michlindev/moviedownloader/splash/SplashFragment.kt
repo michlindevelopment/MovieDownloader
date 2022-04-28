@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
@@ -31,6 +32,7 @@ class SplashFragment : Fragment(), ISplashView {
 
         viewModel.check()
 
+        FileManager.createFile()
 
         return binding.root
     }
