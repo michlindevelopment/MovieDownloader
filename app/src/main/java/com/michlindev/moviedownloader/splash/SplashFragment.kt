@@ -36,7 +36,7 @@ class SplashFragment : Fragment(), ISplashView {
     }
 
     override fun navigateToMain() {
-        TODO("Not yet implemented")
+        findNavController().navigate(R.id.action_splashFragment_to_movieListFragment)
     }
 
     override fun navigateToLogin() {

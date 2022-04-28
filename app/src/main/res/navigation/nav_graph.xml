@@ -13,10 +13,22 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_movieListFragment"
+            app:destination="@id/movieListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.michlindev.moviedownloader.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" />
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_movieListFragment"
+            app:destination="@id/movieListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.michlindev.moviedownloader.MovieListFragment"
+        android:label="movie_list_fragment"
+        tools:layout="@layout/movie_list_fragment" />
 </navigation>

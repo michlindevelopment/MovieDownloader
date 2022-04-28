@@ -1,7 +1,10 @@
 package com.michlindev.moviedownloader.login
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -11,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.michlindev.moviedownloader.DLog
+import com.michlindev.moviedownloader.MovieDownloader
 import com.michlindev.moviedownloader.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -19,18 +24,49 @@ import kotlin.coroutines.suspendCoroutine
 
 object LoginModel {
 
-    suspend fun signIn(): Boolean? = suspendCoroutine { cont ->
+    var gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(MovieDownloader.applicationContext().getString(R.string.default_web_client_id))
+        .requestEmail().build()
 
-        /*val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail().build()
 
-        val mSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-        firebaseAuth = FirebaseAuth.getInstance()
+    suspend fun signIn(result: ActivityResult): Boolean? = suspendCoroutine { cont ->
 
-        val signIntent = mSignInClient.signInIntent
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
 
-            Log.d("DTAG", "$result")
+        try {
+            val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+            if (account != null) {
+                // UpdateUI(account)
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+                //firebaseAuth = FirebaseAuth.getInstance()
+                FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener { task2 ->
+                    if (task2.isSuccessful) {
+
+                        Firebase.auth.currentUser?.uid
+
+                        DLog.d("UID: ${task2.result.user?.uid}")
+                        DLog.d(account.email.toString())
+                        DLog.d(account.displayName.toString())
+                        DLog.d(account.id.toString())
+                        DLog.d("isSuccessful")
+                        cont.resume(true)
+                    }
+                }
+
+
+            }
+        } catch (e: ApiException) {
+            DLog.d("exception: $e")
+        }
+
+    }
+
+    /*fun registerForActivityResult(loginFragment: LoginFragment){
+    //fun registerForActivityResult(loginFragment: LoginFragment) {
+        lapupu = loginFragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+            DLog.d( "$result")
 
             if (result.resultCode == Activity.RESULT_OK) {
                 // parse result and perform action
@@ -46,35 +82,24 @@ object LoginModel {
 
                                 Firebase.auth.currentUser?.uid
 
-                                Log.d("DTAG", "UID: ${task2.result.user?.uid}")
-                                Log.d("DTAG", account.email.toString())
-                                Log.d("DTAG", account.displayName.toString())
-                                Log.d("DTAG", account.id.toString())
-                                Log.d("DTAG", "isSuccessful")
+                                DLog.d( "UID: ${task2.result.user?.uid}")
+                                DLog.d( account.email.toString())
+                                DLog.d( account.displayName.toString())
+                                DLog.d( account.id.toString())
+                                DLog.d( "isSuccessful")
+
+                                cont.resume(true)
                             }
                         }
 
 
                     }
                 } catch (e: ApiException) {
-                    Log.d("DTAG", "exception: $e")
+                    DLog.d( "exception: $e")
                 }
             }
-        }.launch(signIntent)*/
-
-
-
-        for (i in 0..10) {
-            //println(i)
-            Log.d("DTAG", "Cnt $i")
-            runBlocking {
-                delay(1000)
-            }
-
         }
-        cont.resume(true)
-    }
-
+    }*/
 
 
 }

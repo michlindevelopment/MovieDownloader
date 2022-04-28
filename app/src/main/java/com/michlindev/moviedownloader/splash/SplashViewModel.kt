@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.michlindev.moviedownloader.DLog
 
 class SplashViewModel : ViewModel() {
 
@@ -14,12 +15,12 @@ class SplashViewModel : ViewModel() {
     fun check() {
 
 
-        Log.d("DTAG", "${Firebase.auth.currentUser}")
+        DLog.d( "${Firebase.auth.currentUser}")
 
         if (Firebase.auth.currentUser == null) {
             splashView?.navigateToLogin()
         } else {
-            Log.d("DTAG", "User: ${Firebase.auth.currentUser!!.uid}")
+            DLog.d( "User: ${Firebase.auth.currentUser!!.uid}")
             //splashView?.navigateToMain()
 
         }
