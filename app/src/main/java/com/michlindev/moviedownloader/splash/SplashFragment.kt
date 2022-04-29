@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -14,11 +15,7 @@ import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
-class SplashFragment : Fragment(), ISplashView {
-
-    /* companion object {
-         fun newInstance() = SplashFragment()
-     }*/
+class SplashFragment : Fragment() {
 
     private val viewModel: SplashViewModel by activityViewModels()
 
@@ -26,23 +23,17 @@ class SplashFragment : Fragment(), ISplashView {
 
         val binding = SplashFragmentBinding.inflate(layoutInflater)
 
-        viewModel.splashView = this
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         viewModel.check()
 
-        FileManager.createFile()
+        viewModel.navigate.observe(viewLifecycleOwner){
+            it?.let { it1 -> findNavController().navigate(it1) }
+        }
+
+        //FileManager.createFile()
 
         return binding.root
     }
-
-    override fun navigateToMain() {
-        findNavController().navigate(R.id.action_splashFragment_to_movieListFragment)
-    }
-
-    override fun navigateToLogin() {
-        findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
-    }
-
 }

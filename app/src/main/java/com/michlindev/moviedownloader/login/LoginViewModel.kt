@@ -12,9 +12,7 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel : ViewModel() {
 
-    //var singleLiveEvent = SingleLiveEvent<Any>()
     var signIn = SingleLiveEvent<Any>()
-    //private val repo = LoginModel
 
     fun signIn() {
         signIn.call()
