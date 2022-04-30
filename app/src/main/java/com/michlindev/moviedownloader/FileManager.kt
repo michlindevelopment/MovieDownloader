@@ -7,13 +7,15 @@ object FileManager {
     private const val RSS_HEADER =
         "<rss xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" version=\"2.0\">"
     private const val RSS_TITLE = "<title>Movies RSS</title>"
+    private const val FILE_NAME = "my1.rss"
+
 
     private val path = MovieDownloader.applicationContext().filesDir.path
 
     private fun writeToRssFile(fileContent: List<String?>) {
         try {
             val directory = File("$path/MoviesSync")
-            val file = File(directory, "my.rss")
+            val file = File(directory, FILE_NAME)
             val fOut = FileOutputStream(file)
             val osw = OutputStreamWriter(fOut)
             for (line in fileContent) {
@@ -29,7 +31,7 @@ object FileManager {
 
     fun createFile() {
         val directory = File("$path/MoviesSync")
-        val file = File(directory, "my.rss")
+        val file = File(directory, FILE_NAME)
         try {
             if (!directory.exists()) directory.mkdir()
             if (!file.exists()) {
@@ -46,7 +48,7 @@ object FileManager {
     fun readFromRssFile(): List<String> {
         val fileContent: MutableList<String> = ArrayList()
         val directory = File("$path/MoviesSync")
-        val file = File(directory, "my.rss")
+        val file = File(directory, FILE_NAME)
         try {
             if (!directory.exists()) directory.mkdir()
             if (!file.exists()) {

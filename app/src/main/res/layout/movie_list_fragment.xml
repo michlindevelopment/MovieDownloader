@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             android:text="Create File"
+            android:onClick="@{()->viewModel.createFile()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="Upload file"
+            android:onClick="@{()->viewModel.uploadFile()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button2" />
