@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/app_bar_switch_id"
+        android:title="Switch"
+        android:icon="@drawable/more_vert"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="Settings"
+        android:icon="@drawable/more_vert"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction">
+
+        <menu>
+            <item android:id="@+id/action_clear_file"
+                android:title="Clear File" />
+            <item android:id="@+id/action_upload_file"
+                android:title="Upload File" />
+           <!-- <item android:id="@+id/action_request_sign"
+                android:title="Sign in Drive" />-->
+        </menu>
+    </item>
+</menu>
