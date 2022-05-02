@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.LoginFragmentBinding
@@ -28,7 +27,7 @@ class LoginFragment : Fragment() {
         DLog.d("$result")
         if (result.resultCode == Activity.RESULT_OK) {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = LoginModel.signIn(result)
+                val res = LoginRepo.signIn(result)
                 //TODO add if true
                 DLog.d("Res: $res")
 
@@ -48,7 +47,7 @@ class LoginFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.signIn.observe(viewLifecycleOwner) {
-            resultLauncher.launch(GoogleSignIn.getClient(requireActivity(), LoginModel.gso).signInIntent)
+            resultLauncher.launch(GoogleSignIn.getClient(requireActivity(), LoginRepo.gso).signInIntent)
         }
 
         return binding.root

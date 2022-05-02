@@ -26,6 +26,9 @@ class MovieListViewModel : ViewModel() {
         //createFile.call()
         FileManager.createFile()
     }
+    fun getMovies() {
+        MovieListRepo.getMovies()
+    }
 
     fun uploadFile() {
 
