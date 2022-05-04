@@ -7,7 +7,7 @@ import java.util.ArrayList
 
 data class Movie(
     @SerializedName("url") var url:String,
-    @SerializedName("torrents") var torrents: MutableList<Torrents>
+    @SerializedName("torrents") var torrents: List<Torrents>
 ) {
 
 fun getPop(): String {

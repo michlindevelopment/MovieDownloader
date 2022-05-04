@@ -12,10 +12,12 @@
         tools:layout="@layout/splash_fragment" >
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph" />
         <action
             android:id="@+id/action_splashFragment_to_movieListFragment"
-            app:destination="@id/movieListFragment" />
+            app:destination="@id/movieListFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -24,11 +26,20 @@
         tools:layout="@layout/login_fragment" >
         <action
             android:id="@+id/action_loginFragment_to_movieListFragment"
-            app:destination="@id/movieListFragment" />
+            app:destination="@id/movieListFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/movieListFragment"
         android:name="com.michlindev.moviedownloader.main.MovieListFragment"
         android:label="movie_list_fragment"
-        tools:layout="@layout/movie_list_fragment" />
+        tools:layout="@layout/movie_list_fragment" >
+        <action
+            android:id="@+id/action_movieListFragment_to_debugFragment"
+            app:destination="@id/debugFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/debugFragment"
+        android:name="com.michlindev.moviedownloader.debug.DebugFragment"
+        android:label="DebugFragment" />
 </navigation>

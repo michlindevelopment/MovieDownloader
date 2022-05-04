@@ -34,6 +34,8 @@ class LoginFragment : Fragment() {
                 if (res == true) {
                     withContext(Dispatchers.Main) {
                         findNavController().navigate(R.id.action_loginFragment_to_movieListFragment)
+                        //findNavController(fragment).navigate(SignInFragmentDirections.actionSignInFragmentToUserNameFragment())
+
                     }
                 }
             }

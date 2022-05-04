@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader.main
+package com.michlindev.moviedownloader.debug
 
 import android.util.Log
 import com.michlindev.moviedownloader.DLog
@@ -11,8 +11,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-object MovieListRepo {
-    /*fun getMovies() {
+object DebugRepo {
+    fun getMovies() {
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
@@ -24,19 +24,19 @@ object MovieListRepo {
                         //moviesList.addAll(movies.getData().getData())
                         var res = movies.data.movies
                         DLog.d("")
-                        *//*globalCounter++
+                        /*globalCounter++
                         if (globalCounter == pages) {
                             allDone()
                         }
-                        progressBar.setProgress(globalCounter, true)*//*
+                        progressBar.setProgress(globalCounter, true)*/
                     }
 
                     override fun onError(e: Throwable) {
                         DLog.d("")
-                        *//* Log.e(MainActivity.TAG, String.format("onError: %s", e.message), e)
-                         setEnabledBar(true)*//*
+                        /* Log.e(MainActivity.TAG, String.format("onError: %s", e.message), e)
+                         setEnabledBar(true)*/
                     }
                 })
         )
-    }*/
+    }
 }
