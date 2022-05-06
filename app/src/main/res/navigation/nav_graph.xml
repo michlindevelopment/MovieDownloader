@@ -41,5 +41,6 @@
     <fragment
         android:id="@+id/debugFragment"
         android:name="com.michlindev.moviedownloader.debug.DebugFragment"
-        android:label="DebugFragment" />
+        android:label="DebugFragment"
+        tools:layout="@layout/debug_fragment"/>
 </navigation>

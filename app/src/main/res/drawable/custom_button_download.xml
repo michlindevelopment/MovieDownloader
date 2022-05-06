@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="false" android:state_enabled="false">
+        <shape>
+            <gradient android:angle="270" android:endColor="@color/btn_disabled" android:startColor="@color/btn_disabled" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+    <item android:state_focused="false" android:state_pressed="true">
+        <shape>
+            <gradient android:angle="270" android:endColor="@color/btn_pressed" android:startColor="@color/btn_pressed" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+
+    <item>
+        <shape>
+            <gradient android:angle="270" android:endColor="@color/btn_enabled" android:startColor="@color/btn_enabled" />
+            <corners android:radius="20dp" />
+
+        </shape>
+    </item>
+</selector>
