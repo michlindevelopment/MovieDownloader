@@ -12,24 +12,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 object MovieListRepo {
 
     //suspend fun signIn(result: ActivityResult): Boolean? = suspendCoroutine { cont ->
-    suspend fun getMovies1(): List<Movie> = suspendCoroutine { cont ->
+    suspend fun getMovies1(page: Int): List<Movie> = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
-            apiService.getWithParameters("", 6, DefaultData.PAGE_LIMIT, 2, "year", "").subscribeOn(Schedulers.io())
+            apiService.getWithParameters("", 6, DefaultData.PAGE_LIMIT, page, "year", "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         //moviesList.addAll(movies.getData().getData())
                         val res = movies.data.movies
-                        DLog.d("")
+
+
+                        //DLog.d("")
                         /*globalCounter++
                         if (globalCounter == pages) {
                             allDone()
@@ -45,5 +51,24 @@ object MovieListRepo {
                     }
                 })
         )
+    }
+
+    suspend fun getMovies2(page: Int): List<Movie> = suspendCoroutine { cont ->
+        val movies = mutableListOf<Movie>()
+        var cnt = 0
+        for (i in 1..page) {
+            DLog.d("Firing $i")
+            CoroutineScope(Dispatchers.IO).launch {
+                DLog.d("Start $i")
+                movies.addAll(getMovies1(i))
+                DLog.d("End $i")
+                cnt++
+                if (cnt==page) {
+                    DLog.d("Resuming")
+                    cont.resume(movies)
+                }
+            }
+
+        }
     }
 }

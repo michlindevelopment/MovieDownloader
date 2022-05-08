@@ -26,7 +26,7 @@ fun setAdapter(
     }
 }
 
-//@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST")
 @BindingAdapter("submitList")
 fun submitList(recyclerView: RecyclerView, list: List<ListAdapterItem>?) {
     val adapter = recyclerView.adapter as BaseAdapter<ViewDataBinding, ListAdapterItem>?
@@ -34,8 +34,7 @@ fun submitList(recyclerView: RecyclerView, list: List<ListAdapterItem>?) {
 }
 
 @BindingAdapter("loadWithGlide")
-fun ImageView.loadUrlWithGlide(url: String?)
-{
+fun ImageView.loadUrlWithGlide(url: String?) {
     val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
     Glide.with(this).load(url).transition(DrawableTransitionOptions.withCrossFade(factory))
         .into(this)
