@@ -61,7 +61,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
             CoroutineScope(Dispatchers.IO).launch {
                 DLog.d("Start G")
-                movies.addAll(MovieListRepo.getMovies2(10))
+                movies.addAll(MovieListRepo.getMovies2(2))
                 DLog.d("End G - Total: ${movies.size}")
 
 
@@ -90,6 +90,16 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     override fun infoImage(item: Movie) {
         DLog.d("Clicked: ${item.title_english}")
+    }
+
+    override fun rating(item: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val rt = MovieListRepo.getRealRating(item)
+            DLog.d("Rating: $rt")
+        }
+
+
+
     }
 
 

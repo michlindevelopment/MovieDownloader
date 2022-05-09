@@ -1,7 +1,5 @@
 package com.michlindev.moviedownloader.main
 
-import android.util.Log
-import androidx.activity.result.ActivityResult
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.api.ApiClient
 import com.michlindev.moviedownloader.api.ApiService
@@ -15,7 +13,10 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -70,5 +71,25 @@ object MovieListRepo {
             }
 
         }
+    }
+
+    suspend fun getRealRating(imdbCode: String): String = suspendCoroutine { cont ->
+
+        DLog.d("imdbCode: $imdbCode")
+        val url = "https://www.imdb.com/title/$imdbCode/"
+        DLog.d("url: $url")
+
+        var document: Document? = null
+        var element: Element? = null
+
+        try {
+            document = Jsoup.connect(url).get()
+            element = document.selectFirst("span[class=sc-7ab21ed2-1 jGRxWM]")
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        assert(element != null)
+        val sor = element?.text()
+        cont.resume(sor.toString())
     }
 }

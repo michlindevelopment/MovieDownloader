@@ -1,6 +1,7 @@
 package com.michlindev.moviedownloader
 
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +20,7 @@ fun bindSignInClick(button: SignInButton, method: () -> Unit) {
 @BindingAdapter("setAdapter")
 fun setAdapter(
     recyclerView: RecyclerView,
-    adapter: BaseAdapter<ViewDataBinding, ListAdapterItem>?
-) {
+    adapter: BaseAdapter<ViewDataBinding, ListAdapterItem>?) {
     adapter?.let {
         recyclerView.adapter = it
     }
@@ -38,4 +38,10 @@ fun ImageView.loadUrlWithGlide(url: String?) {
     val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
     Glide.with(this).load(url).transition(DrawableTransitionOptions.withCrossFade(factory))
         .into(this)
+}
+
+@BindingAdapter("stringArray")
+fun TextView.stringArray(list: List<String>) {
+    //val commaSeperatedString = listOfStringColumn.joinToString (separator = "-") { it -> "\'${it.nameOfStringVariable}\'" }
+    text = list.joinToString (separator = ", ") { it }
 }

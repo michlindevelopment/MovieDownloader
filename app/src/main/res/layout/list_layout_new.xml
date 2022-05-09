@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="connectedItem"
+            type= "com.michlindev.moviedownloader.data.Movie" />
+
+        <variable
+            name="listener"
+            type="com.michlindev.moviedownloader.main.ItemListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
+
+        <ImageView
+            android:id="@+id/imageViewPoster"
+            android:layout_width="150dp"
+            android:layout_height="225dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#FFFFFF"
+            android:padding="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadWithGlide="@{connectedItem.large_cover_image}"
+            app:srcCompat="@drawable/placeholder" />
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:autoSizeMaxTextSize="25sp"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="start"
+            android:text="@{connectedItem.title_english}"
+            android:textColor="@color/headline_color"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Some" />
+
+        <ImageView
+            android:id="@+id/imageViewImdb"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:onClick="@{() -> listener.rating(connectedItem.imdb_code)}"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+            app:srcCompat="@drawable/ic_imdb_logo_2016" />
+
+        <TextView
+            android:id="@+id/textViewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/rating_color"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewImdb"
+            app:layout_constraintStart_toEndOf="@+id/imageViewImdb"
+            app:layout_constraintTop_toTopOf="@+id/imageViewImdb"
+            android:text="@{Double.toString(connectedItem.rating)}"
+            tools:text="8.9" />
+
+
+        <TextView
+            android:id="@+id/textViewYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/year_color"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewImdb"
+            android:text="@{Integer.toString(connectedItem.year)}"
+            tools:text="2022" />
+
+        <TextView
+            android:id="@+id/textViewGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:maxHeight="30dp"
+            android:maxLines="3"
+            app:stringArray="@{connectedItem.genres}"
+            android:textColor="@color/genre_color"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@+id/textViewYear"
+            tools:text="Genres"/>
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:text="Available Qualities:"
+            android:textColor="@color/quality_color_headine"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGenre" />
+
+       <!-- <TextView
+            android:id="@+id/textViewQuality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@{connectedItem.}"
+            tools:text="1080p"
+            android:textColor="@color/quality_color"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+

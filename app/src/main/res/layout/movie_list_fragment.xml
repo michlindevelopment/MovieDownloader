@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/button5"
             app:setAdapter="@{adapter}"
             app:submitList="@{viewModel.itemList}"
-            tools:listitem="@layout/list_layout" />
+            tools:listitem="@layout/list_layout_new" />
 
         <Button
             android:id="@+id/button5"
