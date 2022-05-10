@@ -6,13 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.michlindev.moviedownloader.FileManager
-import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
 class SplashFragment : Fragment() {
@@ -31,8 +25,6 @@ class SplashFragment : Fragment() {
         viewModel.navigate.observe(viewLifecycleOwner){
             it?.let { it1 -> findNavController().navigate(it1) }
         }
-
-        //FileManager.createFile()
 
         return binding.root
     }

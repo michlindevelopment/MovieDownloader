@@ -61,7 +61,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
             CoroutineScope(Dispatchers.IO).launch {
                 DLog.d("Start G")
-                movies.addAll(MovieListRepo.getMovies2(2))
+                movies.addAll(MovieListRepo.getMovies2(10))
                 DLog.d("End G - Total: ${movies.size}")
 
 

@@ -29,7 +29,8 @@ object MovieListRepo {
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
-            apiService.getWithParameters("", 6, DefaultData.PAGE_LIMIT, page, "year", "").subscribeOn(Schedulers.io())
+            //TODO error with 9
+            apiService.getWithParameters("", 8, DefaultData.PAGE_LIMIT, page, "year", "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         //moviesList.addAll(movies.getData().getData())
@@ -84,11 +85,18 @@ object MovieListRepo {
 
         try {
             document = Jsoup.connect(url).get()
-            element = document.selectFirst("span[class=sc-7ab21ed2-1 jGRxWM]")
+            DLog.d("document: $document")
+            DLog.d("-----------------------------")
+            DLog.d("-----------------------------")
+            DLog.d("-----------------------------")
+            DLog.d("-----------------------------")
+            element = document.selectFirst("span[sc-7ab21ed2-1 jGRxWM]")
+            DLog.d("---------------------------------------element: $element")
         } catch (e: IOException) {
             e.printStackTrace()
+            DLog.e("error: $e")
         }
-        assert(element != null)
+        //assert(element != null)
         val sor = element?.text()
         cont.resume(sor.toString())
     }
