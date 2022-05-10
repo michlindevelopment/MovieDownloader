@@ -43,6 +43,7 @@ object MovieListRepo {
                             allDone()
                         }
                         progressBar.setProgress(globalCounter, true)*/
+
                         cont.resume(res)
                     }
 
