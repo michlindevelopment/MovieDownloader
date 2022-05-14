@@ -18,7 +18,7 @@ object DebugRepo {
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
-            apiService.getWithParameters("", 6, DefaultData.PAGE_LIMIT, 2, "year", "").subscribeOn(Schedulers.io())
+            apiService.getWithParameters(6, DefaultData.PAGE_LIMIT, 2,  "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         //moviesList.addAll(movies.getData().getData())

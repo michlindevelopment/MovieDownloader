@@ -23,21 +23,18 @@ import kotlin.coroutines.suspendCoroutine
 object MovieListRepo {
 
     //suspend fun signIn(result: ActivityResult): Boolean? = suspendCoroutine { cont ->
-    suspend fun getMovies1(page: Int): List<Movie> = suspendCoroutine { cont ->
+    private suspend fun getPage(page: Int): List<Movie> = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
             //TODO error with 9
-            apiService.getWithParameters("", 6, DefaultData.PAGE_LIMIT, page, "year", "").subscribeOn(Schedulers.io())
+            apiService.getWithParameters( 5, DefaultData.PAGE_LIMIT, page, "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
-                        //moviesList.addAll(movies.getData().getData())
                         val res = movies.data.movies
 
-
-                        //DLog.d("")
                         /*globalCounter++
                         if (globalCounter == pages) {
                             allDone()
@@ -56,15 +53,20 @@ object MovieListRepo {
         )
     }
 
-    suspend fun getMovies2(page: Int): List<Movie> = suspendCoroutine { cont ->
+    suspend fun getMovies(page: Int): List<Movie> = suspendCoroutine { cont ->
         val movies = mutableListOf<Movie>()
+
+
         var cnt = 0
         for (i in 1..page) {
             DLog.d("Firing $i")
             CoroutineScope(Dispatchers.IO).launch {
                 DLog.d("Start $i")
-                movies.addAll(getMovies1(i))
-                DLog.d("End $i")
+                //val mv = getPage(i)
+                DLog.d("End1 $i")
+                movies.addAll(getPage(i))
+                //movies.addAll((i-1)*50,mv)
+                DLog.d("End2 $i")
                 cnt++
                 if (cnt==page) {
                     DLog.d("Resuming")
