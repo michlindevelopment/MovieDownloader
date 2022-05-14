@@ -9,6 +9,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
+//TODO
+/*
+1. Create menu
+2. Arrange movies by menu selection
+3. Create search pop up
+4. Name rss file correctly
+5. Make option to clear file
+
+ */
+
 class SplashFragment : Fragment() {
 
     private val viewModel: SplashViewModel by activityViewModels()

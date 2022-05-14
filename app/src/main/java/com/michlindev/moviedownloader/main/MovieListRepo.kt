@@ -30,7 +30,7 @@ object MovieListRepo {
 
         mDisposable.add(
             //TODO error with 9
-            apiService.getWithParameters("", 8, DefaultData.PAGE_LIMIT, page, "year", "").subscribeOn(Schedulers.io())
+            apiService.getWithParameters("", 6, DefaultData.PAGE_LIMIT, page, "year", "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         //moviesList.addAll(movies.getData().getData())
@@ -48,7 +48,7 @@ object MovieListRepo {
                     }
 
                     override fun onError(e: Throwable) {
-                        DLog.d("")
+                        DLog.d("$e")
                         /* Log.e(MainActivity.TAG, String.format("onError: %s", e.message), e)
                          setEnabledBar(true)*/
                     }

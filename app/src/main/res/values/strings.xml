@@ -11,4 +11,38 @@
     <string name="login_failed">"Login failed"</string>
 
     <string name="web_client_id">496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com</string>
+
+    <array name="days">
+        <item name="Mon">Monday</item>
+        <item name="Tue">Tuesday</item>
+        <item name="Wed">Wednesday</item>
+    </array>
+
+    <array name="genres">
+        <item>"All"</item>
+        <item>"Action"</item>
+        <item>"Adventure"</item>
+        <item>"Animation"</item>
+        <item>"Biography"</item>
+        <item>"Comedy"</item>
+        <item>"Crime"</item>
+        <item>"Documentary"</item>
+        <item>"Drama"</item>
+        <item>"Family"</item>
+        <item>"Fantasy"</item>
+        <item>"History"</item>
+        <item>"Horror"</item>
+        <item>"Music"</item>
+        <item>"Musical"</item>
+        <item>"Mystery"</item>
+        <item>"Romance"</item>
+        <item>"Sci-Fi"</item>
+        <item>"Short Film"</item>
+        <item>"Sport"</item>
+        <item>"Superhero"</item>
+        <item>"Thriller"</item>
+        <item>"War"</item>
+        <item>"Western"</item>
+    </array>
+
 </resources>

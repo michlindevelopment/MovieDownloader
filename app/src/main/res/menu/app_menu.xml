@@ -19,8 +19,8 @@
         <menu>
             <item android:id="@+id/action_debug_menu"
                 android:title="Debug menu" />
-            <item android:id="@+id/action_upload_file"
-                android:title="Upload File" />
+            <item android:id="@+id/action_app_settings"
+                android:title="Settings" />
         </menu>
     </item>
 </menu>

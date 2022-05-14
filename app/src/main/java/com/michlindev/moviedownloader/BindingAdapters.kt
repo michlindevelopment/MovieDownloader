@@ -1,6 +1,7 @@
 package com.michlindev.moviedownloader
 
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
@@ -44,4 +45,10 @@ fun ImageView.loadUrlWithGlide(url: String?) {
 fun TextView.stringArray(list: List<String>) {
     //val commaSeperatedString = listOfStringColumn.joinToString (separator = "-") { it -> "\'${it.nameOfStringVariable}\'" }
     text = list.joinToString (separator = ", ") { it }
+}
+
+@BindingAdapter("selectedValue")
+fun Spinner.setSelectedValue(selectedValue: String?) {
+    //this.setSelectedValue(selectedValue)
+    setSelection(6)
 }
