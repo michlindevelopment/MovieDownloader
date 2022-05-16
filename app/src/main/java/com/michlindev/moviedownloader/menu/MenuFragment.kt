@@ -19,6 +19,7 @@ class MenuFragment : Fragment() {
 
     private val viewModel: MenuViewModel by activityViewModels()
 
+    //TODO Set default values
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         val binding = FragmentMenuBinding.inflate(layoutInflater)
@@ -27,11 +28,16 @@ class MenuFragment : Fragment() {
         binding.viewModel = viewModel
 
 
-        viewModel.pageNumbersPosition.observe(viewLifecycleOwner){
-            if (it!=null) {
-                SharedPreferenceHelper.pagesNumber = viewModel.pageNumbersArray.value?.get(it)
-                DLog.d("Set: ${viewModel.pageNumbersArray.value?.get(it)}}")
-            }
+        viewModel.pageNumbersPosition.observe(viewLifecycleOwner) {
+            SharedPreferenceHelper.pagesNumber = it?.let { it1 -> viewModel.pageNumbersArray.value?.get(it1) } ?: 10
+        }
+
+        viewModel.ratingPosition.observe(viewLifecycleOwner) {
+            SharedPreferenceHelper.minRating = it?.let { it1 -> viewModel.ratingArray.value?.get(it1) } ?: 0
+        }
+
+        viewModel.yearPosition.observe(viewLifecycleOwner) {
+            SharedPreferenceHelper.minYear = it?.let { it1 -> viewModel.yearArray.value?.get(it1) } ?: 2000
         }
 
         return binding.root

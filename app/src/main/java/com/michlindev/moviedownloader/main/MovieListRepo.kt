@@ -1,6 +1,7 @@
 package com.michlindev.moviedownloader.main
 
 import com.michlindev.moviedownloader.DLog
+import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.api.ApiClient
 import com.michlindev.moviedownloader.api.ApiService
 import com.michlindev.moviedownloader.data.DefaultData
@@ -30,10 +31,12 @@ object MovieListRepo {
 
         mDisposable.add(
             //TODO error with 9
-            apiService.getWithParameters( 5, DefaultData.PAGE_LIMIT, page, "").subscribeOn(Schedulers.io())
+            apiService.getWithParameters(SharedPreferenceHelper.minRating, DefaultData.PAGE_LIMIT, page, "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
-                        val res = movies.data.movies
+                        var res = movies.data.movies
+
+
 
                         /*globalCounter++
                         if (globalCounter == pages) {
@@ -41,6 +44,7 @@ object MovieListRepo {
                         }
                         progressBar.setProgress(globalCounter, true)*/
 
+                        if (res==null) res = listOf()
                         cont.resume(res)
                     }
 
@@ -53,22 +57,26 @@ object MovieListRepo {
         )
     }
 
-    suspend fun getMovies(page: Int): List<Movie> = suspendCoroutine { cont ->
+    suspend fun getMovies(): List<Movie> = suspendCoroutine { cont ->
         val movies = mutableListOf<Movie>()
+
+        val numberOfPages = SharedPreferenceHelper.pagesNumber
+
+        DLog.d("Num of pages: $numberOfPages")
+        DLog.d("Min Rating: ${SharedPreferenceHelper.minRating}")
 
 
         var cnt = 0
-        for (i in 1..page) {
+
+        for (i in 1..numberOfPages) {
             DLog.d("Firing $i")
             CoroutineScope(Dispatchers.IO).launch {
                 DLog.d("Start $i")
-                //val mv = getPage(i)
                 DLog.d("End1 $i")
                 movies.addAll(getPage(i))
-                //movies.addAll((i-1)*50,mv)
                 DLog.d("End2 $i")
                 cnt++
-                if (cnt==page) {
+                if (cnt == numberOfPages) {
                     DLog.d("Resuming")
                     cont.resume(movies)
                 }

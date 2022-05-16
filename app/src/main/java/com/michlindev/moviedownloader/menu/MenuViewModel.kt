@@ -2,20 +2,25 @@ package com.michlindev.moviedownloader.menu
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 
 class MenuViewModel : ViewModel() {
 
-    var pageNumbersArray = MutableLiveData(getPageNumbering())
+    var pageNumbersArray = MutableLiveData(generateRange(1,25))
+    var ratingArray = MutableLiveData(generateRange(0,9))
+    var yearArray = MutableLiveData(generateRange(2000,2023))
+
     var pageNumbersPosition = MutableLiveData(pageNumbersArray.value?.indexOf(SharedPreferenceHelper.pagesNumber))
+    var ratingPosition = MutableLiveData(ratingArray.value?.indexOf(SharedPreferenceHelper.minRating))
+    var yearPosition = MutableLiveData(yearArray.value?.indexOf(SharedPreferenceHelper.minYear))
 
-    private fun getPageNumbering():Array<String> {
-        val list = mutableListOf<String>()
-        for (i in 1..25) {
-            list.add(i.toString())
+
+    private fun generateRange(min: Int, max: Int):MutableList<Int> {
+        val list = mutableListOf<Int>()
+        for (i in min..max) {
+            list.add(i)
         }
-        return list.toTypedArray()
-
+        return list
     }
+
 }

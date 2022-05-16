@@ -12,6 +12,8 @@
 
     <string name="web_client_id">496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com</string>
 
+    <string name="language_prefix">Language: %s</string>
+
     <array name="days">
         <item name="Mon">Monday</item>
         <item name="Tue">Tuesday</item>

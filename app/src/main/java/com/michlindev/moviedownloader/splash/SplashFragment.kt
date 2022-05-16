@@ -16,7 +16,9 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 3. Create search pop up
 4. Name rss file correctly
 5. Make option to clear file
-
+6. Background check with DB
+7. Imdb parser
+8. Beautify app
  */
 
 class SplashFragment : Fragment() {

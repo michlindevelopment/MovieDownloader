@@ -13,7 +13,7 @@ class ConnectedItemAdapter(list: List<Movie>, private val itemListener: ItemList
 
     override fun bind(binding: ListLayoutNewBinding, item: Movie) {
         binding.apply {
-            connectedItem = item
+            movie = item
             listener = itemListener
             executePendingBindings()
         }

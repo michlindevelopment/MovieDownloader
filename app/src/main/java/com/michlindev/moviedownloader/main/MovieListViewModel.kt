@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.DLog
+import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
 import com.michlindev.moviedownloader.data.Movie
 import kotlinx.coroutines.CoroutineScope
@@ -60,28 +61,18 @@ class MovieListViewModel : ViewModel(), ItemListener {
     fun getMovies() {
 
         val movies = mutableListOf<Movie>()
+        itemList.postValue(movies)
 
         CoroutineScope(Dispatchers.IO).launch {
             DLog.d("Start G")
 
-
-
-            movies.addAll(MovieListRepo.getMovies(10))
+            movies.addAll(MovieListRepo.getMovies())
             DLog.d("End G - Total: ${movies.size}")
 
-
-
-            withContext(Dispatchers.Main)
-            {
-                //val flt: MutableList<Movie> = movies.filter { it.language == "en" } as MutableList<Movie>
-                movies.removeIf { it.language!="en" }
-                movies.removeIf{ it.year <2019}
-                movies.removeIf{ it.genres.contains("Documentary")}
+            withContext(Dispatchers.Main) {
+                DLog.d("Removing ${SharedPreferenceHelper.minYear}")
+                movies.removeIf { it.year < SharedPreferenceHelper.minYear || it.genres?.contains("Documentary") ?: true }
                 movies.sortByDescending { it.date_uploaded_unix }
-
-                //flt.forEach { DLog.d("Bck: ${it.background_image}") }
-
-
                 DLog.d("After filter: ${movies.size}")
                 itemList.postValue(movies)
             }
