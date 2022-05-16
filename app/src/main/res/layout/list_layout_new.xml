@@ -109,18 +109,31 @@
 
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="15dp"
-            android:text="Available Qualities:"
-            android:textColor="@color/quality_color_headine"
-            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:text="@{connectedItem.language}"
+            android:textColor="@color/year_color"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGenre" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewGenre"
+            tools:text="English" />
 
-       <!-- <TextView
+        <TextView
+            android:id="@+id/textViewRuntime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@{Integer.toString(connectedItem.runtime)}"
+            android:textColor="@color/year_color"
+            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLanguage"
+            tools:text="90 min" />
+
+
+        <!-- <TextView
             android:id="@+id/textViewQuality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

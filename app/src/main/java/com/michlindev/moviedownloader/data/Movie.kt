@@ -27,27 +27,3 @@ data class Movie(
 ) : ListAdapterItem, Serializable
 
 
-/* @JvmName("getTorrents1")
- fun getTorrents(): List<Torrents>? {
-     return torrents
- }
-
- fun setTorrents(torrents: MutableList<Torrents>?) {
-     this.torrents = torrents
- }*/
-
-/*fun addGenres(genresArr: Array<String>) {
-    genres = genresArr
-}
-
-fun addTorrent(torrent: Torrents) {
-    if (torrents == null) torrents = ArrayList()
-    torrents!!.add(torrent)
-}*/
-
-/*override fun equals(o: Any?): Boolean {
-    if (o is Movie) {
-        return id == o.id
-    }
-    return false
-}*/

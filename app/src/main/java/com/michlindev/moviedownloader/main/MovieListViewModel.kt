@@ -103,12 +103,12 @@ class MovieListViewModel : ViewModel(), ItemListener {
     }
 
     override fun rating(item: String) {
-        /*CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val rt = MovieListRepo.getRealRating(item)
             DLog.d("Rating: $rt")
-        }*/
-        DLog.d("H1")
-        imdbClick.postValue(item)
+        }
+        //DLog.d("H1")
+        //imdbClick.postValue(item)
     }
 
 
