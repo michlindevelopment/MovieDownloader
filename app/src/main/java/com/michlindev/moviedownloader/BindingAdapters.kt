@@ -15,9 +15,9 @@ import com.michlindev.moviedownloader.main.BaseAdapter
 import com.michlindev.moviedownloader.main.ListAdapterItem
 
 
-@BindingAdapter("app:onClick")
-fun bindSignInClick(button: SignInButton, method: () -> Unit) {
-    button.setOnClickListener { method.invoke() }
+@BindingAdapter("app:onClickSign")
+fun SignInButton.bindSignInClick(method: () -> Unit) {
+    this.setOnClickListener { method.invoke() }
 }
 
 @BindingAdapter("setAdapter")
@@ -29,18 +29,22 @@ fun setAdapter(
     }
 }
 
-@Suppress("UNCHECKED_CAST")
+/*@Suppress("UNCHECKED_CAST")
 @BindingAdapter("submitList")
 fun submitList(recyclerView: RecyclerView, list: List<ListAdapterItem>?) {
     val adapter = recyclerView.adapter as BaseAdapter<ViewDataBinding, ListAdapterItem>?
+    adapter?.updateData(list ?: listOf())
+}*/
+
+@BindingAdapter("submitList")
+fun RecyclerView.submitList(list: List<ListAdapterItem>?) {
+    val adapter = this.adapter as BaseAdapter<ViewDataBinding, ListAdapterItem>?
     adapter?.updateData(list ?: listOf())
 }
 
 @BindingAdapter("loadWithGlide")
 fun ImageView.loadUrlWithGlide(url: String?) {
     val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
-    /*Glide.with(this).load(url).transition(DrawableTransitionOptions.withCrossFade(factory))
-        .into(this)*/
 
     Glide.with(this)
         .setDefaultRequestOptions(RequestOptions().placeholder(R.drawable.placeholder))

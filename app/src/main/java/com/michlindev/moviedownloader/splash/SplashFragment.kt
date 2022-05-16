@@ -19,6 +19,7 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 6. Background check with DB
 7. Imdb parser
 8. Beautify app
+9. Move to arrays from string
  */
 
 class SplashFragment : Fragment() {

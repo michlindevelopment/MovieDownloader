@@ -3,6 +3,7 @@ package com.michlindev.moviedownloader.menu
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.SharedPreferenceHelper
+import com.michlindev.moviedownloader.SingleLiveEvent
 
 class MenuViewModel : ViewModel() {
 
@@ -15,6 +16,8 @@ class MenuViewModel : ViewModel() {
     var ratingPosition = MutableLiveData(ratingArray.value?.indexOf(SharedPreferenceHelper.minRating))
     var yearPosition = MutableLiveData(yearArray.value?.indexOf(SharedPreferenceHelper.minYear))
 
+    var showDialog = SingleLiveEvent<Any>()
+
 
     private fun generateRange(min: Int, max: Int):MutableList<Int> {
         val list = mutableListOf<Int>()
@@ -23,5 +26,11 @@ class MenuViewModel : ViewModel() {
         }
         return list
     }
+
+    fun showDialog() {
+        showDialog.call()
+    }
+
+
 
 }
