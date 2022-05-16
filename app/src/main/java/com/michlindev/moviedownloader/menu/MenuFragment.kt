@@ -40,6 +40,10 @@ class MenuFragment : Fragment() {
             SharedPreferenceHelper.minYear = it?.let { it1 -> viewModel.yearArray.value?.get(it1) } ?: 2000
         }
 
+        viewModel.englishOnly.observe(viewLifecycleOwner) {
+            SharedPreferenceHelper.englishOnly = it
+        }
+
         return binding.root
     }
 

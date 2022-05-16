@@ -69,9 +69,14 @@ class MovieListViewModel : ViewModel(), ItemListener {
             movies.addAll(MovieListRepo.getMovies())
             DLog.d("End G - Total: ${movies.size}")
 
+            val englishOnly = SharedPreferenceHelper.englishOnly
+
+            //TODO Check year null
             withContext(Dispatchers.Main) {
                 DLog.d("Removing ${SharedPreferenceHelper.minYear}")
-                movies.removeIf { it.year < SharedPreferenceHelper.minYear || it.genres?.contains("Documentary") ?: true }
+                movies.removeIf {it.year < SharedPreferenceHelper.minYear
+                        || it.genres?.contains("Documentary") ?: true
+                        || (englishOnly && it.language!="en")}
                 movies.sortByDescending { it.date_uploaded_unix }
                 DLog.d("After filter: ${movies.size}")
                 itemList.postValue(movies)
