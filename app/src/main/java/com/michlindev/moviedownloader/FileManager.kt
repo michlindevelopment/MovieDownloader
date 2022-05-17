@@ -1,7 +1,6 @@
 package com.michlindev.moviedownloader
 
 import java.io.*
-import java.util.ArrayList
 
 object FileManager {
     private const val RSS_HEADER =

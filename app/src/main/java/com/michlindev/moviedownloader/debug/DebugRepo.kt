@@ -1,6 +1,5 @@
 package com.michlindev.moviedownloader.debug
 
-import android.util.Log
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.api.ApiClient
 import com.michlindev.moviedownloader.api.ApiService

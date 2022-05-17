@@ -1,20 +1,14 @@
 package com.michlindev.moviedownloader.menu
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.michlindev.moviedownloader.DLog
-import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.databinding.FragmentMenuBinding
-import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 import com.michlindev.moviedownloader.dialog.GenreDialogFragment
-import com.michlindev.moviedownloader.splash.SplashViewModel
 
 class MenuFragment : Fragment() {
 
@@ -46,8 +40,9 @@ class MenuFragment : Fragment() {
         }
 
         viewModel.showDialog.observe(viewLifecycleOwner) {
-            GenreDialogFragment().show(
-                childFragmentManager, GenreDialogFragment.TAG)
+            //Send list as first param
+            GenreDialogFragment.newInstance("A", "B").show(childFragmentManager, GenreDialogFragment.TAG)
+
         }
 
         return binding.root

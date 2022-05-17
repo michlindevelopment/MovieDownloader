@@ -1,8 +1,5 @@
 package com.michlindev.moviedownloader.main.ref
 
-import androidx.annotation.DrawableRes
-import java.io.Serializable
-
 /*
 data class ConnectedItem(
     val headline: String?,
