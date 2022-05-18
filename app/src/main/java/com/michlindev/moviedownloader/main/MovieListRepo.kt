@@ -1,6 +1,8 @@
 package com.michlindev.moviedownloader.main
 
+import com.google.gson.Gson
 import com.michlindev.moviedownloader.DLog
+import com.michlindev.moviedownloader.imdb.Imdb
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.api.ApiClient
 import com.michlindev.moviedownloader.api.ApiService
@@ -14,6 +16,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -57,6 +60,11 @@ object MovieListRepo {
         )
     }
 
+    //Todo maybe change to this type
+    suspend fun getMovies2(): Boolean = withContext(Dispatchers.IO) {
+        return@withContext true
+    }
+
     suspend fun getMovies(): List<Movie> = suspendCoroutine { cont ->
         val movies = mutableListOf<Movie>()
 
@@ -92,22 +100,22 @@ object MovieListRepo {
         DLog.d("url: $url")
 
         var document: Document? = null
-        var element: Element? = null
+        val element: Element? = null
 
         try {
             document = Jsoup.connect(url).get()
-            DLog.d("document: $document")
+            //DLog.d("document: $document")
             DLog.d("-----------------------------")
-            DLog.d("-----------------------------")
-            DLog.d("-----------------------------")
-            DLog.d("-----------------------------")
+
 
             val e: Element = document.select("script").first()!!
             val s = e.html()
 
+            val testModel = Gson().fromJson(s, Imdb::class.java)
 
-            element = document.selectFirst("script[type=application/ld+json]")
-            DLog.d("---------------------------------------element: $element")
+
+            //element = document.selectFirst("script[type=application/ld+json]")
+            DLog.d("---------------------------------------Rating: ${testModel.aggregateRating.ratingValue}")
         } catch (e: IOException) {
             e.printStackTrace()
             DLog.e("error: $e")

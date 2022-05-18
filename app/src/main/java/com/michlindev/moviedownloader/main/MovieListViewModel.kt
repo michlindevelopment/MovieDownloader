@@ -22,6 +22,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         val movies = mutableListOf<Movie>()
         itemList.postValue(movies)
 
+        //TODO change to lifecycle
         CoroutineScope(Dispatchers.IO).launch {
             DLog.d("Start G")
 
