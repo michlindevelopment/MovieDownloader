@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -15,7 +16,7 @@ abstract class BaseAdapter<BINDING : ViewDataBinding, T : ListAdapterItem>(var d
 
     abstract fun bind(binding: BINDING, item: T)
 
-    //@SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(list: List<T>) {
         this.data = list
         notifyDataSetChanged()

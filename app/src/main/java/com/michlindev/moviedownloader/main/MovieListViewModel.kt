@@ -13,49 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MovieListViewModel : ViewModel(), ItemListener {
-    //Check if file exist on sd
-    //Create if not with content
-    //Upload it
 
-    //Add fixed data
-    //Upload it to firebase
     var itemList = MutableLiveData<List<Movie>>()
     var imdbClick = SingleLiveEvent<String>()
-
-    /*fun getMovies() {
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val movies = mutableListOf<Movie>()
-            for (i in 1..10) {
-                DLog.d("Start $i")
-                movies.addAll(MovieListRepo.getMovies1(i))
-                DLog.d("End $i")
-            }
-            val flt: List<Movie> = movies.filter { it.language == "en" }
-
-            DLog.d("Size ${flt.size}")
-            withContext(Dispatchers.Main)
-            {
-                itemList.postValue(flt)
-            }
-        }
-    }*/
-
-    /*fun getMovies() {
-
-        val movies = mutableListOf<Movie>()
-        for (i in 1..10) {
-            CoroutineScope(Dispatchers.IO).launch {
-                DLog.d("Start $i")
-                movies.addAll(MovieListRepo.getMovies1(i))
-                DLog.d("End $i")
-            }
-
-        }
-        DLog.d("Aha")
-
-    }*/
-
 
     fun getMovies() {
 

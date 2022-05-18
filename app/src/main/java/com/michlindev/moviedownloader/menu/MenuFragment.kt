@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.databinding.FragmentMenuBinding
 import com.michlindev.moviedownloader.dialog.GenreDialogFragment
@@ -41,7 +42,8 @@ class MenuFragment : Fragment() {
 
         viewModel.showDialog.observe(viewLifecycleOwner) {
             //Send list as first param
-            GenreDialogFragment.newInstance("A", "B").show(childFragmentManager, GenreDialogFragment.TAG)
+            var genres = resources.getStringArray(R.array.genres)
+            GenreDialogFragment.newInstance(genres).show(childFragmentManager, GenreDialogFragment.TAG)
 
         }
 

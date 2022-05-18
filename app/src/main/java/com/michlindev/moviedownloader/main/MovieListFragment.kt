@@ -19,7 +19,7 @@ class MovieListFragment : Fragment() {
 
         val binding = MovieListFragmentBinding.inflate(layoutInflater)
 
-        binding.adapter = ConnectedItemAdapter(listOf(), viewModel)
+        binding.adapter = MovieItemAdapter(listOf(), viewModel)
         viewModel.itemList.observe(viewLifecycleOwner) {
             binding.adapter?.notifyDataSetChanged()
         }

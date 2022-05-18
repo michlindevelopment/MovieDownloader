@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.databinding.FragmentGenreDialogBinding
+import com.michlindev.moviedownloader.main.MovieItemAdapter
 
 class GenreDialogFragment : DialogFragment() {
     /*override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
@@ -21,13 +24,12 @@ class GenreDialogFragment : DialogFragment() {
 
         const val TAG = "GenreDialogFragment"
 
-        private const val KEY_TITLE = "KEY_TITLE"
-        private const val KEY_SUBTITLE = "KEY_SUBTITLE"
+        private const val GENRES = "GENRES"
 
-        fun newInstance(title: String, subTitle: String): GenreDialogFragment {
+        fun newInstance(title: Array<String>): GenreDialogFragment {
             val args = Bundle()
-            args.putString(KEY_TITLE, title)
-            args.putString(KEY_SUBTITLE, subTitle)
+            args.putStringArray(GENRES, title)
+            //args.putString(KEY_SUBTITLE, subTitle)
             val fragment = GenreDialogFragment()
             fragment.arguments = args
             return fragment
@@ -35,11 +37,16 @@ class GenreDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        //return inflater.inflate(R.layout.fragment_genre_dialog, container, false)
         val binding = FragmentGenreDialogBinding.inflate(layoutInflater)
 
         binding.lifecycleOwner = this
-        //binding.viewModel = viewModel
+        binding.viewModel = viewModel
+
+        binding.adapter = GenreItemAdapter(listOf(), viewModel)
+       /* viewModel.itemList.observe(viewLifecycleOwner) {
+            binding.adapter?.notifyDataSetChanged()
+        }*/
+
         return binding.root
     }
 
@@ -47,6 +54,23 @@ class GenreDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         //setupView(view)
         //setupClickListeners(view)
+
+        val foo1 = mutableListOf<Genre>()
+
+        val foo2 = arguments?.getStringArray(GENRES)
+        val foo3 = MutableLiveData(false)
+
+
+        if (foo2 != null) {
+            foo2.forEach {
+                foo1.add(Genre(
+                    genre = it,
+                    enabled = false))
+            }
+        }
+
+        viewModel.itemList.postValue(foo1)
+        DLog.d("")
     }
 
     override fun onStart() {

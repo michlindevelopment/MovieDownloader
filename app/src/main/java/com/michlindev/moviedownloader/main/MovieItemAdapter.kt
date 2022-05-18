@@ -7,7 +7,7 @@ import com.michlindev.moviedownloader.databinding.ListLayoutNewBinding
 
 
 //Connected item adapter for each item
-class ConnectedItemAdapter(list: List<Movie>, private val itemListener: ItemListener) : BaseAdapter<ListLayoutNewBinding, Movie>(list) {
+class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener) : BaseAdapter<ListLayoutNewBinding, Movie>(list) {
 
     override val layoutId: Int = R.layout.list_layout_new
 
