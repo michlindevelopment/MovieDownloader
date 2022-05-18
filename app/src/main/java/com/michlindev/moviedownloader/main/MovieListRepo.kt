@@ -101,7 +101,12 @@ object MovieListRepo {
             DLog.d("-----------------------------")
             DLog.d("-----------------------------")
             DLog.d("-----------------------------")
-            element = document.selectFirst("span[sc-7ab21ed2-1 jGRxWM]")
+
+            val e: Element = document.select("script").first()!!
+            val s = e.html()
+
+
+            element = document.selectFirst("script[type=application/ld+json]")
             DLog.d("---------------------------------------element: $element")
         } catch (e: IOException) {
             e.printStackTrace()
