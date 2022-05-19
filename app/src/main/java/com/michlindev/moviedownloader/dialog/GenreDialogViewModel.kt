@@ -30,6 +30,7 @@ class GenreDialogViewModel : ViewModel(), ItemListener {
             val toPut = genres != null && genres.contains(it)
             newGenres.add(Genre(genre = it, enabled = MutableLiveData(toPut)))
         }
+        //allEnabled.postValue(false)
         itemList.postValue(newGenres)
     }
 }

@@ -38,7 +38,7 @@ class GenreDialogFragment : DialogFragment() {
         binding.adapter = GenreItemAdapter(listOf(), viewModel)
         viewModel.allEnabled.observe(viewLifecycleOwner) { it2 ->
             viewModel.itemList.value?.forEach {
-                it.enabled.postValue(it2)
+                it.enabled.value = it2
             }
             binding.adapter?.notifyDataSetChanged()
         }
