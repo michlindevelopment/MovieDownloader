@@ -55,7 +55,6 @@ fun ImageView.loadUrlWithGlide(url: String?) {
 
 @BindingAdapter("stringArray")
 fun TextView.stringArray(list: List<String>) {
-    //val commaSeperatedString = listOfStringColumn.joinToString (separator = "-") { it -> "\'${it.nameOfStringVariable}\'" }
     text = list.joinToString (separator = ", ") { it }
 }
 

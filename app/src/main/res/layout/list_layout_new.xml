@@ -91,6 +91,7 @@
             android:text="@{Integer.toString(movie.year)}"
             tools:text="2022" />
 
+        <!--app:stringArray="@{movie.genres}"-->
         <TextView
             android:id="@+id/textViewGenre"
             android:layout_width="wrap_content"

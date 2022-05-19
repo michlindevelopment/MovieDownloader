@@ -34,8 +34,12 @@ class MovieListViewModel : ViewModel(), ItemListener {
             //TODO Check year null
             withContext(Dispatchers.Main) {
                 DLog.d("Removing ${SharedPreferenceHelper.minYear}")
+
+                val genres = SharedPreferenceHelper.genres
+
                 movies.removeIf {it.year < SharedPreferenceHelper.minYear
-                        || it.genres?.contains("Documentary") ?: true
+                        //|| it.genres?.contains("Documentary") ?: true
+                        || checkContainment(it,genres)
                         || (englishOnly && it.language!="en")}
                 movies.sortByDescending { it.date_uploaded_unix }
                 DLog.d("After filter: ${movies.size}")
@@ -43,6 +47,23 @@ class MovieListViewModel : ViewModel(), ItemListener {
             }
         }
 
+    }
+
+    private fun checkContainment(movie: Movie, genres: MutableSet<String>?): Boolean {
+
+        movie.genres?.forEach {
+            if (genres?.contains(it) == true)
+            {
+                DLog.d("")
+            }
+            else
+            {
+                DLog.d("")
+                return true //remove the movie
+            }
+
+        }
+        return false
     }
 
 

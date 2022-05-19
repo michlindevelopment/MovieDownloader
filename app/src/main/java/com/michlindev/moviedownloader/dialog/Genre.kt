@@ -9,8 +9,8 @@ import java.util.*
 data class Genre(
     override val id: Long = 0,
     var genre: String,
-    //var enabled : MutableLiveData<Boolean>
-    var enabled : Boolean
+    var enabled : MutableLiveData<Boolean>
+    //var enabled : Boolean
 ) : ListAdapterItem, Serializable
 
 
