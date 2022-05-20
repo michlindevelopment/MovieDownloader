@@ -93,6 +93,7 @@ object MovieListRepo {
         }
     }
 
+
     suspend fun getRealRating(imdbCode: String): String = suspendCoroutine { cont ->
 
         //DLog.d("imdbCode: $imdbCode")
@@ -101,25 +102,13 @@ object MovieListRepo {
 
         //var document: Document? = null
         //val element: Element? = null
-         var testModel : Imdb? = null
+        var testModel: Imdb? = null
+        val document = Jsoup.connect(url).get()
+        val e: Element? = document.select("script").first()
+        //val s = e?.html()
 
-        try {
-            val document = Jsoup.connect(url).get()
+        testModel = Gson().fromJson(e?.html(), Imdb::class.java)
 
-            val e: Element = document.select("script").first()!!
-            val s = e.html()
-
-            testModel = Gson().fromJson(s, Imdb::class.java)
-
-
-            //element = document.selectFirst("script[type=application/ld+json]")
-            //DLog.d("---------------------------------------Rating: ${testModel.aggregateRating.ratingValue}")
-        } catch (e: IOException) {
-            e.printStackTrace()
-            DLog.e("error: $e")
-            cont.resume("0")
-        }
-        //assert(element != null)
 
         val rating = testModel?.aggregateRating?.ratingValue.toString()
         //DLog.d("$rating")

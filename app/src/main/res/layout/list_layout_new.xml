@@ -67,7 +67,7 @@
             app:srcCompat="@drawable/ic_imdb_logo_2016" />
 
        <!-- android:text="@{Double.toString(movie.rating)}"-->
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,9 +77,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageViewImdb"
             app:layout_constraintStart_toEndOf="@+id/imageViewImdb"
             app:layout_constraintTop_toTopOf="@+id/imageViewImdb"
-            android:text="@{Double.toString(movie.rating)}"
             app:setRating="@{movie}"
             tools:text="8.9" />
+
 
 
         <TextView

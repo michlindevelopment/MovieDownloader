@@ -4,6 +4,10 @@ import android.view.View
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.ListLayoutNewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 //Connected item adapter for each item
@@ -15,6 +19,14 @@ class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener
         binding.apply {
             movie = item
             listener = itemListener
+
+            /*CoroutineScope(Dispatchers.IO).launch {
+                val tt = MovieListRepo.getRealRating(item.imdb_code)
+                withContext(Dispatchers.Main) {
+                    movie.updatedRating.postValue(tt)
+                }
+            }*/
+
             executePendingBindings()
         }
     }

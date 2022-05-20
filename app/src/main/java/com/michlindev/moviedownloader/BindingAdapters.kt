@@ -75,8 +75,8 @@ fun TextView.setRating(movie: Movie) {
     DLog.d("---------------------------")
     DLog.d("Movie: ${movie.title} Rating ${movie.rating}")
 
-    //text = movie.rating.toString()
-    //setTextColor(Color.parseColor("#FFFFFF"))
+    text = movie.rating.toString()
+    setTextColor(Color.parseColor("#FFFFFF"))
 
     CoroutineScope(Dispatchers.IO).launch {
         val rating = MovieListRepo.getRealRating(movie.imdb_code)

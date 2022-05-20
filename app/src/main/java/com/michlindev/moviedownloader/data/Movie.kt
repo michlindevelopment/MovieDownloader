@@ -1,8 +1,16 @@
 package com.michlindev.moviedownloader.data
 
+import android.graphics.Color
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.annotations.SerializedName
+import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.main.ListAdapterItem
+import com.michlindev.moviedownloader.main.MovieListRepo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.Serializable
 import java.util.*
 
@@ -23,16 +31,17 @@ data class Movie(
     @SerializedName("runtime") var runtime: Int,
     @SerializedName("description_full") var description_full: String,
     @SerializedName("synopsis") var synopsis: String,
-    @SerializedName("language") var language: String
+    @SerializedName("language") var language: String,
 
 ) : ListAdapterItem, Serializable {
-
 
     val fullLanguage: String
         get() = Locale(language).displayLanguage
 
     val genres: List<String>
         get() = tempGenres ?: listOf()
+
+
 
 
 

@@ -83,6 +83,8 @@ class MovieListViewModel : ViewModel(), ItemListener {
         }
     }
 
+
+
     override fun imdbLogoClick(item: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val rt = MovieListRepo.getRealRating(item)
