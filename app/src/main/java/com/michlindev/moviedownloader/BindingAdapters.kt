@@ -81,7 +81,6 @@ fun TextView.setRating(movie: Movie) {
     CoroutineScope(Dispatchers.IO).launch {
         val rating = MovieListRepo.getRealRating(movie.imdb_code)
         withContext(Dispatchers.Main) {
-
             DLog.d("Movie: ${movie.title} Rating $rating")
             text = rating
             setTextColor(Color.parseColor("#FF0000"))

@@ -24,6 +24,8 @@ class MovieListFragment : Fragment() {
             binding.adapter?.notifyDataSetChanged()
         }
 
+        //binding.recyclerView.recycledViewPool.setMaxRecycledViews(R.layout.list_layout_new, 0)
+
         viewModel.imdbClick.observe(viewLifecycleOwner) {
             DLog.d("Clicked")
             val site = "https://www.imdb.com/title/$it"

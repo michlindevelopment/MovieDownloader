@@ -101,7 +101,7 @@ object MovieListRepo {
 
         //var document: Document? = null
         //val element: Element? = null
-        lateinit var testModel : Imdb
+         var testModel : Imdb? = null
 
         try {
             val document = Jsoup.connect(url).get()
@@ -117,10 +117,11 @@ object MovieListRepo {
         } catch (e: IOException) {
             e.printStackTrace()
             DLog.e("error: $e")
+            cont.resume("0")
         }
         //assert(element != null)
 
-        val rating = testModel.aggregateRating.ratingValue.toString()
+        val rating = testModel?.aggregateRating?.ratingValue.toString()
         //DLog.d("$rating")
         cont.resume(rating)
     }
