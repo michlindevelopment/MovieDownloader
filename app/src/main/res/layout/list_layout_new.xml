@@ -28,6 +28,7 @@
             android:layout_marginBottom="5dp"
             android:background="#FFFFFF"
             android:padding="3dp"
+            android:onClick="@{() -> listener.posterClick(movie.imdb_code)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,11 +61,12 @@
             android:layout_height="30dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:onClick="@{() -> listener.rating(movie.imdb_code)}"
+            android:onClick="@{() -> listener.imdbLogoClick(movie.imdb_code)}"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
             app:srcCompat="@drawable/ic_imdb_logo_2016" />
 
+       <!-- android:text="@{Double.toString(movie.rating)}"-->
         <TextView
             android:id="@+id/textViewRating"
             android:layout_width="wrap_content"
@@ -76,6 +78,7 @@
             app:layout_constraintStart_toEndOf="@+id/imageViewImdb"
             app:layout_constraintTop_toTopOf="@+id/imageViewImdb"
             android:text="@{Double.toString(movie.rating)}"
+            app:setRating="@{movie}"
             tools:text="8.9" />
 
 
@@ -113,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:text="@{String.format(@string/language_prefix, movie.fullLanguage())}"
+            android:text="@{String.format(@string/language_prefix, movie.fullLanguage)}"
 
             android:textColor="@color/year_color"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"

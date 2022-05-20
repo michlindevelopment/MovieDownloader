@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,10 +38,19 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
                 val genres = SharedPreferenceHelper.genres
 
-                movies.removeIf {it.year < SharedPreferenceHelper.minYear
-                        //|| it.genres?.contains("Documentary") ?: true
-                        || checkContainment(it,genres)
-                        || (englishOnly && it.language!="en")}
+                /*movies.forEach{
+                    DLog.d(it.title)
+                    DLog.d("${it.genres}")
+                    DLog.d("--------------------------")
+
+                }*/
+
+                movies.removeIf {
+                    it.year < SharedPreferenceHelper.minYear
+                            //|| it.genres?.contains("Documentary") ?: true
+                            || checkContainment(it, genres)
+                            || (englishOnly && it.language != "en")
+                }
                 movies.sortByDescending { it.date_uploaded_unix }
                 DLog.d("After filter: ${movies.size}")
                 itemList.postValue(movies)
@@ -51,41 +61,37 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     private fun checkContainment(movie: Movie, genres: MutableSet<String>?): Boolean {
 
-        movie.genres?.forEach {
-            if (genres?.contains(it) == true)
-            {
-                DLog.d("")
-            }
-            else
-            {
-                DLog.d("")
-                return true //remove the movie
-            }
+        //var remove = false
 
+        DLog.d("-----------------------------------")
+        DLog.d("Movie Name: ${movie.title}")
+        DLog.d("Genres: ${movie.genres}")
+
+        if (movie.genres.isEmpty()) {
+            DLog.d("List empty")
+            return true
         }
-        return false
+        else {
+            movie.genres.forEach {
+                if (genres?.contains(it) == false) {
+                    DLog.d("Ret true")
+                    return true
+                }
+            }
+            DLog.d("Ret false")
+            return false
+        }
     }
 
-
-    override fun onItemCheckedClicked(item: Movie, view: View) {
-        TODO("Not yet implemented")
-    }
-
-    override fun zoomImage(view: View, image: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun infoImage(item: Movie) {
-        DLog.d("Clicked: ${item.title_english}")
-    }
-
-    override fun rating(item: String) {
+    override fun imdbLogoClick(item: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val rt = MovieListRepo.getRealRating(item)
             DLog.d("Rating: $rt")
         }
-        //DLog.d("H1")
-        //imdbClick.postValue(item)
+    }
+
+    override fun posterClick(item: String) {
+        imdbClick.postValue(item)
     }
 
 

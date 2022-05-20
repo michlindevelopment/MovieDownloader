@@ -11,15 +11,16 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
 //TODO
 /*
-1. Create menu
-2. Arrange movies by menu selection
-3. Create search pop up
+1. Create menu - V
+2. Arrange movies by menu selection - V
+3. Create search pop up - V
 4. Name rss file correctly
 5. Make option to clear file
 6. Background check with DB
 7. Imdb parser
 8. Beautify app
-9. Move to arrays from string
+9. Move to arrays from string - V
+10. Create imdb page
  */
 
 class SplashFragment : Fragment() {

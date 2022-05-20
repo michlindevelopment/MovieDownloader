@@ -1,5 +1,7 @@
 package com.michlindev.moviedownloader.dialog
 
+import android.view.View
+import android.widget.CheckBox
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.SharedPreferenceHelper
@@ -8,7 +10,6 @@ import com.michlindev.moviedownloader.SingleLiveEvent
 class GenreDialogViewModel : ViewModel(), ItemListener {
 
     var itemList = MutableLiveData<List<Genre>>()
-    var allEnabled = MutableLiveData<Boolean>()
     var dismissDialog = SingleLiveEvent<Any>()
 
     fun saveSelected() {
@@ -30,7 +31,21 @@ class GenreDialogViewModel : ViewModel(), ItemListener {
             val toPut = genres != null && genres.contains(it)
             newGenres.add(Genre(genre = it, enabled = MutableLiveData(toPut)))
         }
-        //allEnabled.postValue(false)
         itemList.postValue(newGenres)
     }
+
+    fun selectAll(view: View) {
+        val checkBox = view as CheckBox
+        itemList.value?.forEach {
+            it.enabled.value = checkBox.isChecked
+        }
+        itemList.notifyObserver()
+
+
+    }
+
+    private fun <T> MutableLiveData<T>.notifyObserver() {
+        this.value = this.value
+    }
+
 }

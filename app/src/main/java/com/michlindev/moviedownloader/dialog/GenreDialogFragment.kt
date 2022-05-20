@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.databinding.FragmentGenreDialogBinding
 
 class GenreDialogFragment : DialogFragment() {
@@ -36,23 +37,15 @@ class GenreDialogFragment : DialogFragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.adapter = GenreItemAdapter(listOf(), viewModel)
-        viewModel.allEnabled.observe(viewLifecycleOwner) { it2 ->
-            viewModel.itemList.value?.forEach {
-                it.enabled.value = it2
-            }
-            binding.adapter?.notifyDataSetChanged()
-        }
-
-        viewModel.dismissDialog.observe(viewLifecycleOwner){
-            dismiss()
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.populate(arguments?.getStringArray(GENRES))
+        viewModel.dismissDialog.observe(viewLifecycleOwner){
+            dismiss()
+        }
     }
 
     override fun onStart() {

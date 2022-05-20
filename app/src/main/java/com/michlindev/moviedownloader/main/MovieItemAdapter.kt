@@ -21,8 +21,9 @@ class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener
 }
 
 interface ItemListener {
-    fun onItemCheckedClicked(item: Movie, view: View)
+   /* fun onItemCheckedClicked(item: Movie, view: View)
     fun zoomImage(view: View, image: Int)
-    fun infoImage(item: Movie)
-    fun rating(item: String)
+    fun infoImage(item: Movie)*/
+    fun imdbLogoClick(item: String)
+    fun posterClick(item: String)
 }

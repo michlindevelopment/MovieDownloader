@@ -19,12 +19,14 @@
         android:layout_height="match_parent"
         tools:context=".dialog.GenreDialogFragment">
 
+       <!-- android:checked="@={viewModel.allEnabled}"-->
+
         <CheckBox
             android:id="@+id/checkBox4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="All"
-            android:checked="@={viewModel.allEnabled}"
+            android:onClick="@{(view)->viewModel.selectAll(view)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
