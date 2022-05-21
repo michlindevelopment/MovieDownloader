@@ -66,7 +66,7 @@ fun TextView.stringArray(list: List<String>) {
 }
 
 
-@BindingAdapter("setRating")
+/*@BindingAdapter("setRating")
 fun TextView.setRating(movie: Movie) {
 
     DLog.d("---------------------------")
@@ -83,7 +83,7 @@ fun TextView.setRating(movie: Movie) {
             setTextColor(Color.parseColor("#FF0000"))
         }
     }
-}
+}*/
 
 /*
 @BindingAdapter("selectedValue")

@@ -94,6 +94,7 @@ object MovieListRepo {
 
     suspend fun getRealRating(imdbCode: String): String = suspendCoroutine { cont ->
 
+        //TODO handle error
         var rating = "N"
 
         try {

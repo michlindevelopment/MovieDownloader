@@ -18,8 +18,4 @@ class MovieDownloader : Application() {
         }
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        //val context: Context = applicationContext()
-    }
 }

@@ -9,36 +9,6 @@ object DefaultData {
     const val API = "/v2/"
     const val JSON_FILE = "list_movies.json"
 
-    enum class MovieGenre(private val friendlyName: String) {
-        ALL("All"),
-        ACTION("Action"),
-        ADVENTURE("Adventure"),
-        ANIMATION("Animation"),
-        BIOGRAPHY("Biography"),
-        COMEDY("Comedy"),
-        CRIME("Crime"),
-        DOCUMENTARY("Documentary"),
-        DRAMA("Drama"),
-        FAMILY("Family"),
-        FANTASY("Fantasy"),
-        HISTORY("History"),
-        HORROR("Horror"),
-        MUSIC("Music"),
-        MUSICAL("Musical"),
-        MYSTERY("Mystery"),
-        ROMANCE("Romance"),
-        SCI_FI("Sci-Fi"),
-        SHORT_FILM("Short Film"),
-        SPORT("Sport"),
-        SUPERHERO("Superhero"),
-        THRILLER("Thriller"),
-        WAR("War"),
-        WESTERN("Western");
-
-        override fun toString(): String {
-            return friendlyName
-        }
-    }
 
     enum class Sort(private val value: String) {
         TITLE("title"),
@@ -53,7 +23,4 @@ object DefaultData {
         }
     }
 
-    enum class SearchType {
-        SPECIFIC, ALL
-    }
 }

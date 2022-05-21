@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MovieDownloaderNew</string>
-    <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -13,13 +12,4 @@
     <string name="web_client_id">496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com</string>
 
     <string name="language_prefix">Language: %s</string>
-
-    <array name="days">
-        <item name="Mon">Monday</item>
-        <item name="Tue">Tuesday</item>
-        <item name="Wed">Wednesday</item>
-    </array>
-
-
-
 </resources>
