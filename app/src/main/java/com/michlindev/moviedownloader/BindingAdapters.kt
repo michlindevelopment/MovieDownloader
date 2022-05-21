@@ -1,11 +1,8 @@
 package com.michlindev.moviedownloader
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.widget.ImageView
-import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

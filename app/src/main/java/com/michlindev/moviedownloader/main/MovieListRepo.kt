@@ -2,13 +2,13 @@ package com.michlindev.moviedownloader.main
 
 import com.google.gson.Gson
 import com.michlindev.moviedownloader.DLog
-import com.michlindev.moviedownloader.imdb.Imdb
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.api.ApiClient
 import com.michlindev.moviedownloader.api.ApiService
 import com.michlindev.moviedownloader.data.DefaultData
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.data.MoviesResponse
+import com.michlindev.moviedownloader.imdb.Imdb
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -18,9 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
-import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.databinding.FragmentGenreDialogBinding
 
 class GenreDialogFragment : DialogFragment() {

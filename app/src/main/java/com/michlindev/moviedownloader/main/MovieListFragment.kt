@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ class MovieListFragment : Fragment() {
 
     private val viewModel: MovieListViewModel by activityViewModels()
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         val binding = MovieListFragmentBinding.inflate(layoutInflater)
@@ -24,14 +26,14 @@ class MovieListFragment : Fragment() {
             binding.adapter?.notifyDataSetChanged()
         }
 
-        //binding.recyclerView.recycledViewPool.setMaxRecycledViews(R.layout.list_layout_new, 0)
-        viewModel.testVar.observe(viewLifecycleOwner) {
-            DLog.d("Observing testVar")
+        viewModel.notifyAdapter.observe(viewLifecycleOwner) {
+            it?.let { binding.adapter?.notifyItemChanged(it) }
+
+            //binding.adapter?.notifyItemChanged(it)
         }
 
 
         viewModel.imdbClick.observe(viewLifecycleOwner) {
-            DLog.d("Clicked")
             val site = "https://www.imdb.com/title/$it"
             DLog.d("Site $site")
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))

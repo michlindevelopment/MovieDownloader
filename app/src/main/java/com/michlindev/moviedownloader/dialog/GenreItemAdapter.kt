@@ -1,10 +1,7 @@
 package com.michlindev.moviedownloader.dialog
 
-import android.view.View
 import com.michlindev.moviedownloader.R
-import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.ItemListGenreBinding
-import com.michlindev.moviedownloader.databinding.ListLayoutNewBinding
 import com.michlindev.moviedownloader.main.BaseAdapter
 
 

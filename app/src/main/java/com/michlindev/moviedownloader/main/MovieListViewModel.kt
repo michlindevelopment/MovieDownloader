@@ -1,10 +1,7 @@
 package com.michlindev.moviedownloader.main
 
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
@@ -18,8 +15,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     var itemList = MutableLiveData<List<Movie>>()
     var imdbClick = SingleLiveEvent<String>()
-
-    var testVar = MutableLiveData<String>()
+    var notifyAdapter = SingleLiveEvent<Int>()
 
     fun getMovies() {
 
@@ -83,13 +79,32 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     override fun imdbLogoClick(item: Movie) {
         //TODO change to view model scope
+        val itemIndex = itemList.value?.indexOf(item)
+        itemIndex?.let {  itemList.value?.get(it)?.progressing=true }
+
+        //itemList.value!![itemIndex!!].progressing=true
+
         CoroutineScope(Dispatchers.IO).launch {
+
+            withContext(Dispatchers.Main) {
+                itemIndex?.let { notifyAdapter.postValue(it) }
+
+                //notifyAdapter.postValue(itemIndex)
+            }
+
             val rt = MovieListRepo.getRealRating(item.imdb_code)
 
             withContext(Dispatchers.Main) {
-                val rr = itemList.value?.indexOf(item)
-                itemList.value!![rr!!].realRating = rt
-                itemList.notifyObserver()
+                //
+                itemIndex?.let {  itemList.value?.get(it)?.realRating = rt }
+                itemIndex?.let {  itemList.value?.get(it)?.progressing=false }
+                itemIndex?.let { notifyAdapter.postValue(it) }
+                //
+
+                //itemList.value!![rr!!].realRating = rt
+                //itemList.value!![rr!!].progressing=false
+                //itemList.notifyObserver()
+                //notifyAdapter.postValue(rr!!)
             }
 
             DLog.d("Rating: $rt")

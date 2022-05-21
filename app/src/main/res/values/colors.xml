@@ -23,7 +23,8 @@
 
     <color name="checkbox_color">#FFFFFF</color>
     <color name="headline_color">#FFFFFF</color>
-    <color name="rating_color">#FFFFFF</color>
+    <color name="yts_rating_color">#939393</color>
+    <color name="imdb_rating_color">#FFFFFF</color>
     <color name="year_color">#FFFFFF</color>
     <color name="genre_color">#FFFFFF</color>
     <color name="quality_color">#FFFFFF</color>
