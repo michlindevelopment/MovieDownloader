@@ -1,6 +1,7 @@
 package com.michlindev.moviedownloader.main
 
 import android.view.View
+import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.ListLayoutNewBinding
@@ -19,14 +20,11 @@ class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener
         binding.apply {
             movie = item
             listener = itemListener
+            DLog.d("Trig: ${item.title} Rt: ${item.realRating}")
 
-            /*CoroutineScope(Dispatchers.IO).launch {
-                val tt = MovieListRepo.getRealRating(item.imdb_code)
-                withContext(Dispatchers.Main) {
-                    movie.updatedRating.postValue(tt)
-                }
-            }*/
-
+            //TODO maybe item should pull data here
+            if (item.realRating.isNullOrEmpty())
+                itemListener.imdbLogoClick(item)
             executePendingBindings()
         }
     }
@@ -36,6 +34,6 @@ interface ItemListener {
    /* fun onItemCheckedClicked(item: Movie, view: View)
     fun zoomImage(view: View, image: Int)
     fun infoImage(item: Movie)*/
-    fun imdbLogoClick(item: String)
+    fun imdbLogoClick(item: Movie)
     fun posterClick(item: String)
 }

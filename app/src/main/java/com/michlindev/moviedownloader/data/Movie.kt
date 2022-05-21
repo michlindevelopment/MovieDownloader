@@ -23,7 +23,7 @@ data class Movie(
     @SerializedName("large_cover_image") var large_cover_image: String,
     @SerializedName("imdb_code") var imdb_code: String,
     @SerializedName("year") var year: Int = 0,
-    @SerializedName("rating") var rating: Double,
+    @SerializedName("rating") private var rating: Double,
     @SerializedName("genres") private var tempGenres: List<String>?,
     @SerializedName("summary") var summary: String,
     @SerializedName("background_image") var background_image: String,
@@ -32,6 +32,7 @@ data class Movie(
     @SerializedName("description_full") var description_full: String,
     @SerializedName("synopsis") var synopsis: String,
     @SerializedName("language") var language: String,
+   var realRating: String?,
 
 ) : ListAdapterItem, Serializable {
 
@@ -40,6 +41,10 @@ data class Movie(
 
     val genres: List<String>
         get() = tempGenres ?: listOf()
+
+    val ratingString: String
+        get() = rating.toString()
+
 
 
 

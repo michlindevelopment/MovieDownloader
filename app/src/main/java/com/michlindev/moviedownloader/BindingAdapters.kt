@@ -73,9 +73,9 @@ fun TextView.stringArray(list: List<String>) {
 fun TextView.setRating(movie: Movie) {
 
     DLog.d("---------------------------")
-    DLog.d("Movie: ${movie.title} Rating ${movie.rating}")
+    DLog.d("Movie: ${movie.title} Rating ${movie.ratingString}")
 
-    text = movie.rating.toString()
+    text = movie.ratingString
     setTextColor(Color.parseColor("#FFFFFF"))
 
     CoroutineScope(Dispatchers.IO).launch {

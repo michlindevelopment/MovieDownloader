@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
@@ -17,6 +18,8 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     var itemList = MutableLiveData<List<Movie>>()
     var imdbClick = SingleLiveEvent<String>()
+
+    var testVar = MutableLiveData<String>()
 
     fun getMovies() {
 
@@ -38,13 +41,6 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
                 val genres = SharedPreferenceHelper.genres
 
-                /*movies.forEach{
-                    DLog.d(it.title)
-                    DLog.d("${it.genres}")
-                    DLog.d("--------------------------")
-
-                }*/
-
                 movies.removeIf {
                     it.year < SharedPreferenceHelper.minYear
                             //|| it.genres?.contains("Documentary") ?: true
@@ -63,31 +59,39 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         //var remove = false
 
-        DLog.d("-----------------------------------")
+      /*  DLog.d("-----------------------------------")
         DLog.d("Movie Name: ${movie.title}")
-        DLog.d("Genres: ${movie.genres}")
+        DLog.d("Genres: ${movie.genres}")*/
 
         if (movie.genres.isEmpty()) {
-            DLog.d("List empty")
+            //DLog.d("List empty")
             return true
         }
         else {
             movie.genres.forEach {
                 if (genres?.contains(it) == false) {
-                    DLog.d("Ret true")
+                    //DLog.d("Ret true")
                     return true
                 }
             }
-            DLog.d("Ret false")
+            //DLog.d("Ret false")
             return false
         }
     }
 
 
 
-    override fun imdbLogoClick(item: String) {
+    override fun imdbLogoClick(item: Movie) {
+        //TODO change to view model scope
         CoroutineScope(Dispatchers.IO).launch {
-            val rt = MovieListRepo.getRealRating(item)
+            val rt = MovieListRepo.getRealRating(item.imdb_code)
+
+            withContext(Dispatchers.Main) {
+                val rr = itemList.value?.indexOf(item)
+                itemList.value!![rr!!].realRating = rt
+                itemList.notifyObserver()
+            }
+
             DLog.d("Rating: $rt")
         }
     }
@@ -96,5 +100,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         imdbClick.postValue(item)
     }
 
-
+    private fun <T> MutableLiveData<T>.notifyObserver() {
+        this.value = this.value
+    }
 }

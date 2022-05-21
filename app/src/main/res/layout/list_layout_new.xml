@@ -12,6 +12,10 @@
         <variable
             name="listener"
             type="com.michlindev.moviedownloader.main.ItemListener" />
+
+        <variable
+            name="viewModel"
+            type="com.michlindev.moviedownloader.main.MovieListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,26 +65,44 @@
             android:layout_height="30dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:onClick="@{() -> listener.imdbLogoClick(movie.imdb_code)}"
+            android:onClick="@{() -> listener.imdbLogoClick(movie)}"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
             app:srcCompat="@drawable/ic_imdb_logo_2016" />
 
        <!-- android:text="@{Double.toString(movie.rating)}"-->
+       <!-- app:setRating="@{movie}"-->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:textColor="@color/rating_color"
             android:textSize="20sp"
+            android:text="@{movie.ratingString}"
+            android:textColor="@color/rating_color"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewImdb"
             app:layout_constraintStart_toEndOf="@+id/imageViewImdb"
             app:layout_constraintTop_toTopOf="@+id/imageViewImdb"
-            app:setRating="@{movie}"
+
             tools:text="8.9" />
 
 
+
+
+        <!--android:text="@{movie.realRating}"-->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textViewRatingTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="@{movie.realRating}"
+            android:textColor="@color/rating_color"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewRating"
+            app:layout_constraintStart_toEndOf="@+id/imageViewImdb"
+            app:layout_constraintTop_toTopOf="@+id/textViewRating"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="8.9" />
 
         <TextView
             android:id="@+id/textViewYear"
@@ -123,17 +145,19 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewGenre"
             tools:text="English" />
 
-      <!--  <TextView
-            android:id="@+id/textViewRuntime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@{Integer.toString(movie.runtime)}"
-            android:textColor="@color/year_color"
-            app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLanguage"
-            tools:text="90 min" />-->
+
+
+        <!--  <TextView
+              android:id="@+id/textViewRuntime"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="5dp"
+              android:layout_marginTop="5dp"
+              android:text="@{Integer.toString(movie.runtime)}"
+              android:textColor="@color/year_color"
+              app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
+              app:layout_constraintTop_toBottomOf="@+id/textViewLanguage"
+              tools:text="90 min" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

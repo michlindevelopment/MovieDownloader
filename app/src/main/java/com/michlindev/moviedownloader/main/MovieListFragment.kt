@@ -25,6 +25,10 @@ class MovieListFragment : Fragment() {
         }
 
         //binding.recyclerView.recycledViewPool.setMaxRecycledViews(R.layout.list_layout_new, 0)
+        viewModel.testVar.observe(viewLifecycleOwner) {
+            DLog.d("Observing testVar")
+        }
+
 
         viewModel.imdbClick.observe(viewLifecycleOwner) {
             DLog.d("Clicked")
