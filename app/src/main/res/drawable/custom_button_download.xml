@@ -14,7 +14,6 @@
         </shape>
     </item>
 
-
     <item>
         <shape>
             <gradient android:angle="270" android:endColor="@color/btn_enabled" android:startColor="@color/btn_enabled" />
