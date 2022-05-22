@@ -1,5 +1,7 @@
 package com.michlindev.moviedownloader.main
 
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.DLog
@@ -16,6 +18,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var itemList = MutableLiveData<List<Movie>>()
     var imdbClick = SingleLiveEvent<String>()
     var notifyAdapter = SingleLiveEvent<Int>()
+    var qualitySelectionDialog = SingleLiveEvent<Movie>()
 
     fun getMovies() {
 
@@ -75,6 +78,12 @@ class MovieListViewModel : ViewModel(), ItemListener {
         }
     }
 
+    override fun downloadClick(movie: Movie) {
+
+        qualitySelectionDialog.postValue(movie)
+
+
+    }
 
 
     override fun imdbLogoClick(item: Movie) {

@@ -11,13 +11,14 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
 //TODO
 /*
+Progress bar + pull
 Create search pop up
 Name rss file correctly
 Make option to clear file
 Background check with DB
 Beautify app
 Create imdb page
-Search icon + bar
+Write to file with popup
  */
 
 class SplashFragment : Fragment() {

@@ -2,15 +2,15 @@ package com.michlindev.moviedownloader.main
 
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.data.Movie
-import com.michlindev.moviedownloader.databinding.ListLayoutNewBinding
+import com.michlindev.moviedownloader.databinding.ItemListMovieBinding
 
 
 //Connected item adapter for each item
-class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener) : BaseAdapter<ListLayoutNewBinding, Movie>(list) {
+class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener) : BaseAdapter<ItemListMovieBinding, Movie>(list) {
 
-    override val layoutId: Int = R.layout.list_layout_new
+    override val layoutId: Int = R.layout.item_list_movie
 
-    override fun bind(binding: ListLayoutNewBinding, item: Movie) {
+    override fun bind(binding: ItemListMovieBinding, item: Movie) {
         binding.apply {
             movie = item
             listener = itemListener
@@ -20,9 +20,7 @@ class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener
 }
 
 interface ItemListener {
-   /* fun onItemCheckedClicked(item: Movie, view: View)
-    fun zoomImage(view: View, image: Int)
-    fun infoImage(item: Movie)*/
+   fun downloadClick(item: Movie)
     fun imdbLogoClick(item: Movie)
     fun posterClick(item: String)
 }
