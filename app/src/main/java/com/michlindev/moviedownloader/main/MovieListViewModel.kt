@@ -42,7 +42,6 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
                 movies.removeIf {
                     it.year < SharedPreferenceHelper.minYear
-                            //|| it.genres?.contains("Documentary") ?: true
                             || checkContainment(it, genres)
                             || (englishOnly && it.language != "en")
                 }

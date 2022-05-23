@@ -17,7 +17,7 @@ import kotlin.coroutines.suspendCoroutine
 object LoginRepo {
 
     var gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(MovieDownloader.applicationContext().getString(R.string.default_web_client_id))
+        .requestIdToken(MovieDownloader.appContext.getString(R.string.default_web_client_id))
         .requestEmail().build()
 
     suspend fun signIn(result: ActivityResult): Boolean? = suspendCoroutine { cont ->

@@ -21,7 +21,7 @@ class DebugViewModel : ViewModel() {
 
         val storageReference = FirebaseStorage.getInstance().reference
 
-        val path = MovieDownloader.applicationContext().filesDir.path
+        val path = MovieDownloader.appContext.filesDir.path
         val directory = File("$path/MoviesSync")
         //val file = File(directory, "my1.rss")
 

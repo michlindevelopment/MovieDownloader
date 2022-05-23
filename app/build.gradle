@@ -106,4 +106,14 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
 
     implementation 'org.jsoup:jsoup:1.14.3'
+
+    //room
+    def roomVersion  = "2.4.2"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$roomVersion")
+    // To use Kotlin Symbolic Processing (KSP)
+    //ksp("androidx.room:room-compiler:$roomVersion")
+    
 }

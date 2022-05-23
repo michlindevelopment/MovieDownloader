@@ -13,9 +13,12 @@ class MovieDownloader : Application() {
     companion object {
         private lateinit var instance: MovieDownloader
 
-        fun applicationContext() : Context {
+        val appContext: Context
+        get() = instance.applicationContext
+
+        /*fun applicationContext() : Context {
             return instance.applicationContext
-        }
+        }*/
     }
 
 }
