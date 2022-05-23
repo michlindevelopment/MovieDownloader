@@ -20,7 +20,7 @@ class MovieItemAdapter(list: List<Movie>, private val itemListener: ItemListener
 }
 
 interface ItemListener {
-   fun downloadClick(item: Movie)
+    fun downloadClick(item: Movie)
     fun imdbLogoClick(item: Movie)
     fun posterClick(item: String)
 }

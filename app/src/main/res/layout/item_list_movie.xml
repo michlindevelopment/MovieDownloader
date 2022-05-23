@@ -146,6 +146,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/custom_button_download"
+            android:textColor="@color/black"
             android:text="Download"
             android:textSize="12dp"
             android:onClick="@{() -> listener.downloadClick(movie)}"

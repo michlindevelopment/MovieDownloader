@@ -12,7 +12,7 @@ object SharedPreferenceHelper {
     private const val GENRES= "GENRES"
     private const val APP_SHARED_PREFS = "APP_SHARED_PREFS"
 
-    private var preferences:SharedPreferences = MovieDownloader.applicationContext().getSharedPreferences(APP_SHARED_PREFS,Context.MODE_PRIVATE)
+    private var preferences:SharedPreferences = MovieDownloader.appContext.getSharedPreferences(APP_SHARED_PREFS,Context.MODE_PRIVATE)
 
     var pagesNumber: Int
         get() = preferences.getInt(PAGES_NUMBER, 10)

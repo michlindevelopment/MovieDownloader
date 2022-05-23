@@ -23,7 +23,7 @@ object FileManager {
 
     private const val FILE_NAME = "my1.rss"
 
-    private val path = MovieDownloader.applicationContext().filesDir.path
+    private val path = MovieDownloader.appContext.filesDir.path
 
     fun writeToRssFile(fileContent: List<String?>) {
         try {

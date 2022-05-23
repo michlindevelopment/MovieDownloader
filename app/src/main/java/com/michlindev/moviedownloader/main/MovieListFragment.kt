@@ -9,11 +9,13 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.DLog
-import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.R
+import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.MovieListFragmentBinding
+import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
 
@@ -25,8 +27,6 @@ class MovieListFragment : Fragment() {
 
         val binding = MovieListFragmentBinding.inflate(layoutInflater)
 
-        rssDataList = FileManager.readFromRssFile()
-
         binding.adapter = MovieItemAdapter(listOf(), viewModel)
         viewModel.itemList.observe(viewLifecycleOwner) {
             binding.adapter?.notifyDataSetChanged()
@@ -36,13 +36,13 @@ class MovieListFragment : Fragment() {
             it?.let { binding.adapter?.notifyItemChanged(it) }
         }
 
-        viewModel.qualitySelectionDialog.observe(viewLifecycleOwner) { it ->
+        viewModel.qualitySelectionDialog.observe(viewLifecycleOwner) {
 
             val qualitiesList = mutableListOf<String>()
             it?.torrents?.forEach { torrent ->
-                when (torrent.quality) {
-                    "bluray" -> qualitiesList.add("BluRay")
-                    "web" -> qualitiesList.add("Web")
+                when (torrent.type) {
+                    "bluray" -> qualitiesList.add("BluRay ${torrent.quality}")
+                    "web" -> qualitiesList.add("Web ${torrent.quality}")
                 }
             }
 
@@ -50,15 +50,14 @@ class MovieListFragment : Fragment() {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Select Quality")
                 .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
-                    val link = it?.torrents?.get(which)?.url
-                    (rssDataList as MutableList<String>).add(rssDataList.size - 2, "<item>")
-                    (rssDataList as MutableList<String>).add(rssDataList.size - 2, "<title>")
-                    it?.title?.let { it1 -> (rssDataList as MutableList<String>).add(rssDataList.size - 2, it1) }
-                    (rssDataList as MutableList<String>).add(rssDataList.size - 2, "</title>")
-                    (rssDataList as MutableList<String>).add(rssDataList.size - 2, "<enclosure url=\"$link\" type=\"application/x-bittorrent\" length=\"10000\"/>")
-                    (rssDataList as MutableList<String>).add(rssDataList.size - 2, "</item>")
-                    FileManager.writeToRssFile(rssDataList)
+                    val torrent = it?.torrents?.get(which)
 
+
+                    lifecycleScope.launch {
+                        if (it != null) {
+                            torrent?.let { it1 -> DataBaseHelper.addTorrents(it.id,it.title, it1) }
+                        }
+                    }
                 }
 
             val dialog = builder.create()
