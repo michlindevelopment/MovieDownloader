@@ -11,7 +11,7 @@ import java.io.File
 class DebugViewModel : ViewModel() {
 
     fun createFile() {
-        FileManager.createFile()
+        //FileManager.createFile()
     }
     fun getMovies() {
         DebugRepo.getMovies()
