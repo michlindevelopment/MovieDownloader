@@ -12,15 +12,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.DLog
+import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.MovieListFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
 
     private val viewModel: MovieListViewModel by activityViewModels()
-    lateinit var rssDataList: List<String>
+    //lateinit var rssDataList: List<String>
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -51,11 +54,9 @@ class MovieListFragment : Fragment() {
             builder.setTitle("Select Quality")
                 .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
                     val torrent = it?.torrents?.get(which)
-
-
                     lifecycleScope.launch {
                         if (it != null) {
-                            torrent?.let { it1 -> DataBaseHelper.addTorrents(it.id,it.title, it1) }
+                            torrent?.let { selectedTorrent -> DataBaseHelper.addTorrents(it.id,it.title, selectedTorrent) }
                         }
                     }
                 }
@@ -65,15 +66,8 @@ class MovieListFragment : Fragment() {
 
         }
 
-
-
-
-
-
-    viewModel.imdbClick.observe(viewLifecycleOwner)
-    {
+    viewModel.imdbClick.observe(viewLifecycleOwner)    {
         val site = "https://www.imdb.com/title/$it"
-        DLog.d("Site $site")
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
         startActivity(browserIntent)
     }
@@ -86,7 +80,24 @@ class MovieListFragment : Fragment() {
     return binding.root
 }
 
-override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onPause() {
+        super.onPause()
+
+        DLog.d("Pausing")
+        //TODO move this to view model
+        DLog.d("Writing")
+        CoroutineScope(Dispatchers.IO).launch{
+            //Get list from DB
+            val torrents = DataBaseHelper.getAllTorrents()
+            FileManager.writeToRssFile(torrents)
+
+            //Write that list to file + header + footer
+            //upload file
+
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.app_menu, menu)
     super.onCreateOptionsMenu(menu, inflater)
 

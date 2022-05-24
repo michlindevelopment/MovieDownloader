@@ -1,97 +1,64 @@
 package com.michlindev.moviedownloader
 
+import com.michlindev.moviedownloader.database.TorrentEntity
 import java.io.*
 
 object FileManager {
     private const val RSS_HEADER =
         "<rss xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" version=\"2.0\">"
 
+    private const val ENCLOSURE_PREFIX = "<enclosure url=\"https://yts.mx/torrent/download/"
+    private const val ENCLOSURE_SUFFIX = "\" type=\"application/x-bittorrent\" length=\"10000\"/>"
+
     private const val RSS_TITLE = "<title>Movies RSS</title>"
     private const val CHANNEL_OPEN = "<channel>"
     private const val CHANNEL_CLOSE = "</channel>"
     private const val RSS_HEADER_CLOSE = "</rss>"
     private const val FOLDER_NAME = "MoviesSync"
-
+    private const val FILE_NAME = "my1.rss"
     private const val ITEM = "<item>"
     private const val ITEM_CLOSE = "</item>"
     private const val TITLE = "<title>"
     private const val TITLE_CLOSE = "</title>"
+    private const val B = "\n"
 
-    //"<enclosure url=\"$link\" type=\"application/x-bittorrent\" length=\"10000\"/>"
-
-
-
-    private const val FILE_NAME = "my1.rss"
 
     private val path = MovieDownloader.appContext.filesDir.path
 
-    fun writeToRssFile(fileContent: List<String?>) {
-        try {
-            val directory = File("$path/MoviesSync")
-            val file = File(directory, FILE_NAME)
-            val fOut = FileOutputStream(file)
-            val osw = OutputStreamWriter(fOut)
-            for (line in fileContent) {
-                osw.append(line)
-                osw.append('\n')
+    fun writeToRssFile(torrents: List<TorrentEntity>) {
+        //TODO remove prefix
+        checkFile()
+
+        val file = File("$path/$FOLDER_NAME", FILE_NAME)
+        file.bufferedWriter().use { out ->
+
+            out.write("$RSS_HEADER$B")
+            out.write("$CHANNEL_OPEN$B")
+            out.write("$RSS_TITLE$B")
+
+            torrents.forEach {
+                out.write("$ITEM$B")
+                out.write("$TITLE$B")
+                out.write("${it.movieName}$B")
+                out.write("$TITLE_CLOSE$B")
+                out.write("$ENCLOSURE_PREFIX${it.torrentUrl}$ENCLOSURE_SUFFIX$B")
+                out.write("$ITEM_CLOSE$B")
             }
-            osw.flush()
-            osw.close()
-        } catch (ioe: IOException) {
-            ioe.printStackTrace()
+            out.write("$CHANNEL_CLOSE$B")
+            out.write("$RSS_HEADER_CLOSE$B")
         }
     }
 
-    fun createFile() {
-        val directory = File("$path/MoviesSync")
+    private fun checkFile() {
+        val directory = File("$path/$FOLDER_NAME")
         val file = File(directory, FILE_NAME)
 
-        if (!directory.exists()) directory.mkdir()
-        if (!file.exists()) {
-            file.createNewFile()
-            writeToRssFile(createNewList())
-        }
-
-    }
-
-    fun readFromRssFile(): MutableList<String> {
-        val fileContent: MutableList<String> = ArrayList()
-        val directory = File("$path/MoviesSync")
-        val file = File(directory, FILE_NAME)
-        try {
+        if (file.exists())
+            return
+        else {
             if (!directory.exists()) directory.mkdir()
-            if (!file.exists()) {
-                file.createNewFile()
-                writeToRssFile(createNewList())
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        try {
-            val br = BufferedReader(FileReader(file))
-            var line: String
-            while (br.readLine().also { line = it } != null) {
-                fileContent.add(line)
-            }
-            br.close()
-        } catch (e: IOException) {
-        }
-        return fileContent
-    }
+            if (!file.exists()) file.createNewFile()
 
-    fun clearFile(): ArrayList<String?> {
-        val initialList = createNewList()
-        writeToRssFile(initialList)
-        return initialList
-    }
-
-    private fun createNewList(): ArrayList<String?> {
-        val rssDataList = ArrayList<String?>()
-        rssDataList.add(RSS_HEADER)
-        rssDataList.add("<channel>")
-        rssDataList.add(RSS_TITLE)
-        rssDataList.add("</channel>")
-        rssDataList.add("</rss>")
-        return rssDataList
+        }
     }
 }
