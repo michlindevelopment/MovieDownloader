@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
@@ -63,14 +64,13 @@ object MovieListRepo {
         return@withContext true
     }
 
-    suspend fun getMovies(): List<Movie> = suspendCoroutine { cont ->
+    suspend fun getMovies(progress: MutableLiveData<Int>): List<Movie> = suspendCoroutine { cont ->
         val movies = mutableListOf<Movie>()
 
         val numberOfPages = SharedPreferenceHelper.pagesNumber
 
-        DLog.d("Num of pages: $numberOfPages")
-        DLog.d("Min Rating: ${SharedPreferenceHelper.minRating}")
-
+        //DLog.d("Num of pages: $numberOfPages")
+        //DLog.d("Min Rating: ${SharedPreferenceHelper.minRating}")
 
         var cnt = 0
 
@@ -81,7 +81,11 @@ object MovieListRepo {
                 DLog.d("End1 $i")
                 movies.addAll(getPage(i))
                 DLog.d("End2 $i")
+
                 cnt++
+                withContext(Dispatchers.Main) {
+                    progress.postValue(cnt)
+                }
                 if (cnt == numberOfPages) {
                     DLog.d("Resuming")
                     cont.resume(movies)

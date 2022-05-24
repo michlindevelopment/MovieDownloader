@@ -20,16 +20,26 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
 
+    val maxValue:Int
+        get() = SharedPreferenceHelper.pagesNumber
+
+    var progress = MutableLiveData(0)
+
+    init {
+        getMovies()
+    }
+
     fun getMovies() {
 
         val movies = mutableListOf<Movie>()
         itemList.postValue(movies)
+        progress.postValue(0)
 
         //TODO change to lifecycle
         CoroutineScope(Dispatchers.IO).launch {
             DLog.d("Start G")
 
-            movies.addAll(MovieListRepo.getMovies())
+            movies.addAll(MovieListRepo.getMovies(progress))
             DLog.d("End G - Total: ${movies.size}")
 
             val englishOnly = SharedPreferenceHelper.englishOnly
@@ -118,6 +128,12 @@ class MovieListViewModel : ViewModel(), ItemListener {
             DLog.d("Rating: $rt")
         }
     }
+   /* var pagesNumber: Int
+        get() = SharedPreferenceHelper.preferences.getInt(SharedPreferenceHelper.PAGES_NUMBER, 10)
+        set(value) = SharedPreferenceHelper.preferences.edit().putInt(SharedPreferenceHelper.PAGES_NUMBER, value).apply()*/
+
+
+
 
     override fun posterClick(item: String) {
         imdbClick.postValue(item)
