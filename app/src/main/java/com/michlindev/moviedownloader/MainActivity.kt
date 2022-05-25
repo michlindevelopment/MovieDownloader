@@ -2,25 +2,28 @@ package com.michlindev.moviedownloader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-
-//import com.google.firebase.storage.FirebaseStorage
-
-//TODO
-/*
-1. Create 3 screens
-2. Use data binding
-3. Login to google
-*/
+import com.michlindev.moviedownloader.database.DataBaseHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
 
+    override fun onPause() {
+        super.onPause()
 
-        // Create a storage reference from our app
-        //val storage = FirebaseStorage.getInstance()
-
-        //var storageRef = storage.reference
+        DLog.d("Pausing")
+        //TODO move this to view model
+        DLog.d("Writing")
+        CoroutineScope(Dispatchers.IO).launch {
+            //Get list from DB
+            val torrents = DataBaseHelper.getAllTorrents()
+            FileManager.writeToRssFile(torrents)
+            FileManager.uploadFile()
+        }
     }
 }

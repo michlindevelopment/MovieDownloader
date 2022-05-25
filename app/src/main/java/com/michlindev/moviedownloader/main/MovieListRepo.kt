@@ -14,10 +14,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import kotlin.coroutines.resume
@@ -25,52 +24,55 @@ import kotlin.coroutines.suspendCoroutine
 
 object MovieListRepo {
 
-    //suspend fun signIn(result: ActivityResult): Boolean? = suspendCoroutine { cont ->
     private suspend fun getPage(page: Int): List<Movie> = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
-            //TODO error with 9
             apiService.getWithParameters(SharedPreferenceHelper.minRating, DefaultData.PAGE_LIMIT, page, "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         var res = movies.data.movies
 
-
-
-                        /*globalCounter++
-                        if (globalCounter == pages) {
-                            allDone()
-                        }
-                        progressBar.setProgress(globalCounter, true)*/
-
-                        if (res==null) res = listOf()
+                        if (res == null) res = listOf()
                         cont.resume(res)
+
                     }
 
                     override fun onError(e: Throwable) {
                         DLog.d("$e")
-                        /* Log.e(MainActivity.TAG, String.format("onError: %s", e.message), e)
-                         setEnabledBar(true)*/
+
                     }
                 })
         )
     }
 
     //Todo maybe change to this type
-    suspend fun getMovies2(): Boolean = withContext(Dispatchers.IO) {
+    /*suspend fun getMovies2(): Boolean = withContext(Dispatchers.IO) {
         return@withContext true
+    }*/
+    suspend fun getMoviesSync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
+
+        val movies = mutableListOf<Movie>()
+        val numberOfPages = SharedPreferenceHelper.pagesNumber
+        CoroutineScope(Dispatchers.IO).launch {
+            for (i in 1..numberOfPages) {
+                movies.addAll(getPage(i))
+                withContext(Dispatchers.Main) {
+                    progress.postValue(i)
+                }
+            }
+            cont.resume(movies)
+        }
     }
 
-    suspend fun getMovies(progress: MutableLiveData<Int>): List<Movie> = suspendCoroutine { cont ->
+
+    suspend fun getMoviesAsync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
+
+        val mutex = Mutex()
         val movies = mutableListOf<Movie>()
-
         val numberOfPages = SharedPreferenceHelper.pagesNumber
-
-        //DLog.d("Num of pages: $numberOfPages")
-        //DLog.d("Min Rating: ${SharedPreferenceHelper.minRating}")
 
         var cnt = 0
 
@@ -78,8 +80,17 @@ object MovieListRepo {
             DLog.d("Firing $i")
             CoroutineScope(Dispatchers.IO).launch {
                 DLog.d("Start $i")
-                DLog.d("End1 $i")
-                movies.addAll(getPage(i))
+
+                val sdf = getPage(i)
+                //mutex.withLock {
+
+                withContext(Dispatchers.Default) {
+                    mutex.withLock {
+                        movies.addAll(sdf)
+                    }
+                }
+                //}
+                //delay(100)
                 DLog.d("End2 $i")
 
                 cnt++
@@ -88,7 +99,18 @@ object MovieListRepo {
                 }
                 if (cnt == numberOfPages) {
                     DLog.d("Resuming")
-                    cont.resume(movies)
+
+                    DLog.d("complete: ${cont.isCompleted}")
+                    if (cont.isActive) {
+                        cont.resume(movies)
+                        //cont.cancel()
+                        DLog.e("isActive")
+                        DLog.d("complete: ${cont.isCompleted}")
+                    } else {
+                        DLog.e("not Active")
+                    }
+                    DLog.e("Canceling")
+                    cont.cancel()
                 }
             }
 
@@ -111,5 +133,16 @@ object MovieListRepo {
         }
 
         cont.resume(rating)
+    }
+
+    fun generateQualities(it: Movie): MutableList<String> {
+        val qualitiesList = mutableListOf<String>()
+        it.torrents.forEach { torrent ->
+            when (torrent.type) {
+                "bluray" -> qualitiesList.add("BluRay ${torrent.quality}")
+                "web" -> qualitiesList.add("Web ${torrent.quality}")
+            }
+        }
+        return qualitiesList
     }
 }

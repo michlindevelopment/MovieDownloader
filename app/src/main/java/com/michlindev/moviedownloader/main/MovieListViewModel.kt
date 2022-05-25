@@ -1,7 +1,7 @@
 package com.michlindev.moviedownloader.main
 
-import android.content.DialogInterface
-import androidx.appcompat.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.DLog
@@ -11,35 +11,41 @@ import com.michlindev.moviedownloader.data.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class MovieListViewModel : ViewModel(), ItemListener {
 
     var itemList = MutableLiveData<List<Movie>>()
-    var imdbClick = SingleLiveEvent<String>()
+    var imdbClick = SingleLiveEvent<Intent>()
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
 
-    val maxValue:Int
+    val maxValue: Int
         get() = SharedPreferenceHelper.pagesNumber
 
     var progress = MutableLiveData(0)
 
     init {
-        //getMovies()
+        getMovies()
     }
 
     fun getMovies() {
+
+
 
         val movies = mutableListOf<Movie>()
         itemList.postValue(movies)
         progress.postValue(0)
 
         //TODO change to lifecycle
+
+
         CoroutineScope(Dispatchers.IO).launch {
             DLog.d("Start G")
 
-            movies.addAll(MovieListRepo.getMovies(progress))
+            movies.addAll(MovieListRepo.getMoviesAsync(progress))
             DLog.d("End G - Total: ${movies.size}")
 
             val englishOnly = SharedPreferenceHelper.englishOnly
@@ -50,7 +56,18 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
                 val genres = SharedPreferenceHelper.genres
 
+                /*movies.forEach {
+                    if (it==null)
+                    {
+                        DLog.d("AHA-------------------------------------")
+                    }
+                    else {
+                        DLog.d("${it.title} Year: ${it.year}")
+                    }
+                }*/
+
                 movies.removeIf {
+                    it == null ||
                     it.year < SharedPreferenceHelper.minYear
                             || checkContainment(it, genres)
                             || (englishOnly && it.language != "en")
@@ -67,15 +84,14 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         //var remove = false
 
-      /*  DLog.d("-----------------------------------")
-        DLog.d("Movie Name: ${movie.title}")
-        DLog.d("Genres: ${movie.genres}")*/
+        /*  DLog.d("-----------------------------------")
+          DLog.d("Movie Name: ${movie.title}")
+          DLog.d("Genres: ${movie.genres}")*/
 
         if (movie.genres.isEmpty()) {
             //DLog.d("List empty")
             return true
-        }
-        else {
+        } else {
             movie.genres.forEach {
                 if (genres?.contains(it) == false) {
                     //DLog.d("Ret true")
@@ -87,56 +103,45 @@ class MovieListViewModel : ViewModel(), ItemListener {
         }
     }
 
-    override fun downloadClick(movie: Movie) {
-
-        qualitySelectionDialog.postValue(movie)
-
-
+    override fun downloadClick(item: Movie) {
+        qualitySelectionDialog.postValue(item)
     }
 
 
     override fun imdbLogoClick(item: Movie) {
         //TODO change to view model scope
         val itemIndex = itemList.value?.indexOf(item)
-        itemIndex?.let {  itemList.value?.get(it)?.progressing=true }
-
-        //itemList.value!![itemIndex!!].progressing=true
+        itemIndex?.let { itemList.value?.get(it)?.progressing = true }
 
         CoroutineScope(Dispatchers.IO).launch {
 
             withContext(Dispatchers.Main) {
                 itemIndex?.let { notifyAdapter.postValue(it) }
-
-                //notifyAdapter.postValue(itemIndex)
             }
 
             val rt = MovieListRepo.getRealRating(item.imdb_code)
 
             withContext(Dispatchers.Main) {
-                //
-                itemIndex?.let {  itemList.value?.get(it)?.realRating = rt }
-                itemIndex?.let {  itemList.value?.get(it)?.progressing=false }
+                itemIndex?.let { itemList.value?.get(it)?.realRating = rt }
+                itemIndex?.let { itemList.value?.get(it)?.progressing = false }
                 itemIndex?.let { notifyAdapter.postValue(it) }
-                //
-
-                //itemList.value!![rr!!].realRating = rt
-                //itemList.value!![rr!!].progressing=false
-                //itemList.notifyObserver()
-                //notifyAdapter.postValue(rr!!)
             }
 
             DLog.d("Rating: $rt")
         }
     }
-   /* var pagesNumber: Int
-        get() = SharedPreferenceHelper.preferences.getInt(SharedPreferenceHelper.PAGES_NUMBER, 10)
-        set(value) = SharedPreferenceHelper.preferences.edit().putInt(SharedPreferenceHelper.PAGES_NUMBER, value).apply()*/
-
-
+    /* var pagesNumber: Int
+         get() = SharedPreferenceHelper.preferences.getInt(SharedPreferenceHelper.PAGES_NUMBER, 10)
+         set(value) = SharedPreferenceHelper.preferences.edit().putInt(SharedPreferenceHelper.PAGES_NUMBER, value).apply()*/
 
 
     override fun posterClick(item: String) {
-        imdbClick.postValue(item)
+
+        val site = "https://www.imdb.com/title/$item"
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
+        //startActivity(browserIntent)
+
+        imdbClick.postValue(browserIntent)
     }
 
     private fun <T> MutableLiveData<T>.notifyObserver() {

@@ -14,12 +14,12 @@ import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.R
+import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.MovieListFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 
 class MovieListFragment : Fragment() {
 
@@ -40,80 +40,51 @@ class MovieListFragment : Fragment() {
         }
 
         viewModel.qualitySelectionDialog.observe(viewLifecycleOwner) {
+            it?.let { movie -> createQualityDialog(movie) }
+        }
 
-            val qualitiesList = mutableListOf<String>()
-            it?.torrents?.forEach { torrent ->
-                when (torrent.type) {
-                    "bluray" -> qualitiesList.add("BluRay ${torrent.quality}")
-                    "web" -> qualitiesList.add("Web ${torrent.quality}")
+        viewModel.imdbClick.observe(viewLifecycleOwner) {
+            startActivity(it)
+        }
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        setHasOptionsMenu(true)
+        return binding.root
+    }
+
+    private fun createQualityDialog(it: Movie) {
+        val qualitiesList = it.let { movie -> MovieListRepo.generateQualities(movie) }
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Select Quality")
+            .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
+                val torrent = it.torrents[which]
+                lifecycleScope.launch {
+                    torrent.let { selectedTorrent -> DataBaseHelper.addTorrents(it.id, it.title, selectedTorrent) }
                 }
             }
 
-
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Select Quality")
-                .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
-                    val torrent = it?.torrents?.get(which)
-                    lifecycleScope.launch {
-                        if (it != null) {
-                            torrent?.let { selectedTorrent -> DataBaseHelper.addTorrents(it.id,it.title, selectedTorrent) }
-                        }
-                    }
-                }
-
-            val dialog = builder.create()
-            dialog.show()
-
-        }
-
-    viewModel.imdbClick.observe(viewLifecycleOwner)    {
-        val site = "https://www.imdb.com/title/$it"
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
-        startActivity(browserIntent)
-    }
-
-    binding.lifecycleOwner = this
-    binding.viewModel = viewModel
-
-
-    setHasOptionsMenu(true)
-    return binding.root
-}
-
-    override fun onPause() {
-        super.onPause()
-
-        DLog.d("Pausing")
-        //TODO move this to view model
-        DLog.d("Writing")
-        CoroutineScope(Dispatchers.IO).launch{
-            //Get list from DB
-            val torrents = DataBaseHelper.getAllTorrents()
-            FileManager.writeToRssFile(torrents)
-            FileManager.uploadFile()
-
-            //Write that list to file + header + footer
-            //upload file
-
-        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.app_menu, menu)
-    super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.app_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
 
 
-}
-
-override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
-        R.id.action_debug_menu -> findNavController().navigate(R.id.action_movieListFragment_to_debugFragment)
-        R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
-        R.id.action_search -> DLog.d("C")
-        else -> {}
     }
-    return true
-}
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_debug_menu -> findNavController().navigate(R.id.action_movieListFragment_to_debugFragment)
+            R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
+            R.id.action_search -> DLog.d("C")
+            else -> {}
+        }
+        return true
+    }
 
 
 }
