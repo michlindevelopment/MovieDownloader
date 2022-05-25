@@ -41,19 +41,5 @@ class DebugViewModel : ViewModel() {
             DLog.d("Prog")
         }
 
-        /*val mountainsRef = storageReference.child("my2.rss")
-        val stream = FileInputStream(file)
-        val uploadTask = mountainsRef.putStream(stream)
-        uploadTask.addOnFailureListener {
-            // Handle unsuccessful uploads
-            DLog.d("Fail $it")
-        }.addOnSuccessListener { taskSnapshot ->
-            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-            // ...
-            DLog.d("Success")
-        }.addOnProgressListener {
-            DLog.d("Prog")
-        }*/
-
     }
 }

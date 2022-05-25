@@ -10,6 +10,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.MovieDownloader
 import com.michlindev.moviedownloader.R
+import com.michlindev.moviedownloader.SharedPreferenceHelper
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -29,7 +30,13 @@ object LoginRepo {
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        DLog.d("UID: ${task.result.user?.uid}")
+
+                        val uid = task.result.user?.uid
+                        SharedPreferenceHelper.uid = uid
+
+                        DLog.d("UID: $uid")
+
+
                         DLog.d(account.email.toString())
                         DLog.d(account.displayName.toString())
                         DLog.d(account.id.toString())

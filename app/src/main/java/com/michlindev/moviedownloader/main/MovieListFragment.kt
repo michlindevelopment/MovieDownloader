@@ -19,11 +19,11 @@ import com.michlindev.moviedownloader.databinding.MovieListFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MovieListFragment : Fragment() {
 
     private val viewModel: MovieListViewModel by activityViewModels()
-    //lateinit var rssDataList: List<String>
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -90,6 +90,7 @@ class MovieListFragment : Fragment() {
             //Get list from DB
             val torrents = DataBaseHelper.getAllTorrents()
             FileManager.writeToRssFile(torrents)
+            FileManager.uploadFile()
 
             //Write that list to file + header + footer
             //upload file

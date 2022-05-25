@@ -41,7 +41,6 @@ class MenuFragment : Fragment() {
         }
 
         viewModel.showDialog.observe(viewLifecycleOwner) {
-            //Send list as first param
             val genres = resources.getStringArray(R.array.genres)
             GenreDialogFragment.newInstance(genres).show(childFragmentManager, GenreDialogFragment.TAG)
 

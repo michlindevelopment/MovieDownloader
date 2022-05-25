@@ -28,7 +28,7 @@ class GenreDialogViewModel : ViewModel(), ItemListener {
         val genres = SharedPreferenceHelper.genres
 
         stringArray?.forEach {
-            val toPut = genres != null && genres.contains(it)
+            val toPut = genres.contains(it)
             newGenres.add(Genre(genre = it, enabled = MutableLiveData(toPut)))
         }
         itemList.postValue(newGenres)

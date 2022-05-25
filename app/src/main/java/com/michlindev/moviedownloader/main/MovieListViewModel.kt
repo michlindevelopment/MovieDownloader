@@ -26,7 +26,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var progress = MutableLiveData(0)
 
     init {
-        getMovies()
+        //getMovies()
     }
 
     fun getMovies() {

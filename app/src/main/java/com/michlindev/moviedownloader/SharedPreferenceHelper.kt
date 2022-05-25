@@ -11,6 +11,7 @@ object SharedPreferenceHelper {
     private const val ENGLISH_ONLY= "ENGLISH_ONLY"
     private const val GENRES= "GENRES"
     private const val APP_SHARED_PREFS = "APP_SHARED_PREFS"
+    private const val USER_UID = "USER_UID"
 
     private var preferences:SharedPreferences = MovieDownloader.appContext.getSharedPreferences(APP_SHARED_PREFS,Context.MODE_PRIVATE)
 
@@ -30,8 +31,21 @@ object SharedPreferenceHelper {
         get() = preferences.getBoolean(ENGLISH_ONLY, false)
         set(value) = preferences.edit().putBoolean(ENGLISH_ONLY, value).apply()
 
-    var genres: MutableSet<String>?
-        get() = preferences.getStringSet(GENRES, HashSet<String>())
+    /*val genres = resources.getStringArray(R.array.genres)*/
+
+    var genres: MutableSet<String>
+        get() {
+            val genres = preferences.getStringSet(GENRES, null)
+            return if (genres==null) {
+                val genresSet = mutableSetOf<String>()
+                genresSet.addAll(MovieDownloader.appContext.resources.getStringArray(R.array.genres))
+                genresSet
+            } else
+                genres
+        }
         set(value) = preferences.edit().putStringSet(GENRES, value).apply()
 
+    var uid: String?
+        get() = preferences.getString(USER_UID, null)
+        set(value) = preferences.edit().putString(USER_UID, value).apply()
 }
