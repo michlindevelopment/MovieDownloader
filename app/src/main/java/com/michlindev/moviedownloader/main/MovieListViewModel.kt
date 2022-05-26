@@ -17,7 +17,8 @@ import kotlinx.coroutines.withContext
 
 class MovieListViewModel : ViewModel(), ItemListener {
 
-    var itemList = MutableLiveData<List<Movie>>()
+    var itemList = MutableLiveData<List<Movie?>>()
+    var isLoading = MutableLiveData(false)
     var imdbClick = SingleLiveEvent<Intent>()
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
@@ -33,14 +34,10 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     fun getMovies() {
 
-
-
-        val movies = mutableListOf<Movie>()
+        val movies = mutableListOf<Movie?>()
         itemList.postValue(movies)
         progress.postValue(0)
-
-        //TODO change to lifecycle
-
+        isLoading.postValue(true)
 
         CoroutineScope(Dispatchers.IO).launch {
             DLog.d("Start G")
@@ -51,30 +48,21 @@ class MovieListViewModel : ViewModel(), ItemListener {
             val englishOnly = SharedPreferenceHelper.englishOnly
 
             //TODO Check year null
+
             withContext(Dispatchers.Main) {
                 DLog.d("Removing ${SharedPreferenceHelper.minYear}")
 
                 val genres = SharedPreferenceHelper.genres
-
-                /*movies.forEach {
-                    if (it==null)
-                    {
-                        DLog.d("AHA-------------------------------------")
-                    }
-                    else {
-                        DLog.d("${it.title} Year: ${it.year}")
-                    }
-                }*/
-
                 movies.removeIf {
                     it == null ||
                     it.year < SharedPreferenceHelper.minYear
                             || checkContainment(it, genres)
                             || (englishOnly && it.language != "en")
                 }
-                movies.sortByDescending { it.date_uploaded_unix }
+                movies.sortByDescending { it?.date_uploaded_unix }
                 DLog.d("After filter: ${movies.size}")
                 itemList.postValue(movies)
+                isLoading.postValue(false)
             }
         }
 

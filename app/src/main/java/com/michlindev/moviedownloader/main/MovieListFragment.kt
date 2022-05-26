@@ -72,15 +72,15 @@ class MovieListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.app_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_debug_menu -> findNavController().navigate(R.id.action_movieListFragment_to_debugFragment)
             R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
-            R.id.action_search -> DLog.d("C")
+            R.id.action_search -> {
+                //TODO Serach dialog
+            }
             else -> {}
         }
         return true

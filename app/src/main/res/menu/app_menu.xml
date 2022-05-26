@@ -6,13 +6,13 @@
     <item
         android:id="@+id/action_search"
         android:title="Switch"
-        android:icon="@drawable/more_vert"
+        android:icon="@drawable/search_icon"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="Settings"
-        android:icon="@drawable/more_vert"
+        android:icon="@drawable/more_icon"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction">
 
