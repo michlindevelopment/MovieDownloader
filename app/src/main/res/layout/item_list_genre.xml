@@ -9,11 +9,11 @@
 
         <variable
             name="genre"
-            type= "com.michlindev.moviedownloader.dialog.Genre" />
+            type= "com.michlindev.moviedownloader.dialogs.genre.Genre" />
 
         <variable
             name="listener"
-            type="com.michlindev.moviedownloader.dialog.ItemListener" />
+            type="com.michlindev.moviedownloader.dialogs.genre.ItemListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

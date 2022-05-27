@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader.dialog
+package com.michlindev.moviedownloader.dialogs.genre
 
 import androidx.lifecycle.MutableLiveData
 import com.michlindev.moviedownloader.main.ListAdapterItem

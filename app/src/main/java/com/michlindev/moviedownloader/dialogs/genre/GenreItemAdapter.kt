@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader.dialog
+package com.michlindev.moviedownloader.dialogs.genre
 
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.ItemListGenreBinding
@@ -21,9 +21,4 @@ class GenreItemAdapter(list: List<Genre>, private val itemListener: ItemListener
 
 }
 
-interface ItemListener {
-    //fun onItemCheckedClicked(item: Movie, view: View)
-    //fun zoomImage(view: View, image: Int)
-    //fun infoImage(item: Movie)
-    //fun rating(item: String)
-}
+interface ItemListener

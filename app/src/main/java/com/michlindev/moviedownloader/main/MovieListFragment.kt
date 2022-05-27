@@ -31,7 +31,27 @@ class MovieListFragment : Fragment() {
         val binding = MovieListFragmentBinding.inflate(layoutInflater)
 
         binding.adapter = MovieItemAdapter(listOf(), viewModel)
-        viewModel.itemList.observe(viewLifecycleOwner) {
+
+
+        with (viewModel){
+            itemList.observe(viewLifecycleOwner) {
+                binding.adapter?.notifyDataSetChanged()
+            }
+            notifyAdapter.observe(viewLifecycleOwner) {
+                it?.let { binding.adapter?.notifyItemChanged(it) }
+            }
+            qualitySelectionDialog.observe(viewLifecycleOwner) {
+                it?.let { movie -> createQualityDialog(movie) }
+            }
+            imdbClick.observe(viewLifecycleOwner) {
+                startActivity(it)
+            }
+            searchInput.observe(viewLifecycleOwner){
+                MovieListRepo.searchMovie(it)
+            }
+        }
+
+        /*viewModel.itemList.observe(viewLifecycleOwner) {
             binding.adapter?.notifyDataSetChanged()
         }
 
@@ -46,6 +66,10 @@ class MovieListFragment : Fragment() {
         viewModel.imdbClick.observe(viewLifecycleOwner) {
             startActivity(it)
         }
+
+        viewModel.searchInput.observe(viewLifecycleOwner){
+            DLog.d("$it")
+        }*/
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -78,9 +102,7 @@ class MovieListFragment : Fragment() {
         when (item.itemId) {
             R.id.action_debug_menu -> findNavController().navigate(R.id.action_movieListFragment_to_debugFragment)
             R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
-            R.id.action_search -> {
-                //TODO Serach dialog
-            }
+            R.id.action_search -> viewModel.searchVisible.value?.let { viewModel.searchVisible.postValue(!it) }
             else -> {}
         }
         return true

@@ -2,6 +2,10 @@ package com.michlindev.moviedownloader.main
 
 import android.content.Intent
 import android.net.Uri
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.DLog
@@ -19,9 +23,11 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     var itemList = MutableLiveData<List<Movie?>>()
     var isLoading = MutableLiveData(false)
+    var searchVisible = MutableLiveData(false)
     var imdbClick = SingleLiveEvent<Intent>()
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
+    var searchInput = MutableLiveData("")
 
     val maxValue: Int
         get() = SharedPreferenceHelper.pagesNumber
@@ -30,6 +36,20 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     init {
         getMovies()
+
+
+    }
+
+    val searchTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            // Do nothing.
+        }
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            searchInput.postValue(s.toString())
+        }
+        override fun afterTextChanged(s: Editable) {
+            // Do nothing.
+        }
     }
 
     fun getMovies() {
@@ -55,7 +75,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
                 val genres = SharedPreferenceHelper.genres
                 movies.removeIf {
                     it == null ||
-                    it.year < SharedPreferenceHelper.minYear
+                            it.year < SharedPreferenceHelper.minYear
                             || checkContainment(it, genres)
                             || (englishOnly && it.language != "en")
                 }
@@ -70,23 +90,14 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     private fun checkContainment(movie: Movie, genres: MutableSet<String>?): Boolean {
 
-        //var remove = false
-
-        /*  DLog.d("-----------------------------------")
-          DLog.d("Movie Name: ${movie.title}")
-          DLog.d("Genres: ${movie.genres}")*/
-
         if (movie.genres.isEmpty()) {
-            //DLog.d("List empty")
             return true
         } else {
             movie.genres.forEach {
                 if (genres?.contains(it) == false) {
-                    //DLog.d("Ret true")
                     return true
                 }
             }
-            //DLog.d("Ret false")
             return false
         }
     }
@@ -118,17 +129,11 @@ class MovieListViewModel : ViewModel(), ItemListener {
             DLog.d("Rating: $rt")
         }
     }
-    /* var pagesNumber: Int
-         get() = SharedPreferenceHelper.preferences.getInt(SharedPreferenceHelper.PAGES_NUMBER, 10)
-         set(value) = SharedPreferenceHelper.preferences.edit().putInt(SharedPreferenceHelper.PAGES_NUMBER, value).apply()*/
-
 
     override fun posterClick(item: String) {
 
         val site = "https://www.imdb.com/title/$item"
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
-        //startActivity(browserIntent)
-
         imdbClick.postValue(browserIntent)
     }
 

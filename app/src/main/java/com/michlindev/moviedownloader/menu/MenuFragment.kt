@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.databinding.FragmentMenuBinding
-import com.michlindev.moviedownloader.dialog.GenreDialogFragment
+import com.michlindev.moviedownloader.dialogs.genre.GenreDialogFragment
 
 class MenuFragment : Fragment() {
 

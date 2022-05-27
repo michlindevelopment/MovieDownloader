@@ -67,6 +67,8 @@ object MovieListRepo {
         }
     }
 
+    fun searchMovie(it: String?) {
+    }
 
     suspend fun getMoviesAsync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
 
@@ -145,4 +147,6 @@ object MovieListRepo {
         }
         return qualitiesList
     }
+
+
 }

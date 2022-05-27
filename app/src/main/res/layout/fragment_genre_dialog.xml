@@ -5,19 +5,19 @@
 
     <data>
         <variable
-            type="com.michlindev.moviedownloader.dialog.GenreDialogViewModel"
+            type="com.michlindev.moviedownloader.dialogs.genre.GenreDialogViewModel"
             name="viewModel"/>
 
 
         <variable
             name="adapter"
-            type="com.michlindev.moviedownloader.dialog.GenreItemAdapter" />
+            type="com.michlindev.moviedownloader.dialogs.genre.GenreItemAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".dialog.GenreDialogFragment">
+        tools:context=".dialogs.genre.SearchDialogFragment">
 
        <!-- android:checked="@={viewModel.allEnabled}"-->
 
