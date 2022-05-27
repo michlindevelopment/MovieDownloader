@@ -2,8 +2,6 @@ package com.michlindev.moviedownloader.main
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
@@ -11,14 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.michlindev.moviedownloader.DLog
-import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.MovieListFragmentBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
@@ -44,32 +38,11 @@ class MovieListFragment : Fragment() {
                 it?.let { movie -> createQualityDialog(movie) }
             }
             imdbClick.observe(viewLifecycleOwner) {
-                startActivity(it)
+                val bundle = Bundle()
+                bundle.putString("imdbCode", it)
+                findNavController().navigate(R.id.action_movieListFragment_to_imdbPage,bundle)
             }
-            searchInput.observe(viewLifecycleOwner){
-                MovieListRepo.searchMovie(it)
-            }
         }
-
-        /*viewModel.itemList.observe(viewLifecycleOwner) {
-            binding.adapter?.notifyDataSetChanged()
-        }
-
-        viewModel.notifyAdapter.observe(viewLifecycleOwner) {
-            it?.let { binding.adapter?.notifyItemChanged(it) }
-        }
-
-        viewModel.qualitySelectionDialog.observe(viewLifecycleOwner) {
-            it?.let { movie -> createQualityDialog(movie) }
-        }
-
-        viewModel.imdbClick.observe(viewLifecycleOwner) {
-            startActivity(it)
-        }
-
-        viewModel.searchInput.observe(viewLifecycleOwner){
-            DLog.d("$it")
-        }*/
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

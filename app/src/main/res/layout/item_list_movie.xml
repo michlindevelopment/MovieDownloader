@@ -12,8 +12,6 @@
         <variable
             name="listener"
             type="com.michlindev.moviedownloader.main.ItemListener" />
-
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

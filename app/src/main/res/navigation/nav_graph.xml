@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_movieListFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_movieListFragment_to_imdbPage"
+            app:destination="@id/imdbPage" />
     </fragment>
     <fragment
         android:id="@+id/debugFragment"
@@ -51,4 +54,13 @@
         android:name="com.michlindev.moviedownloader.menu.MenuFragment"
         android:label="MenuFragment"
         tools:layout="@layout/fragment_menu"/>
+    <fragment
+        android:id="@+id/imdbPage"
+        android:name="com.michlindev.moviedownloader.imdb.ImdbPageFragment"
+        android:label="fragment_imdb_page"
+        tools:layout="@layout/fragment_imdb_page" >
+        <argument
+            android:name="imdbCode"
+            app:argType="string" />
+    </fragment>
 </navigation>

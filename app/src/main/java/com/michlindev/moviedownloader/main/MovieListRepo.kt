@@ -24,25 +24,28 @@ import kotlin.coroutines.suspendCoroutine
 
 object MovieListRepo {
 
-    private suspend fun getPage(page: Int): List<Movie> = suspendCoroutine { cont ->
+    private suspend fun getPage(page: Int): List<Movie> {
+        return getPage(page, SharedPreferenceHelper.minRating, "")
+    }
+
+
+    private suspend fun getPage(page: Int, minRating: Int, query: String): List<Movie> = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
-            apiService.getWithParameters(SharedPreferenceHelper.minRating, DefaultData.PAGE_LIMIT, page, "").subscribeOn(Schedulers.io())
+            apiService.getWithParameters(minRating, DefaultData.PAGE_LIMIT, page, query).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         var res = movies.data.movies
 
                         if (res == null) res = listOf()
                         cont.resume(res)
-
                     }
 
                     override fun onError(e: Throwable) {
                         DLog.d("$e")
-
                     }
                 })
         )
@@ -67,7 +70,8 @@ object MovieListRepo {
         }
     }
 
-    fun searchMovie(it: String?) {
+    suspend fun searchMovie(movie: String): List<Movie> {
+        return getPage(1, 0, movie)
     }
 
     suspend fun getMoviesAsync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
@@ -119,6 +123,16 @@ object MovieListRepo {
         }
     }
 
+    suspend fun getImdbPage(imdbCode: String): Imdb = suspendCoroutine { cont ->
+
+        //TODO combine calls
+        val url = "https://www.imdb.com/title/$imdbCode/"
+        val document = Jsoup.connect(url).get()
+        val e: Element? = document.select("script").first()
+        val testModel = Gson().fromJson(e?.html(), Imdb::class.java)
+        cont.resume(testModel)
+    }
+
 
     suspend fun getRealRating(imdbCode: String): String = suspendCoroutine { cont ->
 
@@ -133,7 +147,6 @@ object MovieListRepo {
             rating = testModel?.aggregateRating?.ratingValue.toString()
         } catch (e: Exception) {
         }
-
         cont.resume(rating)
     }
 

@@ -10,7 +10,9 @@ data class Imdb(
     @SerializedName("trailer") var trailer: Trailer,
     @SerializedName("actor") var actors: List<Person>,
     @SerializedName("director") var director: List<Person>
-)
+)/*{
+    constructor() : this("",null,"","",Trailer(), listOf(),listOf())
+}*/
 
 data class Person(
     @SerializedName("url") var url: String,

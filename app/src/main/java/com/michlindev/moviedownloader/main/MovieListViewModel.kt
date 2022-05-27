@@ -24,10 +24,10 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var itemList = MutableLiveData<List<Movie?>>()
     var isLoading = MutableLiveData(false)
     var searchVisible = MutableLiveData(false)
-    var imdbClick = SingleLiveEvent<Intent>()
+    var imdbClick = SingleLiveEvent<String>()
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
-    var searchInput = MutableLiveData("")
+    //var searchInput = MutableLiveData("")
 
     val maxValue: Int
         get() = SharedPreferenceHelper.pagesNumber
@@ -36,20 +36,21 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     init {
         getMovies()
-
-
     }
 
     val searchTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            // Do nothing.
-        }
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {        }
+
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            searchInput.postValue(s.toString())
+            CoroutineScope(Dispatchers.IO).launch {
+                val query = s.toString()
+                if (query.isNotEmpty()) {
+                    val movies = MovieListRepo.searchMovie(s.toString())
+                    itemList.postValue(movies)
+                } //else itemList.postValue(mutableListOf())
+            }
         }
-        override fun afterTextChanged(s: Editable) {
-            // Do nothing.
-        }
+        override fun afterTextChanged(s: Editable) {        }
     }
 
     fun getMovies() {
@@ -130,11 +131,11 @@ class MovieListViewModel : ViewModel(), ItemListener {
         }
     }
 
-    override fun posterClick(item: String) {
-
-        val site = "https://www.imdb.com/title/$item"
+    override fun posterClick(imdbCode: String) {
+        /*val site = "https://www.imdb.com/title/$item"
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
-        imdbClick.postValue(browserIntent)
+        imdbClick.postValue(browserIntent)*/
+        imdbClick.postValue(imdbCode)
     }
 
     private fun <T> MutableLiveData<T>.notifyObserver() {

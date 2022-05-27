@@ -15,10 +15,8 @@ public interface ApiService {
 
     @GET(DefaultData.JSON_FILE)
     Single<MoviesResponse> getWithParameters(
-            //@Query("genre") String genre,
             @Query("minimum_rating") int rating,
             @Query("limit") int limit,
             @Query("page") int page,
-            //@Query("sort_by") String sort_by,
             @Query("query_term") String query);
 }
