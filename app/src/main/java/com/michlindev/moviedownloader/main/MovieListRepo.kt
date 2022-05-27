@@ -130,6 +130,7 @@ object MovieListRepo {
         val document = Jsoup.connect(url).get()
         val e: Element? = document.select("script").first()
         val testModel = Gson().fromJson(e?.html(), Imdb::class.java)
+
         cont.resume(testModel)
     }
 

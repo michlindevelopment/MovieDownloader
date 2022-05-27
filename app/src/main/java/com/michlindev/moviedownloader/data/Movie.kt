@@ -35,6 +35,7 @@ data class Movie(
     val ratingString: String
         get() = rating.toString()
 
+    //TODO check this
     val year: Int
         get() = tempYear ?: 3000
 

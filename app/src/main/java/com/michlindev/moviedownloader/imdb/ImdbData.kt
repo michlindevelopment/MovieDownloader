@@ -8,11 +8,28 @@ data class Imdb(
     @SerializedName("image") var image: String,
     @SerializedName("description") var description: String,
     @SerializedName("trailer") var trailer: Trailer,
-    @SerializedName("actor") var actors: List<Person>,
-    @SerializedName("director") var director: List<Person>
-)/*{
-    constructor() : this("",null,"","",Trailer(), listOf(),listOf())
-}*/
+    @SerializedName("actor") private var actors: List<Person>?,
+    @SerializedName("director") private var director: List<Person>?
+) {
+    val directorString: String
+        get() {
+            val pop = mutableListOf<String>()
+            director?.forEach {
+                pop.add(it.name)
+            }
+            return pop.joinToString(separator = ", ")
+        }
+
+    val actorsString: String
+        get() {
+            val pop = mutableListOf<String>()
+            actors?.forEach {
+                pop.add(it.name)
+            }
+            return pop.joinToString(separator = ", ")
+        }
+}
+
 
 data class Person(
     @SerializedName("url") var url: String,

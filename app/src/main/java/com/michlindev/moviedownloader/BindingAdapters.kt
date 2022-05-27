@@ -1,10 +1,12 @@
 package com.michlindev.moviedownloader
 
+import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -59,6 +61,15 @@ fun ImageView.loadUrlWithGlide(url: String?) {
 @BindingAdapter("stringArray")
 fun TextView.stringArray(list: List<String>) {
     text = list.joinToString(separator = ", ") { it }
+}
+
+@BindingAdapter("htmlString")
+fun TextView.htmlString(htmlText: String?) {
+    this.text = htmlText?.let {
+        Html.fromHtml(htmlText, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    } ?: ""
+
+
 }
 
 @BindingAdapter("app:visibility")

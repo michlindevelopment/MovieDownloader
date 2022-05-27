@@ -47,11 +47,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+               <!-- app:htmlText="@{viewModel.movie.description}"-->
+                <!--android:text="@{viewModel.movie.description}"-->
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.movie.description}"
+                    app:htmlString="@{viewModel.movie.description}"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tellus et elit pretium tristique. Quisque varius non turpis non rutrum. Etiam hendrerit, tortor et aliquam faucibus, tellus lacus auctor dui, vel suscipit urna erat et elit. Curabitur posuere nulla quis quam ornare efficitur." />
 
               <!--  <TextView
@@ -76,29 +78,32 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.movie.movieName}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Movie Name" />
 
         <TextView
             android:id="@+id/textView8"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
+            android:text="@{String.format(@string/director_prefix, viewModel.movie.directorString)}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            tools:text="Directors: A,B,C" />
+            tools:text="Directors: John Doe,Bubu Makota, Tutu fruti" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-
+            android:text="@{String.format(@string/rating_prefix, viewModel.movie.aggregateRating.ratingValue)}"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView"
             tools:text="Rating: 8.1" />
@@ -113,13 +118,15 @@
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
+            android:text="@{String.format(@string/actors_prefix, viewModel.movie.actorsString)}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/textView8"
-            tools:text="Actors: A,B,C" />
+            tools:text="Actors: John Doe,Bubu Makota, Tutu fruti" />
 
         <TextView
             android:id="@+id/textView10"

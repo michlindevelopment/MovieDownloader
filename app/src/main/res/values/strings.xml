@@ -12,4 +12,7 @@
     <string name="web_client_id">496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com</string>
 
     <string name="language_prefix">Language: %s</string>
+    <string name="rating_prefix">Rating: %s</string>
+    <string name="actors_prefix">Actors: %s</string>
+    <string name="director_prefix">Director: %s</string>
 </resources>
