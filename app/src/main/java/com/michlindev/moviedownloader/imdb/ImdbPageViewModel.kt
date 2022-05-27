@@ -2,11 +2,9 @@ package com.michlindev.moviedownloader.imdb
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.main.MovieListRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ImdbPageViewModel : ViewModel() {

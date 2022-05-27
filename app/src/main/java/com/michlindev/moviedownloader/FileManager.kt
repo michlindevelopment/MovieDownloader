@@ -3,7 +3,7 @@ package com.michlindev.moviedownloader
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
 import com.michlindev.moviedownloader.database.TorrentEntity
-import java.io.*
+import java.io.File
 
 object FileManager {
     private const val RSS_HEADER =

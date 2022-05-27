@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.michlindev.moviedownloader.DLog
-import com.michlindev.moviedownloader.FileManager
 import com.michlindev.moviedownloader.MovieDownloader
 import java.io.File
 

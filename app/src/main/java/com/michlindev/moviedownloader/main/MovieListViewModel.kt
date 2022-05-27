@@ -1,11 +1,7 @@
 package com.michlindev.moviedownloader.main
 
-import android.content.Intent
-import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michlindev.moviedownloader.DLog
@@ -15,8 +11,6 @@ import com.michlindev.moviedownloader.data.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class MovieListViewModel : ViewModel(), ItemListener {

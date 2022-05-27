@@ -1,9 +1,9 @@
 package com.michlindev.moviedownloader.database
 
 import com.michlindev.moviedownloader.MovieDownloader
-import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.data.Torrents
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 object DataBaseHelper {
