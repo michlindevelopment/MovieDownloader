@@ -21,6 +21,10 @@
                 android:title="Debug menu" />
             <item android:id="@+id/action_app_settings"
                 android:title="Settings" />
+            <item android:id="@+id/action_rss_url"
+                android:title="Show RSS" />
+            <item android:id="@+id/action_clear_db"
+                android:title="Clear rss file" />
         </menu>
     </item>
 </menu>

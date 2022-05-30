@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/notif_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/notif_movie_name"
+            style="@style/TextAppearance.Compat.Notification.Title"
+            android:text="Title of the notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+       <!-- <TextView
+            style="@style/TextAppearance.Compat.Notification.Info"
+            android:text="Title description of the notitification in collapsed mode. click expand icon to expand it."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />-->
+    </LinearLayout>
+
+</LinearLayout>

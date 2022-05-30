@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Imdb(
     @SerializedName("name") var movieName: String,
+    @SerializedName("url") var url: String,
     @SerializedName("aggregateRating") var aggregateRating: Rating,
     @SerializedName("image") var image: String,
     @SerializedName("description") var description: String,

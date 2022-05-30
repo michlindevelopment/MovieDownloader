@@ -13,13 +13,13 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 /*
 1. Progress bar + pull - V
 2. Create search pop up - V
-3. Create imdb page
+3. Create imdb page - V
 
-Make option to clear file
+Make option to clear file - V
 Background check with DB
 Beautify app
 Code clean and renaming
-Show file path
+Show file path - V
 
  */
 

@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 
 object DataBaseHelper {
 
-    var db: AppDatabase = AppDatabase(MovieDownloader.appContext)
+    private var db: AppDatabase = AppDatabase(MovieDownloader.appContext)
 
 
     suspend fun getAllTorrents() = withContext(Dispatchers.IO) {
@@ -16,8 +16,12 @@ object DataBaseHelper {
     }
 
     suspend fun addTorrents(id: Long, title: String, torrent: Torrents) = withContext(Dispatchers.IO) {
-        val torrentEntity = TorrentEntity(id,title,torrent.url)
+        val torrentEntity = TorrentEntity(id, title, torrent.url)
         db.torrentDao().insert(torrentEntity)
+    }
+
+    suspend fun clearDb() = withContext(Dispatchers.IO) {
+        db.torrentDao().nukeTable()
     }
 
 }

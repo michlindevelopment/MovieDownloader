@@ -1,13 +1,17 @@
 package com.michlindev.moviedownloader.debug
 
+import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.MovieDownloader
+import com.michlindev.moviedownloader.SingleLiveEvent
 import java.io.File
 
 class DebugViewModel : ViewModel() {
+
+    var notification = SingleLiveEvent<Boolean>()
 
     fun createFile() {
         //FileManager.createFile()
@@ -15,6 +19,11 @@ class DebugViewModel : ViewModel() {
     fun getMovies() {
         DebugRepo.getMovies()
     }
+
+    fun notification() {
+       notification.call()
+    }
+
 
     fun uploadFile() {
 
