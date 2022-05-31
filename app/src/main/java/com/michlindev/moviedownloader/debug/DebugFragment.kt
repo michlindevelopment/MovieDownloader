@@ -8,18 +8,19 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.NotificationTarget
 import com.bumptech.glide.request.transition.Transition
 import com.michlindev.moviedownloader.MainActivity
 import com.michlindev.moviedownloader.R
@@ -49,21 +50,36 @@ class DebugFragment : Fragment() {
             lifecycleScope.launch {
                 val movies = MovieListRepo.searchMovie("Die Hard")
 
-                Glide.with(requireContext())
-                    .asBitmap()
-                    .load(movies[1].large_cover_image)
-                    .into(object : CustomTarget<Bitmap>(){
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            showNotification(movies[1],resource)
-                            //imageView.setImageBitmap(resource)
-                        }
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                            // this is called when imageView is cleared on lifecycle call or for
-                            // some other reason.
-                            // if you are referencing the bitmap somewhere else too other than this imageView
-                            // clear it here as you can no longer have the bitmap
-                        }
-                    })
+                val newMovies = mutableListOf<Movie>()
+                newMovies.add(movies[1])
+                newMovies.add(movies[2])
+
+                if (newMovies.size==1)
+                {
+                    Glide.with(requireContext())
+                        .asBitmap()
+                        .load(newMovies[0].large_cover_image)
+                        .into(object : CustomTarget<Bitmap>(){
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+
+
+                                showNotification(newMovies,resource)
+                                //imageView.setImageBitmap(resource)
+                            }
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                                // this is called when imageView is cleared on lifecycle call or for
+                                // some other reason.
+                                // if you are referencing the bitmap somewhere else too other than this imageView
+                                // clear it here as you can no longer have the bitmap
+                            }
+                        })
+                }
+                else
+                {
+                    showNotification(newMovies,null)
+                }
+
+
 
 
 
@@ -73,16 +89,41 @@ class DebugFragment : Fragment() {
         return binding.root
     }
 
-    private fun showNotification(movie: Movie, resource: Bitmap) {
+    private fun showNotification(movie: List<Movie>, resource: Bitmap?) {
         createNotificationChannel()
 
+        lateinit var remoteCollapsedViews : RemoteViews
+        lateinit var remoteExpandedViews : RemoteViews
+
+        if (movie.size==1)
+        {
+            remoteCollapsedViews = RemoteViews(requireActivity().packageName, R.layout.notification_normal)
+            remoteExpandedViews = RemoteViews(requireActivity().packageName, R.layout.notification_expended)
+
+            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name,movie[0].title)
+            remoteCollapsedViews.setImageViewBitmap(R.id.notif_image, resource);
+
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_name_extend,movie[0].title)
+            remoteExpandedViews.setImageViewBitmap(R.id.notif_image_extend, resource);
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_extend, movie[0].year.toString());
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_sypnosis, Html.fromHtml(movie[0].summary, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        }
+        else
+        {
+            remoteCollapsedViews = RemoteViews(requireActivity().packageName, R.layout.notification_normal_multiple)
+
+            //pop.joinToString(separator = ", ")
+
+            var movies = ""
+            movie.forEach {
+                movies = movies +", "+it.title
+            }
+
+            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name_multiple,movies)
+
+        }
 
 
-        val remoteCollapsedViews = RemoteViews(requireActivity().packageName, R.layout.notification_normal)
-        val remoteExpandedViews = RemoteViews(requireActivity().packageName, R.layout.notification_expended)
-
-        remoteCollapsedViews.setTextViewText(R.id.notif_movie_name,movie.title)
-        remoteCollapsedViews.setImageViewBitmap(R.id.notif_image, resource);
 
         //start this(MainActivity) on by Tapping notification
         val mainIntent = Intent(requireContext(), MainActivity::class.java)
@@ -93,13 +134,13 @@ class DebugFragment : Fragment() {
         )
 
         val builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-        builder.setSmallIcon(R.drawable.search_icon)
+        builder.setSmallIcon(R.drawable.ic_notification_icon)
         builder.priority = NotificationCompat.PRIORITY_DEFAULT
         builder.setAutoCancel(true)
         builder.setContentIntent(mainPIntent)
         builder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
         builder.setCustomContentView(remoteCollapsedViews)
-        builder.setCustomBigContentView(remoteExpandedViews)
+        if (movie.size==1) builder.setCustomBigContentView(remoteExpandedViews)
         val notificationManagerCompat = NotificationManagerCompat.from(requireContext())
         notificationManagerCompat.notify(NOTIFICATION_ID, builder.build())
 
