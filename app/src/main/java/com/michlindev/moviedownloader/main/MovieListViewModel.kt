@@ -49,7 +49,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     fun getMovies() {
 
-        val movies = mutableListOf<Movie?>()
+        val movies = mutableListOf<Movie>()
         itemList.postValue(movies)
         progress.postValue(0)
         isLoading.postValue(true)
@@ -58,43 +58,16 @@ class MovieListViewModel : ViewModel(), ItemListener {
             DLog.d("Start G")
 
             movies.addAll(MovieListRepo.getMoviesAsync(progress))
-            DLog.d("End G - Total: ${movies.size}")
-
-            val englishOnly = SharedPreferenceHelper.englishOnly
-
-            //TODO Check year null
-
             withContext(Dispatchers.Main) {
-                DLog.d("Removing ${SharedPreferenceHelper.minYear}")
 
-                val genres = SharedPreferenceHelper.genres
-                movies.removeIf {
-                    it == null ||
-                            it.year < SharedPreferenceHelper.minYear
-                            || checkContainment(it, genres)
-                            || (englishOnly && it.language != "en")
-                }
-                movies.sortByDescending { it?.date_uploaded_unix }
-                DLog.d("After filter: ${movies.size}")
+                val max = movies.maxOf { it.id }
+                SharedPreferenceHelper.lastMovie = max
+
                 itemList.postValue(movies)
                 isLoading.postValue(false)
             }
         }
 
-    }
-
-    private fun checkContainment(movie: Movie, genres: MutableSet<String>?): Boolean {
-
-        if (movie.genres.isEmpty()) {
-            return true
-        } else {
-            movie.genres.forEach {
-                if (genres?.contains(it) == false) {
-                    return true
-                }
-            }
-            return false
-        }
     }
 
     override fun downloadClick(item: Movie) {

@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.michlindev.moviedownloader.DLog
@@ -55,7 +56,7 @@ object MovieListRepo {
     /*suspend fun getMovies2(): Boolean = withContext(Dispatchers.IO) {
         return@withContext true
     }*/
-    suspend fun getMoviesSync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
+    /*suspend fun getMoviesSync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
 
         val movies = mutableListOf<Movie>()
         val numberOfPages = SharedPreferenceHelper.pagesNumber
@@ -68,59 +69,65 @@ object MovieListRepo {
             }
             cont.resume(movies)
         }
-    }
+    }*/
 
     suspend fun searchMovie(movie: String): List<Movie> {
         return getPage(1, 0, movie)
     }
 
-    suspend fun getMoviesAsync(progress: MutableLiveData<Int>): List<Movie> = suspendCancellableCoroutine { cont ->
+    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?): MutableList<Movie> = suspendCancellableCoroutine { cont ->
 
         val mutex = Mutex()
-        val movies = mutableListOf<Movie>()
+        var movies = mutableListOf<Movie>()
         val numberOfPages = SharedPreferenceHelper.pagesNumber
 
         var cnt = 0
 
         for (i in 1..numberOfPages) {
-            DLog.d("Firing $i")
             CoroutineScope(Dispatchers.IO).launch {
-                DLog.d("Start $i")
-
                 val sdf = getPage(i)
-                //mutex.withLock {
 
                 withContext(Dispatchers.Default) {
                     mutex.withLock {
                         movies.addAll(sdf)
                     }
                 }
-                //}
-                //delay(100)
-                DLog.d("End2 $i")
 
                 cnt++
                 withContext(Dispatchers.Main) {
-                    progress.postValue(cnt)
+                    progress?.postValue(cnt)
                 }
                 if (cnt == numberOfPages) {
-                    DLog.d("Resuming")
-
-                    DLog.d("complete: ${cont.isCompleted}")
                     if (cont.isActive) {
+
+                        movies = applyFilters(movies)
                         cont.resume(movies)
-                        //cont.cancel()
-                        DLog.e("isActive")
-                        DLog.d("complete: ${cont.isCompleted}")
-                    } else {
-                        DLog.e("not Active")
                     }
-                    DLog.e("Canceling")
                     cont.cancel()
                 }
             }
 
         }
+    }
+
+    @SuppressLint("null")
+    private fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
+
+        val englishOnly = SharedPreferenceHelper.englishOnly
+        DLog.d("Removing ${SharedPreferenceHelper.minYear}")
+
+        val genres = SharedPreferenceHelper.genres
+        movies.removeIf {
+            it == null ||
+                    it.year < SharedPreferenceHelper.minYear
+                    || checkContainment(it, genres)
+                    || (englishOnly && it.language != "en")
+        }
+        movies.sortByDescending { it.date_uploaded_unix }
+        DLog.d("After filter: ${movies.size}")
+
+        return movies
+
     }
 
     suspend fun getImdbPage(imdbCode: String): Imdb = suspendCoroutine { cont ->
@@ -160,6 +167,17 @@ object MovieListRepo {
             }
         }
         return qualitiesList
+    }
+
+    private fun checkContainment(movie: Movie, genres: MutableSet<String>?): Boolean {
+
+        if (movie.genres.isEmpty()) return true
+        else {
+            movie.genres.forEach {
+                if (genres?.contains(it) == false) return true
+            }
+            return false
+        }
     }
 
 

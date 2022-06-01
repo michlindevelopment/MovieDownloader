@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.michlindev.moviedownloader.MainActivity
+import com.michlindev.moviedownloader.Notification
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.DebugFragmentBinding
@@ -34,8 +35,8 @@ class DebugFragment : Fragment() {
 
     private val viewModel: DebugViewModel by activityViewModels()
 
-    private val CHANNEL_ID = "channel_id01"
-    private val NOTIFICATION_ID = 1
+   /* private val CHANNEL_ID = "channel_id01"
+    private val NOTIFICATION_ID = 1*/
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -45,42 +46,31 @@ class DebugFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.notification.observe(viewLifecycleOwner){
+        viewModel.notification.observe(viewLifecycleOwner) {
 
             lifecycleScope.launch {
                 val movies = MovieListRepo.searchMovie("Die Hard")
 
                 val newMovies = mutableListOf<Movie>()
                 newMovies.add(movies[1])
-                newMovies.add(movies[2])
+                //newMovies.add(movies[2])
 
-                if (newMovies.size==1)
-                {
+                if (newMovies.size == 1) {
                     Glide.with(requireContext())
                         .asBitmap()
                         .load(newMovies[0].large_cover_image)
-                        .into(object : CustomTarget<Bitmap>(){
+                        .into(object : CustomTarget<Bitmap>() {
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-
-
-                                showNotification(newMovies,resource)
+                                Notification.showNotification(newMovies, resource,requireActivity())
                                 //imageView.setImageBitmap(resource)
                             }
+
                             override fun onLoadCleared(placeholder: Drawable?) {
-                                // this is called when imageView is cleared on lifecycle call or for
-                                // some other reason.
-                                // if you are referencing the bitmap somewhere else too other than this imageView
-                                // clear it here as you can no longer have the bitmap
                             }
                         })
+                } else {
+                    Notification.showNotification(newMovies, null,requireContext())
                 }
-                else
-                {
-                    showNotification(newMovies,null)
-                }
-
-
-
 
 
             }
@@ -89,40 +79,38 @@ class DebugFragment : Fragment() {
         return binding.root
     }
 
-    private fun showNotification(movie: List<Movie>, resource: Bitmap?) {
+   /* private fun showNotification(movie: List<Movie>, resource: Bitmap?) {
         createNotificationChannel()
 
-        lateinit var remoteCollapsedViews : RemoteViews
-        lateinit var remoteExpandedViews : RemoteViews
+        lateinit var remoteCollapsedViews: RemoteViews
+        lateinit var remoteExpandedViews: RemoteViews
 
-        if (movie.size==1)
-        {
+        if (movie.size == 1) {
             remoteCollapsedViews = RemoteViews(requireActivity().packageName, R.layout.notification_normal)
             remoteExpandedViews = RemoteViews(requireActivity().packageName, R.layout.notification_expended)
 
-            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name,movie[0].title)
+            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name, movie[0].title)
             remoteCollapsedViews.setImageViewBitmap(R.id.notif_image, resource);
 
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_name_extend,movie[0].title)
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_name_extend, movie[0].title)
             remoteExpandedViews.setImageViewBitmap(R.id.notif_image_extend, resource);
             remoteExpandedViews.setTextViewText(R.id.notif_movie_year_extend, movie[0].year.toString());
             remoteExpandedViews.setTextViewText(R.id.notif_movie_year_sypnosis, Html.fromHtml(movie[0].summary, HtmlCompat.FROM_HTML_MODE_LEGACY));
-        }
-        else
-        {
+        } else {
             remoteCollapsedViews = RemoteViews(requireActivity().packageName, R.layout.notification_normal_multiple)
+            remoteExpandedViews = RemoteViews(requireActivity().packageName, R.layout.notification_expended_multiple)
 
             //pop.joinToString(separator = ", ")
 
             var movies = ""
             movie.forEach {
-                movies = movies +", "+it.title
+                movies = movies + ", " + it.title
             }
 
-            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name_multiple,movies)
+            //remoteCollapsedViews.setTextViewText(R.id.notif_movie_name_multiple, movies)
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_expanded_multiple, movies)
 
         }
-
 
 
         //start this(MainActivity) on by Tapping notification
@@ -140,7 +128,7 @@ class DebugFragment : Fragment() {
         builder.setContentIntent(mainPIntent)
         builder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
         builder.setCustomContentView(remoteCollapsedViews)
-        if (movie.size==1) builder.setCustomBigContentView(remoteExpandedViews)
+        builder.setCustomBigContentView(remoteExpandedViews)
         val notificationManagerCompat = NotificationManagerCompat.from(requireContext())
         notificationManagerCompat.notify(NOTIFICATION_ID, builder.build())
 
@@ -156,6 +144,6 @@ class DebugFragment : Fragment() {
         notificationChannel.description = description
         val notificationManager = requireActivity().getSystemService(NOTIFICATION_SERVICE) as NotificationManager?
         notificationManager!!.createNotificationChannel(notificationChannel)
-    }
+    }*/
 
 }

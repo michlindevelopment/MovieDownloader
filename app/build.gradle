@@ -61,6 +61,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
     def nav_version = "2.4.2"
 
 
