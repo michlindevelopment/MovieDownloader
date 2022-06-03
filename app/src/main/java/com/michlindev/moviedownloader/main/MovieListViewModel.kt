@@ -1,9 +1,8 @@
 package com.michlindev.moviedownloader.main
 
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
@@ -21,10 +20,14 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var imdbClick = SingleLiveEvent<String>()
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
+    var searchField = MutableLiveData<String>()
+
     //var searchInput = MutableLiveData("")
 
-    val maxValue: Int
-        get() = SharedPreferenceHelper.pagesNumber
+    var maxProgressValue = MutableLiveData(SharedPreferenceHelper.pagesNumber)
+
+  /*  val maxValue: Int
+        get() = SharedPreferenceHelper.pagesNumber*/
 
     var progress = MutableLiveData(0)
 
@@ -32,7 +35,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         getMovies()
     }
 
-    val searchTextWatcher = object : TextWatcher {
+    /*val searchTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {        }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -45,16 +48,30 @@ class MovieListViewModel : ViewModel(), ItemListener {
             }
         }
         override fun afterTextChanged(s: Editable) {        }
+    }*/
+
+    fun searchMovie() {
+        //TODO make better way to clear
+        val movies = mutableListOf<Movie>()
+        maxProgressValue.postValue(3)
+        progress.postValue(0)
+        itemList.postValue(movies)
+        viewModelScope.launch {
+            val movies1 = MovieListRepo.getMoviesAsync(searchField,progress)
+            itemList.postValue(movies1)
+        }
+
     }
 
     fun getMovies() {
 
         val movies = mutableListOf<Movie>()
+        maxProgressValue.postValue(SharedPreferenceHelper.pagesNumber)
         itemList.postValue(movies)
         progress.postValue(0)
         isLoading.postValue(true)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             DLog.d("Start G")
 
             movies.addAll(MovieListRepo.getMoviesAsync(progress))

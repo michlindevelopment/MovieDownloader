@@ -65,7 +65,9 @@ class MovieListFragment : Fragment() {
             .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
                 val torrent = it.torrents[which]
                 lifecycleScope.launch {
-                    torrent.let { selectedTorrent -> DataBaseHelper.addTorrents(it.id, it.title, selectedTorrent) }
+                    torrent.let { selectedTorrent ->
+                        SharedPreferenceHelper.uploadRequred = true
+                        DataBaseHelper.addTorrents(it.id, it.title, selectedTorrent) }
                 }
             }
 

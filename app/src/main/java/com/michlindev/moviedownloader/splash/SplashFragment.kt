@@ -11,10 +11,11 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
 //TODO
 /*
-Background check with DB
 Beautify app
 Code clean and renaming
-Is file save required
+Is file save required - V (test)
+Lottie animations - V (test)
+Pull down hides search
 */
 
 class SplashFragment : Fragment() {

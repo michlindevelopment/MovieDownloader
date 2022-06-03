@@ -71,19 +71,105 @@ object MovieListRepo {
         }
     }*/
 
-    suspend fun searchMovie(movie: String): List<Movie> {
-        return getPage(1, 0, movie)
-    }
+    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?): MutableList<Movie> =
+        suspendCancellableCoroutine { cont ->
 
-    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?): MutableList<Movie> = suspendCancellableCoroutine { cont ->
+            val mutex = Mutex()
+            var movies = mutableListOf<Movie>()
 
-        val mutex = Mutex()
+            //TODO set 3 to const
+            val numberOfPages = if (movieName == null) SharedPreferenceHelper.pagesNumber else 3
+
+            //val numberOfPages = SharedPreferenceHelper.pagesNumber
+
+            var cnt = 0
+
+            for (i in 1..numberOfPages) {
+                //TODO search this and replace
+                CoroutineScope(Dispatchers.IO).launch {
+                    val moviesListPage = if (movieName == null)
+                        getPage(i)
+                    else
+                        movieName.value?.let { getPage(i, 0, it) }
+
+                    /*val sdf = getPage(i)
+                    val sdf = movieName.value?.let { getPage(i, 0, it) }*/
+
+                    withContext(Dispatchers.Default) {
+                        mutex.withLock {
+                            moviesListPage?.let { movies.addAll(it) }
+                        }
+                    }
+
+                    cnt++
+                    withContext(Dispatchers.Main) {
+                        progress?.postValue(cnt)
+                    }
+
+                    //TODO handle ifs
+                    if (cnt == numberOfPages) {
+                        if (cont.isActive) {
+                            if (movieName == null)
+                                movies = applyFilters(movies)
+
+                            cont.resume(movies)
+                        }
+                        cont.cancel()
+                    }
+                }
+
+            }
+
+            //////////////////////////////////////////////////
+
+            /*val mutex = Mutex()
+            val movies = mutableListOf<Movie>()
+
+            val numberOfPages = 3
+
+            var cnt = 0
+            for (i in 1..numberOfPages) {
+                //TODO search this and replace
+                CoroutineScope(Dispatchers.IO).launch {
+                    val sdf = movieName.value?.let { getPage(i,0, it) }
+                    withContext(Dispatchers.Default) {
+                        mutex.withLock {
+                            if (sdf != null) {
+                                movies.addAll(sdf)
+                            }
+                        }
+                    }
+
+                    cnt++
+                    withContext(Dispatchers.Main) {
+                        progress?.postValue(cnt)
+                    }
+                    if (cnt == numberOfPages) {
+                        if (cont.isActive) {
+                            cont.resume(movies)
+                        }
+                        cont.cancel()
+                    }
+                }
+
+            }*/
+
+        }
+
+    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?): MutableList<Movie> {
+        return getMoviesAsync(null,  progress)
+
+        /*val mutex = Mutex()
         var movies = mutableListOf<Movie>()
+
+        //val numberOfPages = pages ?: SharedPreferenceHelper.pagesNumber
+
         val numberOfPages = SharedPreferenceHelper.pagesNumber
 
         var cnt = 0
 
         for (i in 1..numberOfPages) {
+            //TODO search this and replace
             CoroutineScope(Dispatchers.IO).launch {
                 val sdf = getPage(i)
 
@@ -99,7 +185,6 @@ object MovieListRepo {
                 }
                 if (cnt == numberOfPages) {
                     if (cont.isActive) {
-
                         movies = applyFilters(movies)
                         cont.resume(movies)
                     }
@@ -107,22 +192,33 @@ object MovieListRepo {
                 }
             }
 
-        }
+        }*/
     }
 
     @SuppressLint("null")
     private fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
 
+        //val newMovies = mutableListOf<Movie>()
         val englishOnly = SharedPreferenceHelper.englishOnly
+        val genres = SharedPreferenceHelper.genres
+
         DLog.d("Removing ${SharedPreferenceHelper.minYear}")
 
-        val genres = SharedPreferenceHelper.genres
+       /* movies.forEach {
+            if (it != null &&
+                it.year >= SharedPreferenceHelper.minYear &&
+                ((englishOnly && it.language == "en")) &&
+                !checkContainment(it, genres))
+                newMovies.add(it)
+        }*/
+
         movies.removeIf {
             it == null ||
                     it.year < SharedPreferenceHelper.minYear
                     || checkContainment(it, genres)
                     || (englishOnly && it.language != "en")
         }
+
         movies.sortByDescending { it.date_uploaded_unix }
         DLog.d("After filter: ${movies.size}")
 

@@ -43,7 +43,7 @@
             app:submitList="@{viewModel.itemList}"
             tools:listitem="@layout/item_list_genre" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

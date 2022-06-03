@@ -13,6 +13,7 @@ object SharedPreferenceHelper {
     private const val APP_SHARED_PREFS = "APP_SHARED_PREFS"
     private const val USER_UID = "USER_UID"
     private const val LAST_MOVIE = "LAST_MOVIE"
+    private const val UPLOAD_REQURED = "UPLOAD_REQURED"
 
     private var preferences:SharedPreferences = MovieDownloader.appContext.getSharedPreferences(APP_SHARED_PREFS,Context.MODE_PRIVATE)
 
@@ -36,7 +37,12 @@ object SharedPreferenceHelper {
         get() = preferences.getLong(LAST_MOVIE, -1)
         set(value) = preferences.edit().putLong(LAST_MOVIE, value).apply()
 
-    /*val genres = resources.getStringArray(R.array.genres)*/
+    var uploadRequred: Boolean
+        get() = preferences.getBoolean(UPLOAD_REQURED, false)
+        set(value) = preferences.edit().putBoolean(UPLOAD_REQURED, value).apply()
+
+
+
 
     var genres: MutableSet<String>
         get() {

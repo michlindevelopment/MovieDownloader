@@ -17,34 +17,43 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".main.MovieListFragment">
+        tools:context=".main.MovieListFragment"
+        android:background="@color/black">
 
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:visibility="@{viewModel.searchVisible}"
-            app:layout_constraintTop_toBottomOf="@+id/progressBarGetter">
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarGetter"
+            android:padding="10dp">
 
-            <EditText
+            <!--app:textChangedListener="@{viewModel.searchTextWatcher}"-->
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editTextTextPersonName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@drawable/edit_text_bg"
                 android:ems="10"
-                app:textChangedListener="@{viewModel.searchTextWatcher}"
                 android:inputType="textPersonName"
-                 />
+                android:layout_marginEnd="10dp"
+                android:text="@={viewModel.searchField}"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                tools:text="Die Hard"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:text="Cancel" />
+               android:onClick="@{() -> viewModel.searchMovie()}"
+                android:background="@drawable/custom_button_download"
+                android:text="Go" />
         </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -72,7 +81,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:max="@{viewModel.maxValue}"
+            android:max="@{viewModel.maxProgressValue}"
             android:progress="@{viewModel.progress}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

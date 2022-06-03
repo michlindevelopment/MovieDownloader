@@ -3,22 +3,25 @@
     <item android:state_focused="false" android:state_enabled="false">
         <shape>
             <gradient android:angle="270" android:endColor="@color/btn_disabled" android:startColor="@color/btn_disabled" />
-            <corners android:radius="10dp" />
+            <corners android:radius="50dp" />
+            <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp" />
         </shape>
     </item>
 
     <item android:state_focused="false" android:state_pressed="true">
         <shape>
             <gradient android:angle="270" android:endColor="@color/btn_pressed" android:startColor="@color/btn_pressed" />
-            <corners android:radius="10dp" />
+            <corners android:radius="50dp" />
+            <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp" />
         </shape>
     </item>
+
 
     <item>
         <shape>
             <gradient android:angle="270" android:endColor="@color/btn_enabled" android:startColor="@color/btn_enabled" />
-            <corners android:radius="10dp" />
-
+            <corners android:radius="50dp" />
+            <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp" />
         </shape>
     </item>
 </selector>

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable-xhdpi/custom_button_go.xml" value="0.242" />
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable-xhdpi/edit_text_bg.xml" value="0.242" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable/custom_button_download.xml" value="0.1735" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable/ic_launcher_background.xml" value="0.166" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable/more_vert.xml" value="0.1095" />
@@ -18,7 +20,7 @@
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/list_layout.xml" value="0.2871376811594203" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/list_layout_new.xml" value="0.25" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/login_fragment.xml" value="0.2604166666666667" />
-        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/movie_list_fragment.xml" value="0.32115085536547433" />
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/movie_list_fragment.xml" value="0.25" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_expended.xml" value="0.1983695652173913" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_expended_multiple.xml" value="0.358695652173913" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_normal.xml" value="0.6177715091678421" />

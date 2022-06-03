@@ -26,7 +26,7 @@
             app:layout_constraintVertical_bias="1.0"
             app:visibility="@{!viewModel.loading}">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 app:layout_constraintTop_toTopOf="@+id/imageView"
                 tools:text="Rating: 8.1" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
