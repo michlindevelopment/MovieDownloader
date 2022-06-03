@@ -1,6 +1,7 @@
 package com.michlindev.moviedownloader.main
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.michlindev.moviedownloader.DLog
@@ -39,10 +40,14 @@ object MovieListRepo {
             apiService.getWithParameters(minRating, DefaultData.PAGE_LIMIT, page, query).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
-                        var res = movies.data.movies
-
-                        if (res == null) res = listOf()
-                        cont.resume(res)
+                        val res = movies.data.movies
+                        val retList = mutableListOf<Movie>()
+                        res?.forEach {
+                            it?.let {
+                                retList.add(it)
+                            }
+                        }
+                        cont.resume(retList)
                     }
 
                     override fun onError(e: Throwable) {
@@ -75,15 +80,12 @@ object MovieListRepo {
         suspendCancellableCoroutine { cont ->
 
             val mutex = Mutex()
-            var movies = mutableListOf<Movie>()
+            val movies = mutableListOf<Movie>()
 
             //TODO set 3 to const
             val numberOfPages = if (movieName == null) SharedPreferenceHelper.pagesNumber else 3
 
-            //val numberOfPages = SharedPreferenceHelper.pagesNumber
-
             var cnt = 0
-
             for (i in 1..numberOfPages) {
                 //TODO search this and replace
                 CoroutineScope(Dispatchers.IO).launch {
@@ -92,12 +94,17 @@ object MovieListRepo {
                     else
                         movieName.value?.let { getPage(i, 0, it) }
 
-                    /*val sdf = getPage(i)
-                    val sdf = movieName.value?.let { getPage(i, 0, it) }*/
 
                     withContext(Dispatchers.Default) {
                         mutex.withLock {
+                            //moviesListPage?.let { movies.addAll(it) }
+
                             moviesListPage?.let { movies.addAll(it) }
+
+                           /* //var list= moviesListPage?.distinctBy { it!=null }
+                            if (moviesListPage != null) {
+                                movies.addAll(moviesListPage)
+                            }*/
                         }
                     }
 
@@ -106,16 +113,25 @@ object MovieListRepo {
                         progress?.postValue(cnt)
                     }
 
-                    //TODO handle ifs
                     if (cnt == numberOfPages) {
                         if (cont.isActive) {
-                            if (movieName == null)
-                                movies = applyFilters(movies)
-
                             cont.resume(movies)
                         }
                         cont.cancel()
                     }
+
+                    //TODO handle ifs and already resumed
+                    //var newMovies = mutableListOf<Movie>()
+                    /*DLog.d("cnt $cnt cont: ${cont.isActive}")
+                    if (cnt == numberOfPages && cont.isActive) {
+
+                        cont.resume(movies)
+                    }
+                        //if (cont.isActive) {
+
+                        //}
+                        cont.cancel()*/
+
                 }
 
             }
@@ -195,34 +211,30 @@ object MovieListRepo {
         }*/
     }
 
-    @SuppressLint("null")
-    private fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
+    fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
 
-        //val newMovies = mutableListOf<Movie>()
+        val newMovies = mutableListOf<Movie>()
         val englishOnly = SharedPreferenceHelper.englishOnly
         val genres = SharedPreferenceHelper.genres
 
         DLog.d("Removing ${SharedPreferenceHelper.minYear}")
 
-       /* movies.forEach {
-            if (it != null &&
-                it.year >= SharedPreferenceHelper.minYear &&
-                ((englishOnly && it.language == "en")) &&
-                !checkContainment(it, genres))
+        movies.forEach {
+            if (it.year >= SharedPreferenceHelper.minYear && (englishOnly && it.language == "en") && !checkContainment(it, genres))
                 newMovies.add(it)
-        }*/
+        }
 
-        movies.removeIf {
+       /* movies.removeIf {
             it == null ||
                     it.year < SharedPreferenceHelper.minYear
                     || checkContainment(it, genres)
                     || (englishOnly && it.language != "en")
-        }
+        }*/
 
-        movies.sortByDescending { it.date_uploaded_unix }
+        newMovies.sortByDescending { it.date_uploaded_unix }
         DLog.d("After filter: ${movies.size}")
 
-        return movies
+        return newMovies
 
     }
 

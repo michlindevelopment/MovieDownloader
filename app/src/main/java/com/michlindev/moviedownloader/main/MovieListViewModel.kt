@@ -65,7 +65,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     fun getMovies() {
 
-        val movies = mutableListOf<Movie>()
+        var movies = mutableListOf<Movie>()
         maxProgressValue.postValue(SharedPreferenceHelper.pagesNumber)
         itemList.postValue(movies)
         progress.postValue(0)
@@ -75,6 +75,8 @@ class MovieListViewModel : ViewModel(), ItemListener {
             DLog.d("Start G")
 
             movies.addAll(MovieListRepo.getMoviesAsync(progress))
+            movies = MovieListRepo.applyFilters(movies)
+
             withContext(Dispatchers.Main) {
 
                 val max = movies.maxOf { it.id }

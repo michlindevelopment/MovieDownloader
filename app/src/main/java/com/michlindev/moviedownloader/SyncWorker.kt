@@ -29,7 +29,8 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
         //42479
 
         //val movies = MovieListRepo.searchMovie("Die Hard")
-        val movies = MovieListRepo.getMoviesAsync(null)
+        var movies = MovieListRepo.getMoviesAsync(null)
+        movies = MovieListRepo.applyFilters(movies)
 
         val lastMovie = SharedPreferenceHelper.lastMovie
         movies.removeIf { it.id <= lastMovie }
