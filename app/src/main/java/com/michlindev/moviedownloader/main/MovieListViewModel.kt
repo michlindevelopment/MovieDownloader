@@ -35,21 +35,6 @@ class MovieListViewModel : ViewModel(), ItemListener {
         getMovies()
     }
 
-    /*val searchTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {        }
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val query = s.toString()
-                if (query.isNotEmpty()) {
-                    val movies = MovieListRepo.searchMovie(s.toString())
-                    itemList.postValue(movies)
-                } //else itemList.postValue(mutableListOf())
-            }
-        }
-        override fun afterTextChanged(s: Editable) {        }
-    }*/
-
     fun searchMovie() {
         //TODO make better way to clear
         val movies = mutableListOf<Movie>()
@@ -67,6 +52,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         var movies = mutableListOf<Movie>()
         maxProgressValue.postValue(SharedPreferenceHelper.pagesNumber)
+        searchVisible.postValue(false)
         itemList.postValue(movies)
         progress.postValue(0)
         isLoading.postValue(true)

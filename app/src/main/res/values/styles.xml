@@ -1,0 +1,9 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/custom_button_download</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+</resources>

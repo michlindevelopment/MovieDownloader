@@ -15,7 +15,7 @@ Beautify app
 Code clean and renaming
 Is file save required - V (test)
 Lottie animations - V (test)
-Pull down hides search
+App icons
 */
 
 class SplashFragment : Fragment() {

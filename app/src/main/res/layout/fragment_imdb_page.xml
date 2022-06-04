@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{()->viewModel.openTrailer()}"
                 android:text="Trailer"
+                style="@style/ButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -58,14 +59,6 @@
                         android:layout_height="wrap_content"
                         app:htmlString="@{viewModel.movie.description}"
                         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lacinia tellus et elit pretium tristique. Quisque varius non turpis non rutrum. Etiam hendrerit, tortor et aliquam faucibus, tellus lacus auctor dui, vel suscipit urna erat et elit. Curabitur posuere nulla quis quam ornare efficitur." />
-
-                    <!--  <TextView
-                          android:id="@+id/textView12"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="10dp"
-                          android:text="@{viewModel.movie.trailer.description}"
-                          tools:text="Maecenas quis luctus tellus. In dictum vitae nulla id tempus. Duis at nunc a magna convallis faucibus nec cursus quam. Duis ultricies consequat quam, eu consectetur ipsum blandit in. Sed tincidunt urna ac sem pharetra, vel finibus risus gravida. Maecenas lacinia magna vitae urna sagittis, nec malesuada erat tincidunt. Morbi placerat pellentesque velit, quis pretium dolor imperdiet id" />-->
                 </LinearLayout>
             </ScrollView>
 
@@ -83,6 +76,9 @@
                 android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
                 android:text="@{viewModel.movie.movieName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +105,8 @@
                 android:text="@{String.format(@string/rating_prefix, viewModel.movie.aggregateRating.ratingValue)}"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView"
-                tools:text="Rating: 8.1" />
+                tools:text="Rating: 8.1"
+                android:textSize="20dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button8"
@@ -117,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{()->viewModel.openImdb()}"
                 android:text="IMdb"
+                style="@style/ButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -138,6 +136,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Description"
+                android:textSize="15dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>

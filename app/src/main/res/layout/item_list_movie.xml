@@ -16,8 +16,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageViewPoster"
@@ -91,7 +90,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@+id/imageViewImdb"
             android:text="@{Integer.toString(movie.year)}"
@@ -107,7 +105,6 @@
             android:maxHeight="30dp"
             android:maxLines="3"
             app:stringArray="@{movie.genres}"
-            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@+id/textViewYear"
             tools:text="Genres"/>
@@ -120,7 +117,6 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:text="@{String.format(@string/language_prefix, movie.fullLanguage)}"
-            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@+id/textViewGenre"
             tools:text="Language: English" />

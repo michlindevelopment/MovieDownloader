@@ -2,12 +2,16 @@ package com.michlindev.moviedownloader
 
 import android.app.Application
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 
 
 class MovieDownloader : Application() {
 
+
     init {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         instance = this
+
     }
 
     companion object {
