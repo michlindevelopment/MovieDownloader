@@ -24,36 +24,36 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
         //42479
 
         //val movies = MovieListRepo.searchMovie("Die Hard")
-        var movies = MovieListRepo.getMoviesAsync(null)
-        movies = MovieListRepo.applyFilters(movies)
+        withContext(Dispatchers.IO){
+            var movies = MovieListRepo.getMoviesAsync(null)
+            movies = MovieListRepo.applyFilters(movies)
 
-        val lastMovie = SharedPreferenceHelper.lastMovie
-        movies.removeIf { it.id <= lastMovie }
+            val lastMovie = SharedPreferenceHelper.lastMovie
+            movies.removeIf { it.id <= lastMovie }
 
-        withContext(Dispatchers.Main) {
-            //val newMovies = mutableListOf<Movie>()
-            //newMovies.add(movies[1])
-            //newMovies.add(movies[2])
+            withContext(Dispatchers.Main) {
+                if (movies.size == 1) {
+                    Glide.with(applicationContext)
+                        .asBitmap()
+                        .load(movies[0].large_cover_image)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                Notification.showNotification(movies, resource, applicationContext)
+                            }
 
-            if (movies.size == 1) {
-                Glide.with(applicationContext)
-                    .asBitmap()
-                    .load(movies[0].large_cover_image)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            Notification.showNotification(movies, resource, applicationContext)
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                        }
-                    })
-            } else {
-                Notification.showNotification(movies, null, applicationContext)
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                            }
+                        })
+                } else {
+                    Notification.showNotification(movies, null, applicationContext)
+                }
             }
+
+
+
         }
-
-
         return Result.success()
+
         //return Result.failure()
     }
 }

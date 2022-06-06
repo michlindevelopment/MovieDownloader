@@ -4,58 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            type="com.michlindev.moviedownloader.debug.DebugViewModel"
-            name="viewModel"/>
+            name="viewModel"
+            type="com.michlindev.moviedownloader.debug.DebugViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".debug.DebugFragment">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:text="Create File"
             android:onClick="@{()->viewModel.createFile()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="Create File" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Upload file"
             android:onClick="@{()->viewModel.uploadFile()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button2" />
+            android:text="Upload file" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Get Movies"
             android:onClick="@{()->viewModel.getMovies()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
+            android:text="Get Movies" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Notify"
-            android:onClick="@{()->viewModel.notification()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button4" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:onClick="@{()->viewModel.notificationSingle()}"
+            android:text="Notify Single" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.notificationMultiple()}"
+            android:text="Notify Multiple" />
+    </LinearLayout>
 </layout>
