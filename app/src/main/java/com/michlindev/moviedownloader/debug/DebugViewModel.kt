@@ -1,6 +1,5 @@
 package com.michlindev.moviedownloader.debug
 
-import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.google.firebase.storage.FirebaseStorage

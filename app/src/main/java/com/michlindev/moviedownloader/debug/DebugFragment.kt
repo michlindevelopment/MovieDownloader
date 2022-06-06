@@ -1,22 +1,12 @@
 package com.michlindev.moviedownloader.debug
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
-import com.michlindev.moviedownloader.Notification
-import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.DebugFragmentBinding
-import com.michlindev.moviedownloader.main.MovieListRepo
-import kotlinx.coroutines.launch
 
 
 class DebugFragment : Fragment() {

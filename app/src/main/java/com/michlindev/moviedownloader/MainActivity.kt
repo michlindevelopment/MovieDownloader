@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.ActivityMainBinding
-import com.michlindev.moviedownloader.databinding.DebugFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
