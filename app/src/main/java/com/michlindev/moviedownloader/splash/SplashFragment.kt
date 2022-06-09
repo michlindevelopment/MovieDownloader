@@ -11,11 +11,9 @@ import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
 
 //TODO
 /*
-Beautify app
 Code clean and renaming
 Is file save required - V (test)
-Lottie animations - V (test)
-App icons
+Add confirmation for clear RSS
 */
 
 class SplashFragment : Fragment() {

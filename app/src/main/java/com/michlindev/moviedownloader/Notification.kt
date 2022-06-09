@@ -6,11 +6,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.text.Html
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.text.HtmlCompat
 import com.michlindev.moviedownloader.data.Movie
 
 object Notification {
@@ -19,37 +17,35 @@ object Notification {
     private const val NOTIFICATION_ID = 1
 
 
-    fun showNotification(movie: List<Movie>, resource: Bitmap?,context: Context) {
+    fun showNotification(movies: List<Movie>, resource: Bitmap?, context: Context) {
 
         createNotificationChannel(context)
 
         lateinit var remoteCollapsedViews: RemoteViews
         lateinit var remoteExpandedViews: RemoteViews
 
-        if (movie.size == 1) {
+        if (movies.size == 1) {
             remoteCollapsedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_normal)
-            remoteExpandedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_expended)
+            remoteExpandedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_expended_single)
 
-            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name, movie[0].title)
+            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name, movies.first().title)
             remoteCollapsedViews.setImageViewBitmap(R.id.notif_image, resource);
 
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_name_extend, movie[0].title)
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_name_extend, movies.first().title)
             remoteExpandedViews.setImageViewBitmap(R.id.notif_image_extend, resource);
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_extend, movie[0].year.toString());
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_sypnosis, Html.fromHtml(movie[0].summary, HtmlCompat.FROM_HTML_MODE_LEGACY));
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_extend, movies.first().year.toString())
+            //remoteExpandedViews.setTextViewText(R.id.notif_movie_year_sypnosis, Html.fromHtml(movies.first().summary, HtmlCompat.FROM_HTML_MODE_LEGACY))
+            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_genre, "Genre ${movies.first().genres.joinToString(", ")}")
+            remoteExpandedViews.setTextViewText(R.id.textViewNotificationExMulRating,"Rating ${movies.first().ratingString}")
         } else {
             remoteCollapsedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_normal_multiple)
             remoteExpandedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_expended_multiple)
 
-            //pop.joinToString(separator = ", ")
-
-            var movies = ""
-            movie.forEach {
-                movies = movies + ", " + it.title
+            val movieNames = mutableListOf<String>()
+            movies.forEach {
+                movieNames.add(it.title)
             }
-
-            //remoteCollapsedViews.setTextViewText(R.id.notif_movie_name_multiple, movies)
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_expanded_multiple, movies)
+            remoteExpandedViews.setTextViewText(R.id.textViewMoviesExpandedMultiple, movieNames.joinToString("\n"))
 
         }
 

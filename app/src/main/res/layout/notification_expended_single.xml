@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="252dp"
-    android:orientation="horizontal"
-    android:gravity="center">
+    android:layout_height="150dp"
+    android:gravity="top"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/notif_image_extend"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:src="@drawable/placeholder" />
+        android:src="@drawable/placeholder"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:orientation="vertical">
 
         <TextView
@@ -23,6 +26,7 @@
             style="@style/TextAppearance.Compat.Notification.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
             android:text="New Movie Added!" />
 
         <TextView
@@ -32,11 +36,22 @@
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/notif_movie_year_sypnosis"
+            android:id="@+id/textViewNotificationExMulRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/TextAppearance.Compat.Notification.Title"
+            android:textSize="16sp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/notif_movie_year_genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="TextView" />
+
+
     </LinearLayout>
 
 </LinearLayout>

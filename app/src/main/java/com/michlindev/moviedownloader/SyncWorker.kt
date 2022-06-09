@@ -22,38 +22,38 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
     override suspend fun doWork(): Result {
 
         //42479
-
-        //val movies = MovieListRepo.searchMovie("Die Hard")
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             var movies = MovieListRepo.getMoviesAsync(null)
             movies = MovieListRepo.applyFilters(movies)
 
             val lastMovie = SharedPreferenceHelper.lastMovie
             movies.removeIf { it.id <= lastMovie }
 
-            withContext(Dispatchers.Main) {
-                if (movies.size == 1) {
-                    Glide.with(applicationContext)
-                        .asBitmap()
-                        .load(movies[0].large_cover_image)
-                        .into(object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                Notification.showNotification(movies, resource, applicationContext)
-                            }
+            SharedPreferenceHelper.lastMovie = movies.maxOf { it.id }
 
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                            }
-                        })
-                } else {
-                    Notification.showNotification(movies, null, applicationContext)
+            if (movies.isNotEmpty()) {
+                withContext(Dispatchers.Main) {
+                    if (movies.size == 1) {
+                        Glide.with(applicationContext)
+                            .asBitmap()
+                            .load(movies[0].large_cover_image)
+                            .into(object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                    Notification.showNotification(movies, resource, applicationContext)
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                }
+                            })
+                    } else {
+                        Notification.showNotification(movies, null, applicationContext)
+                    }
                 }
             }
 
 
-
         }
         return Result.success()
-
-        //return Result.failure()
+       //return Result.failure()
     }
 }

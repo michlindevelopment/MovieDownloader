@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/debug/res/menu/app_menu.xml" value="0.2546875" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable-xhdpi/custom_button_go.xml" value="0.242" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable-xhdpi/edit_text_bg.xml" value="0.242" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable/custom_button_download.xml" value="0.1735" />
@@ -23,10 +24,13 @@
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/movie_list_fragment.xml" value="0.25" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_expended.xml" value="0.1983695652173913" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_expended_multiple.xml" value="0.358695652173913" />
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_expended_single.xml" value="0.33" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_normal.xml" value="0.6177715091678421" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/notification_normal_multiple.xml" value="0.358695652173913" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/layout/splash_fragment.xml" value="0.2604166666666667" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/menu/app_menu.xml" value="0.2175925925925926" />
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26" />
+        <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.26" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/xml/root_preferences.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
       </map>

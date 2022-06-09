@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.michlindev.moviedownloader.Notification
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.DebugFragmentBinding
@@ -38,8 +39,6 @@ class DebugFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.notification.observe(viewLifecycleOwner) {
-
-
 
             when (it){
                 DebugViewModel.NotificationType.SINGLE -> {

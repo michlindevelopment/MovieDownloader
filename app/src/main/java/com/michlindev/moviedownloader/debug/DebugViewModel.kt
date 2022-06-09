@@ -38,12 +38,6 @@ class DebugViewModel : ViewModel() {
 
     fun notificationSingle() {
             notification.postValue(NotificationType.SINGLE)
-
-
-        viewModelScope.launch {
-
-
-        }
     }
 
     fun notificationMultiple() {
