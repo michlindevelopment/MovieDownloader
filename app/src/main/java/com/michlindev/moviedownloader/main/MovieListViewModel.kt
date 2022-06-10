@@ -58,18 +58,18 @@ class MovieListViewModel : ViewModel(), ItemListener {
         isLoading.postValue(true)
 
         viewModelScope.launch {
-            DLog.d("Start G")
 
             movies.addAll(MovieListRepo.getMoviesAsync(progress))
             movies = MovieListRepo.applyFilters(movies)
 
             withContext(Dispatchers.Main) {
 
-                val max = movies.maxOf { it.id }
-                SharedPreferenceHelper.lastMovie = max
-
-                itemList.postValue(movies)
-                isLoading.postValue(false)
+                if (movies.isNotEmpty()) {
+                    val max = movies.maxOf { it.id }
+                    SharedPreferenceHelper.lastMovie = max
+                    itemList.postValue(movies)
+                    isLoading.postValue(false)
+                }
             }
         }
 

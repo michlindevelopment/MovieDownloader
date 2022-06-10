@@ -17,6 +17,9 @@
         tools:ignore="AlwaysShowAction">
 
         <menu>
+            <item android:id="@+id/action_debug_menu"
+                android:title="Debug menu"
+                android:visible="false"/>
             <item android:id="@+id/action_app_settings"
                 android:title="Settings" />
             <item android:id="@+id/action_rss_url"

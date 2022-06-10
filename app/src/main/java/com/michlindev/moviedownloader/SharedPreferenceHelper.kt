@@ -26,7 +26,7 @@ object SharedPreferenceHelper {
         set(value) = preferences.edit().putInt(MIN_RATING, value).apply()
 
     var minYear: Int
-        get() = preferences.getInt(MIN_YEAR, 2000)
+        get() = preferences.getInt(MIN_YEAR, 2020)
         set(value) = preferences.edit().putInt(MIN_YEAR, value).apply()
 
     var englishOnly: Boolean

@@ -102,7 +102,7 @@ object MovieListRepo {
         }
 
     suspend fun getMoviesAsync(progress: MutableLiveData<Int>?): MutableList<Movie> {
-        return getMoviesAsync(null,  progress)
+        return getMoviesAsync(null, progress)
     }
 
     fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
@@ -111,10 +111,14 @@ object MovieListRepo {
         val englishOnly = SharedPreferenceHelper.englishOnly
         val genres = SharedPreferenceHelper.genres
 
-        DLog.d("Removing ${SharedPreferenceHelper.minYear}")
-
         movies.forEach {
-            if (it.year >= SharedPreferenceHelper.minYear && (englishOnly && it.language == "en") && !checkContainment(it, genres))
+
+            var inLanguage = true
+            val inYear: Boolean = it.year >= SharedPreferenceHelper.minYear
+            val inContainment: Boolean = !checkContainment(it, genres)
+            if (englishOnly) inLanguage = it.language == "en"
+
+            if (inYear && inLanguage && inContainment)
                 newMovies.add(it)
         }
 

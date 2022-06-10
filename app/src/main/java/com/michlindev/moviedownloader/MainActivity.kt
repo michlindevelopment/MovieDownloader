@@ -2,6 +2,7 @@ package com.michlindev.moviedownloader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ktx.BuildConfig
 import androidx.work.*
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.ActivityMainBinding
@@ -22,9 +23,12 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //binding.lifecycleOwner = this
         setContentView(binding.root)
-        scheduleWork()
+
+        if (!BuildConfig.DEBUG) {
+            scheduleWork()
+        }
+
     }
 
     override fun onPause() {
