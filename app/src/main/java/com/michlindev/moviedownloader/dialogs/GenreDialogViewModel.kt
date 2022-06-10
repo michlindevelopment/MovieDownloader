@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader.dialogs.genre
+package com.michlindev.moviedownloader.dialogs
 
 import android.view.View
 import android.widget.CheckBox

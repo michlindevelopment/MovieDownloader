@@ -5,13 +5,13 @@
 
     <data>
         <variable
-            type="com.michlindev.moviedownloader.dialogs.genre.GenreDialogViewModel"
+            type="com.michlindev.moviedownloader.dialogs.GenreDialogViewModel"
             name="viewModel"/>
 
 
         <variable
             name="adapter"
-            type="com.michlindev.moviedownloader.dialogs.genre.GenreItemAdapter" />
+            type="com.michlindev.moviedownloader.dialogs.GenreItemAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

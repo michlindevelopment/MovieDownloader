@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader.dialogs.genre
+package com.michlindev.moviedownloader.dialogs
 
 import android.annotation.SuppressLint
 import android.os.Bundle

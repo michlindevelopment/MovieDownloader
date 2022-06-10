@@ -1,4 +1,4 @@
-package com.michlindev.moviedownloader.dialogs.genre
+package com.michlindev.moviedownloader.dialogs
 
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.databinding.ItemListGenreBinding
