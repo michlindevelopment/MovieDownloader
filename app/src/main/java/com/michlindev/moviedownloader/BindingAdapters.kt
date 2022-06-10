@@ -1,9 +1,7 @@
 package com.michlindev.moviedownloader
 
 import android.text.Html
-import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
@@ -19,7 +17,7 @@ import com.michlindev.moviedownloader.main.BaseAdapter
 import com.michlindev.moviedownloader.main.ListAdapterItem
 
 
-@BindingAdapter("app:onClickSign")
+@BindingAdapter("onClickSign")
 fun SignInButton.bindSignInClick(method: () -> Unit) {
     this.setOnClickListener { method.invoke() }
 }
@@ -34,13 +32,7 @@ fun setAdapter(
     }
 }
 
-/*@Suppress("UNCHECKED_CAST")
-@BindingAdapter("submitList")
-fun submitList(recyclerView: RecyclerView, list: List<ListAdapterItem>?) {
-    val adapter = recyclerView.adapter as BaseAdapter<ViewDataBinding, ListAdapterItem>?
-    adapter?.updateData(list ?: listOf())
-}*/
-
+@Suppress("UNCHECKED_CAST")
 @BindingAdapter("submitList")
 fun RecyclerView.submitList(list: List<ListAdapterItem>?) {
     val adapter = this.adapter as BaseAdapter<ViewDataBinding, ListAdapterItem>?
@@ -72,12 +64,12 @@ fun TextView.htmlString(htmlText: String?) {
 
 }
 
-@BindingAdapter("app:visibility")
+@BindingAdapter("visibilityGone")
 fun setVisibility(view: View, value: Boolean) {
     view.visibility = if (value) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter("textChangedListener")
+/*@BindingAdapter("textChangedListener")
 fun bindTextWatcher(editText: EditText, textWatcher: TextWatcher) {
     editText.addTextChangedListener(textWatcher)
-}
+}*/

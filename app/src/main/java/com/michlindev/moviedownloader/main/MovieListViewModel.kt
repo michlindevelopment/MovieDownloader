@@ -3,7 +3,6 @@ package com.michlindev.moviedownloader.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
 import com.michlindev.moviedownloader.data.Movie
@@ -21,14 +20,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var notifyAdapter = SingleLiveEvent<Int>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
     var searchField = MutableLiveData<String>()
-
-    //var searchInput = MutableLiveData("")
-
     var maxProgressValue = MutableLiveData(SharedPreferenceHelper.pagesNumber)
-
-  /*  val maxValue: Int
-        get() = SharedPreferenceHelper.pagesNumber*/
-
     var progress = MutableLiveData(0)
 
     init {
@@ -98,19 +90,10 @@ class MovieListViewModel : ViewModel(), ItemListener {
                 itemIndex?.let { itemList.value?.get(it)?.progressing = false }
                 itemIndex?.let { notifyAdapter.postValue(it) }
             }
-
-            DLog.d("Rating: $rt")
         }
     }
 
-    override fun posterClick(imdbCode: String) {
-        /*val site = "https://www.imdb.com/title/$item"
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
-        imdbClick.postValue(browserIntent)*/
-        imdbClick.postValue(imdbCode)
-    }
-
-    private fun <T> MutableLiveData<T>.notifyObserver() {
-        this.value = this.value
+    override fun posterClick(item: String) {
+        imdbClick.postValue(item)
     }
 }

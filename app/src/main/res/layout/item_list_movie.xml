@@ -63,12 +63,9 @@
             android:onClick="@{() -> listener.imdbLogoClick(movie)}"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-            app:srcCompat="@drawable/ic_imdb_logo_2016" />
+            app:srcCompat="@drawable/ic_imdb_logo_2016"
+            tools:ignore="ContentDescription" />
 
-       <!-- android:text="@{Double.toString(movie.rating)}"-->
-       <!-- app:setRating="@{movie}"-->
-       <!-- android:text="@{movie.ratingString}"-->
-       <!-- android:textColor="@color/rating_color"-->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewRating"
             android:layout_width="wrap_content"
@@ -130,23 +127,25 @@
             android:visibility="@{movie.progressing ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/textViewRating"
             app:layout_constraintStart_toEndOf="@+id/textViewRating"
-            app:layout_constraintTop_toTopOf="@+id/textViewRating" />
+            app:layout_constraintTop_toTopOf="@+id/textViewRating"/>
 
 
-        <!--TODO all material-->
+        <!--TODO Investigate AppCompatButton-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonAdd"
             android:layout_width="wrap_content"
             android:layout_height="26dp"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/custom_button_download"
             android:textColor="@color/black"
-            android:text="Download"
-            android:textSize="12dp"
+            style="@style/CustomButtonStyle"
+            android:text="@string/download_button"
+            android:textSize="11sp"
             android:onClick="@{() -> listener.downloadClick(movie)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

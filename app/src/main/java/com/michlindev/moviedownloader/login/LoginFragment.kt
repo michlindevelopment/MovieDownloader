@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.R
-import com.michlindev.moviedownloader.databinding.LoginFragmentBinding
+import com.michlindev.moviedownloader.databinding.FragmentLoginBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +43,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = LoginFragmentBinding.inflate(layoutInflater)
+        val binding = FragmentLoginBinding.inflate(layoutInflater)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

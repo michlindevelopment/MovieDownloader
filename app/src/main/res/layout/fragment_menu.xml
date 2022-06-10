@@ -36,11 +36,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="Number of pages"
+                    android:text="@string/menu_number_of_pages"
 
                     android:textSize="16sp" />
 
-                <androidx.appcompat.widget.AppCompatSpinner
+                <Spinner
                     android:id="@+id/spinnerPages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,10 +66,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="Min Rating"
+                    android:text="@string/menu_min_rating"
                     android:textSize="16sp" />
 
-                <androidx.appcompat.widget.AppCompatSpinner
+                <Spinner
                     android:id="@+id/spinnerRating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,10 +95,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="Min Year"
+                    android:text="@string/menu_min_year"
                     android:textSize="16sp" />
 
-                <androidx.appcompat.widget.AppCompatSpinner
+                <Spinner
                     android:id="@+id/spinnerYear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,14 +124,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="English only"
+                    android:text="@string/menu_english_only"
                     android:textSize="16sp" />
 
                 <CheckBox
                     android:id="@+id/checkBox2"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
                     android:layout_weight="1"
                     android:checked="@={viewModel.englishOnly}" />
             </LinearLayout>
@@ -153,7 +153,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="Genres"
+                    android:text="@string/menu_genres"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>

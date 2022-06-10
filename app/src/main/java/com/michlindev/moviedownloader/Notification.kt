@@ -28,14 +28,13 @@ object Notification {
             remoteCollapsedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_normal)
             remoteExpandedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_expended_single)
 
-            remoteCollapsedViews.setTextViewText(R.id.notif_movie_name, movies.first().title)
-            remoteCollapsedViews.setImageViewBitmap(R.id.notif_image, resource);
+            remoteCollapsedViews.setTextViewText(R.id.textViewNotificationNrSinMovieName, movies.first().title)
+            remoteCollapsedViews.setImageViewBitmap(R.id.imageViewNotificationNrSinPoster, resource)
 
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_name_extend, movies.first().title)
-            remoteExpandedViews.setImageViewBitmap(R.id.notif_image_extend, resource);
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_extend, movies.first().year.toString())
-            //remoteExpandedViews.setTextViewText(R.id.notif_movie_year_sypnosis, Html.fromHtml(movies.first().summary, HtmlCompat.FROM_HTML_MODE_LEGACY))
-            remoteExpandedViews.setTextViewText(R.id.notif_movie_year_genre, "Genre ${movies.first().genres.joinToString(", ")}")
+            remoteExpandedViews.setTextViewText(R.id.textViewHeadlineNotificationExtended, movies.first().title)
+            remoteExpandedViews.setImageViewBitmap(R.id.imageViewNotificationExtended, resource)
+            remoteExpandedViews.setTextViewText(R.id.textViewNotificationExMulYear, movies.first().year.toString())
+            remoteExpandedViews.setTextViewText(R.id.textViewNotificationExMulGenre, "Genre ${movies.first().genres.joinToString(", ")}")
             remoteExpandedViews.setTextViewText(R.id.textViewNotificationExMulRating,"Rating ${movies.first().ratingString}")
         } else {
             remoteCollapsedViews = RemoteViews(MovieDownloader.appContext.packageName, R.layout.notification_normal_multiple)

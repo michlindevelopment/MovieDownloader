@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Movie Downloader</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -9,10 +9,23 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
-    <string name="web_client_id">496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com</string>
+    <string name="web_client_id" tools:ignore="TypographyDashes">496692733934-3fdvvqqtvjjpoquta99kuh2v5ik9i3vm.apps.googleusercontent.com</string>
 
     <string name="language_prefix">Language: %s</string>
     <string name="rating_prefix">Rating: %s</string>
     <string name="actors_prefix">Actors: %s</string>
     <string name="director_prefix">Director: %s</string>
+    <string name="genre_dialog_all">All</string>
+    <string name="genre_dialog_save">Save</string>
+    <string name="imdb_trailer_button">Trailer</string>
+    <string name="imdb_page_button">IMdb</string>
+    <string name="imdb_description_headline">Description</string>
+    <string name="menu_number_of_pages">Number of pages</string>
+    <string name="menu_min_rating">Min Rating</string>
+    <string name="menu_min_year">Min Year</string>
+    <string name="menu_english_only">English only</string>
+    <string name="menu_genres">Genres</string>
+    <string name="button_go">Go</string>
+    <string name="download_button">Download</string>
+    <string name="notification_headline">New Movie Added!</string>
 </resources>

@@ -28,7 +28,6 @@ object FileManager {
     private val path = MovieDownloader.appContext.filesDir.path
 
     fun writeToRssFile(torrents: List<TorrentEntity>) {
-        //TODO remove prefix
         checkFile()
 
         val file = File("$path/$FOLDER_NAME", FILE_NAME)
@@ -72,11 +71,8 @@ object FileManager {
         val mountainsRef = storageReference.child("${SharedPreferenceHelper.uid}.rss")
         val uploadTask = mountainsRef.putFile(file)
         uploadTask.addOnFailureListener {
-            // Handle unsuccessful uploads
             DLog.d("Fail $it")
-        }.addOnSuccessListener { taskSnapshot ->
-            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-            // ...
+        }.addOnSuccessListener {
             DLog.d("Success")
 
         }.addOnProgressListener {

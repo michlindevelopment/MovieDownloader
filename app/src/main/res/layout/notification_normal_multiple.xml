@@ -9,12 +9,5 @@
         style="@style/TextAppearance.Compat.Notification.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Movies Added!" />
-
-    <!-- <TextView
-        android:id="@+id/notif_movie_name_multiple"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />-->
-
+        android:text="@string/notification_headline" />
 </LinearLayout>

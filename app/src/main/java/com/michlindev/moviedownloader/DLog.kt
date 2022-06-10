@@ -2,6 +2,7 @@ package com.michlindev.moviedownloader
 
 import android.util.Log
 
+@Suppress("unused")
 object DLog {
 
     private var DEFAULT_TAG = "Movie-Tag"
@@ -26,7 +27,6 @@ object DLog {
     }
 
     //--i--
-
     fun i(msg: String) {
         iPrint(tag(DEFAULT_TAG), msg)
     }

@@ -9,10 +9,7 @@ import com.michlindev.moviedownloader.SingleLiveEvent
 
 class SplashViewModel : ViewModel() {
 
-
-
     var navigate = SingleLiveEvent<Int>()
-
 
     fun check() {
         DLog.d( "${Firebase.auth.currentUser}")

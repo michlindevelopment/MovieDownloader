@@ -6,7 +6,9 @@ import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.api.ApiClient
 import com.michlindev.moviedownloader.api.ApiService
-import com.michlindev.moviedownloader.data.DefaultData
+import com.michlindev.moviedownloader.data.Constants
+import com.michlindev.moviedownloader.data.Constants.IMDB_URL
+import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.data.MoviesResponse
 import com.michlindev.moviedownloader.imdb.Imdb
@@ -35,7 +37,7 @@ object MovieListRepo {
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
         mDisposable.add(
-            apiService.getWithParameters(minRating, DefaultData.PAGE_LIMIT, page, query).subscribeOn(Schedulers.io())
+            apiService.getWithParameters(minRating, Constants.PAGE_LIMIT, page, query).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         val res = movies.data.movies
@@ -66,8 +68,7 @@ object MovieListRepo {
             val mutex = Mutex()
             val movies = mutableListOf<Movie>()
 
-            //TODO set 3 to const
-            val numberOfPages = if (movieName == null) SharedPreferenceHelper.pagesNumber else 3
+            val numberOfPages = if (movieName == null) SharedPreferenceHelper.pagesNumber else SEARCH_PAGES
 
             var cnt = 0
             for (i in 1..numberOfPages) {
@@ -123,40 +124,28 @@ object MovieListRepo {
         }
 
         newMovies.sortByDescending { it.date_uploaded_unix }
-        DLog.d("After filter: ${movies.size}")
-
         return newMovies
 
     }
 
-    suspend fun getImdbPage(imdbCode: String): Imdb = suspendCoroutine { cont ->
-
-        //TODO combine calls
-        val url = "https://www.imdb.com/title/$imdbCode/"
+   private fun getImdbData(imdbCode: String): Imdb {
+        val url = "$IMDB_URL/title/$imdbCode/"
         val document = Jsoup.connect(url).get()
         val e: Element? = document.select("script").first()
-        val testModel = Gson().fromJson(e?.html(), Imdb::class.java)
+        return Gson().fromJson(e?.html(), Imdb::class.java)
+    }
 
-        cont.resume(testModel)
+    fun getImdbPage(imdbCode: String): Imdb {
+        return getImdbData(imdbCode)
     }
 
 
-    suspend fun getRealRating(imdbCode: String): String = suspendCoroutine { cont ->
-
-        //TODO handle error
-        var rating = "N"
-
-        try {
-            val url = "https://www.imdb.com/title/$imdbCode/"
-            val document = Jsoup.connect(url).get()
-            val e: Element? = document.select("script").first()
-            val testModel = Gson().fromJson(e?.html(), Imdb::class.java)
-            rating = testModel?.aggregateRating?.ratingValue.toString()
-        } catch (e: Exception) {
-        }
-        cont.resume(rating)
+    fun getRealRating(imdbCode: String): String {
+        val imdb = getImdbData(imdbCode)
+        return imdb.aggregateRating.ratingValue.toString()
     }
 
+    //TODO set to constants and strings
     fun generateQualities(it: Movie): MutableList<String> {
         val qualitiesList = mutableListOf<String>()
         it.torrents.forEach { torrent ->

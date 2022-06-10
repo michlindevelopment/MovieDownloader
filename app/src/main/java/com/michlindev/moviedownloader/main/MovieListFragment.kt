@@ -16,7 +16,7 @@ import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.database.DataBaseHelper
-import com.michlindev.moviedownloader.databinding.MovieListFragmentBinding
+import com.michlindev.moviedownloader.databinding.FragmentMovieListBinding
 import kotlinx.coroutines.launch
 
 
@@ -27,7 +27,7 @@ class MovieListFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        val binding = MovieListFragmentBinding.inflate(layoutInflater)
+        val binding = FragmentMovieListBinding.inflate(layoutInflater)
 
         binding.adapter = MovieItemAdapter(listOf(), viewModel)
 
@@ -84,9 +84,28 @@ class MovieListFragment : Fragment() {
             R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
             R.id.action_search -> viewModel.searchVisible.value?.let { viewModel.searchVisible.postValue(!it) }
             R.id.action_clear_db -> {
-                lifecycleScope.launch {
-                    DataBaseHelper.clearDb()
-                }
+
+                //TODO Move this
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("Are you sure you want to Delete?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes") { dialog, _ ->
+                        // Delete selected note from database
+                        lifecycleScope.launch {
+                            DataBaseHelper.clearDb()
+                        }
+                        dialog.dismiss()
+
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
+
+
+
+
             }
             //TODO Move this
             R.id.action_rss_url -> {

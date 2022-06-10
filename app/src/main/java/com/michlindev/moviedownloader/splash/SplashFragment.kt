@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.michlindev.moviedownloader.databinding.SplashFragmentBinding
+import com.michlindev.moviedownloader.databinding.FragmentSplashBinding
 
 //TODO
 /*
-Code clean and renaming
-Is file save required - V (test)
-Add confirmation for clear RSS
+Go over to dos
 */
 
 class SplashFragment : Fragment() {
@@ -22,7 +20,7 @@ class SplashFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        val binding = SplashFragmentBinding.inflate(layoutInflater)
+        val binding = FragmentSplashBinding.inflate(layoutInflater)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel

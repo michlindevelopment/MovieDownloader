@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun scheduleWork() {
 
-        var perioud = TimeUnit.HOURS
+        var period = TimeUnit.HOURS
         var duration: Long = 3
 
         if (DEBUG) {
-            perioud = TimeUnit.SECONDS
+            period = TimeUnit.SECONDS
             duration = 5
         }
 
@@ -61,13 +61,11 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val refreshCpnWork = PeriodicWorkRequest.Builder(SyncWorker::class.java, 3, TimeUnit.HOURS)
-            .setInitialDelay(duration, perioud)
+            .setInitialDelay(duration, period)
             .setConstraints(myConstraints)
             .addTag(SyncWorker.TAG)
             .build()
 
-
-        //TODO set to keep
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             SyncWorker.TAG,
             ExistingPeriodicWorkPolicy.REPLACE, refreshCpnWork

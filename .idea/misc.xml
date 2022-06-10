@@ -4,6 +4,24 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Development/Projects/MovieDownloader/app/src/debug/res/menu/app_menu.xml" value="0.26875" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/drawable/custom_button_download.xml" value="0.222" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/activity_main.xml" value="0.327445652173913" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/debug_fragment.xml" value="0.26875" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/fragment_genre_dialog.xml" value="0.3067708333333333" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/fragment_imdb_page.xml" value="0.67" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/fragment_login.xml" value="0.25625" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/fragment_menu.xml" value="0.3067708333333333" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/fragment_movie_list.xml" value="0.25625" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/fragment_splash.xml" value="0.25625" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/item_list_genre.xml" value="0.3067708333333333" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/item_list_movie.xml" value="0.4788877445932029" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/login_fragment.xml" value="0.3067708333333333" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/movie_list_fragment.xml" value="0.327445652173913" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/notification_expended_multiple.xml" value="0.327445652173913" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/notification_expended_single.xml" value="0.2421875" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/notification_normal.xml" value="0.2421875" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/notification_normal_multiple.xml" value="0.2421875" />
+        <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/layout/splash_fragment.xml" value="0.327445652173913" />
         <entry key="..\:/Development/Projects/MovieDownloader/app/src/main/res/menu/app_menu.xml" value="0.26875" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/debug/res/menu/app_menu.xml" value="0.2546875" />
         <entry key="..\:/Development/Projects/MovieDownloaderNew/app/src/main/res/drawable-xhdpi/custom_button_go.xml" value="0.242" />

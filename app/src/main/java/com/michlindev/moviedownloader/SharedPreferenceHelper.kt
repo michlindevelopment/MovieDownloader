@@ -2,7 +2,7 @@ package com.michlindev.moviedownloader
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.michlindev.moviedownloader.data.DefaultData
+import com.michlindev.moviedownloader.data.Constants
 
 
 object SharedPreferenceHelper {
@@ -19,15 +19,15 @@ object SharedPreferenceHelper {
     private var preferences:SharedPreferences = MovieDownloader.appContext.getSharedPreferences(APP_SHARED_PREFS,Context.MODE_PRIVATE)
 
     var pagesNumber: Int
-        get() = preferences.getInt(PAGES_NUMBER, DefaultData.PAGES)
+        get() = preferences.getInt(PAGES_NUMBER, Constants.PAGES)
         set(value) = preferences.edit().putInt(PAGES_NUMBER, value).apply()
 
     var minRating: Int
-        get() = preferences.getInt(MIN_RATING, DefaultData.MIN_RATING)
+        get() = preferences.getInt(MIN_RATING, Constants.MIN_RATING)
         set(value) = preferences.edit().putInt(MIN_RATING, value).apply()
 
     var minYear: Int
-        get() = preferences.getInt(MIN_YEAR, DefaultData.MIN_YEAR)
+        get() = preferences.getInt(MIN_YEAR, Constants.MIN_YEAR)
         set(value) = preferences.edit().putInt(MIN_YEAR, value).apply()
 
     var englishOnly: Boolean

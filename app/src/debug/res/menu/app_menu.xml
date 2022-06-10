@@ -16,6 +16,7 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction">
 
+        <!--TODO set the to strings-->
         <menu>
             <item android:id="@+id/action_debug_menu"
                 android:title="Debug menu" />
