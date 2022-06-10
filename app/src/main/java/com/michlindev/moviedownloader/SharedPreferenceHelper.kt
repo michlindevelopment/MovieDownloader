@@ -2,6 +2,7 @@ package com.michlindev.moviedownloader
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.michlindev.moviedownloader.data.DefaultData
 
 
 object SharedPreferenceHelper {
@@ -13,20 +14,20 @@ object SharedPreferenceHelper {
     private const val APP_SHARED_PREFS = "APP_SHARED_PREFS"
     private const val USER_UID = "USER_UID"
     private const val LAST_MOVIE = "LAST_MOVIE"
-    private const val UPLOAD_REQURED = "UPLOAD_REQURED"
+    private const val UPLOAD_REQUIRED = "UPLOAD_REQUIRED"
 
     private var preferences:SharedPreferences = MovieDownloader.appContext.getSharedPreferences(APP_SHARED_PREFS,Context.MODE_PRIVATE)
 
     var pagesNumber: Int
-        get() = preferences.getInt(PAGES_NUMBER, 10)
+        get() = preferences.getInt(PAGES_NUMBER, DefaultData.PAGES)
         set(value) = preferences.edit().putInt(PAGES_NUMBER, value).apply()
 
     var minRating: Int
-        get() = preferences.getInt(MIN_RATING, 0)
+        get() = preferences.getInt(MIN_RATING, DefaultData.MIN_RATING)
         set(value) = preferences.edit().putInt(MIN_RATING, value).apply()
 
     var minYear: Int
-        get() = preferences.getInt(MIN_YEAR, 2020)
+        get() = preferences.getInt(MIN_YEAR, DefaultData.MIN_YEAR)
         set(value) = preferences.edit().putInt(MIN_YEAR, value).apply()
 
     var englishOnly: Boolean
@@ -37,9 +38,9 @@ object SharedPreferenceHelper {
         get() = preferences.getLong(LAST_MOVIE, -1)
         set(value) = preferences.edit().putLong(LAST_MOVIE, value).apply()
 
-    var uploadRequred: Boolean
-        get() = preferences.getBoolean(UPLOAD_REQURED, false)
-        set(value) = preferences.edit().putBoolean(UPLOAD_REQURED, value).apply()
+    var uploadRequired: Boolean
+        get() = preferences.getBoolean(UPLOAD_REQUIRED, false)
+        set(value) = preferences.edit().putBoolean(UPLOAD_REQUIRED, value).apply()
 
 
 

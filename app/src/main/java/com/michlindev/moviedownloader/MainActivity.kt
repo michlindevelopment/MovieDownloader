@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (SharedPreferenceHelper.uploadRequred) {
-            SharedPreferenceHelper.uploadRequred = false
+        if (SharedPreferenceHelper.uploadRequired) {
+            SharedPreferenceHelper.uploadRequired = false
 
             CoroutineScope(Dispatchers.IO).launch {
                 val torrents = DataBaseHelper.getAllTorrents()

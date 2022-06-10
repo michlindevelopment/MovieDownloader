@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.michlindev.moviedownloader.Notification
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.databinding.DebugFragmentBinding
@@ -26,10 +25,6 @@ import kotlinx.coroutines.withContext
 class DebugFragment : Fragment() {
 
     private val viewModel: DebugViewModel by activityViewModels()
-
-   /* private val CHANNEL_ID = "channel_id01"
-    private val NOTIFICATION_ID = 1*/
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 

@@ -64,7 +64,7 @@ class MovieListFragment : Fragment() {
                 val torrent = it.torrents[which]
                 lifecycleScope.launch {
                     torrent.let { selectedTorrent ->
-                        SharedPreferenceHelper.uploadRequred = true
+                        SharedPreferenceHelper.uploadRequired = true
                         DataBaseHelper.addTorrents(it.id, it.title, selectedTorrent) }
                 }
             }

@@ -17,8 +17,6 @@ class GenreItemAdapter(list: List<Genre>, private val itemListener: ItemListener
             executePendingBindings()
         }
     }
-
-
 }
 
 interface ItemListener

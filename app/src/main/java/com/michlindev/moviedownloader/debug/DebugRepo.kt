@@ -20,14 +20,7 @@ object DebugRepo {
             apiService.getWithParameters(6, DefaultData.PAGE_LIMIT, 2,  "").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
-                        //moviesList.addAll(movies.getData().getData())
-                        var res = movies.data.movies
-                        DLog.d("")
-                        /*globalCounter++
-                        if (globalCounter == pages) {
-                            allDone()
-                        }
-                        progressBar.setProgress(globalCounter, true)*/
+                        //var res = movies.data.movies
                     }
 
                     override fun onError(e: Throwable) {

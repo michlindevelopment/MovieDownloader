@@ -10,8 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private final static String BASE_URL = String.format("%s%s", DefaultData.DOMAIN,  DefaultData.API);
-
-
     private static Retrofit retrofit = null;
 
     public static Retrofit getInstance() {
@@ -21,8 +19,6 @@ public class ApiClient {
                     .baseUrl(BASE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
-                    //.client(httpClient.build())
-
                     .build();
         }
 

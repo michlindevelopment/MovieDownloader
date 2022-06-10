@@ -7,11 +7,7 @@ import androidx.room.PrimaryKey
 data class TorrentEntity(
     @PrimaryKey var id: Long,
     var movieName: String,
-    var torrentUrl: String) {
-   /* @PrimaryKey(autoGenerate = true)
-    var id: Long? = null*/
-
-}
+    var torrentUrl: String)
 
 
 
