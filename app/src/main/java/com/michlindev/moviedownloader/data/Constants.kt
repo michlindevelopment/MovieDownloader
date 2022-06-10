@@ -10,4 +10,5 @@ object Constants {
     const val API = "/v2/"
     const val JSON_FILE = "list_movies.json"
     const val IMDB_URL = "https://www.imdb.com"
+    const val IMDB_CODE = "imdbCode"
 }

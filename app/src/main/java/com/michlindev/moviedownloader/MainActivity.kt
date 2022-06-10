@@ -3,10 +3,10 @@ package com.michlindev.moviedownloader
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ktx.BuildConfig
+import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         if (SharedPreferenceHelper.uploadRequired) {
             SharedPreferenceHelper.uploadRequired = false
 
-            CoroutineScope(Dispatchers.IO).launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 val torrents = DataBaseHelper.getAllTorrents()
                 FileManager.writeToRssFile(torrents)
                 FileManager.uploadFile()

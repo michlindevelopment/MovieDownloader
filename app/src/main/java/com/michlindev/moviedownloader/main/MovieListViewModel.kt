@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
+import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,20 +28,16 @@ class MovieListViewModel : ViewModel(), ItemListener {
     }
 
     fun searchMovie() {
-        //TODO make better way to clear
-        val movies = mutableListOf<Movie>()
-        maxProgressValue.postValue(3)
+        maxProgressValue.postValue(SEARCH_PAGES)
         progress.postValue(0)
-        itemList.postValue(movies)
-        viewModelScope.launch {
-            val movies1 = MovieListRepo.getMoviesAsync(searchField,progress)
-            itemList.postValue(movies1)
+        itemList.postValue(mutableListOf<Movie>())
+        viewModelScope.launch(Dispatchers.IO) {
+            itemList.postValue(MovieListRepo.getMoviesAsync(searchField,progress,this))
         }
 
     }
 
     fun getMovies() {
-
         var movies = mutableListOf<Movie>()
         maxProgressValue.postValue(SharedPreferenceHelper.pagesNumber)
         searchVisible.postValue(false)
@@ -49,13 +45,12 @@ class MovieListViewModel : ViewModel(), ItemListener {
         progress.postValue(0)
         isLoading.postValue(true)
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
-            movies.addAll(MovieListRepo.getMoviesAsync(progress))
+            movies.addAll(MovieListRepo.getMoviesAsync(progress,this))
             movies = MovieListRepo.applyFilters(movies)
 
             withContext(Dispatchers.Main) {
-
                 if (movies.isNotEmpty()) {
                     val max = movies.maxOf { it.id }
                     SharedPreferenceHelper.lastMovie = max
@@ -73,12 +68,10 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
 
     override fun imdbLogoClick(item: Movie) {
-        //TODO change to view model scope
         val itemIndex = itemList.value?.indexOf(item)
         itemIndex?.let { itemList.value?.get(it)?.progressing = true }
 
-        CoroutineScope(Dispatchers.IO).launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 itemIndex?.let { notifyAdapter.postValue(it) }
             }

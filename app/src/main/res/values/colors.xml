@@ -12,7 +12,6 @@
     <color name="red">#FF0000</color>
     <color name="white">#FFFFFFFF</color>
 
-   <!-- TODO check needed-->
     <color name="btn_enabled">#FFFFFF</color>
     <color name="btn_pressed">#eeeeee</color>
     <color name="btn_disabled">#d8d8d8</color>

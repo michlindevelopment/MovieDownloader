@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.michlindev.moviedownloader.data.Constants.IMDB_CODE
 import com.michlindev.moviedownloader.databinding.FragmentImdbPageBinding
 
 class ImdbPageFragment : Fragment() {
@@ -19,9 +20,7 @@ class ImdbPageFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        //TODO make string static
-        viewModel.getImdb(arguments?.getString("imdbCode"))
-
+        viewModel.getImdb(arguments?.getString(IMDB_CODE))
         viewModel.imdbClick.observe(viewLifecycleOwner){
             startActivity(it)
         }

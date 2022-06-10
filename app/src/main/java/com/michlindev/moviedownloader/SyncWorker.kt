@@ -23,7 +23,7 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
 
         //42479
         withContext(Dispatchers.IO) {
-            var movies = MovieListRepo.getMoviesAsync(null)
+            var movies = MovieListRepo.getMoviesAsync(null, this)
             movies = MovieListRepo.applyFilters(movies)
 
             val lastMovie = SharedPreferenceHelper.lastMovie

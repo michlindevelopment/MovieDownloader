@@ -57,12 +57,7 @@ object MovieListRepo {
         )
     }
 
-    //Todo maybe change to this type
-    /*suspend fun getMovies2(): Boolean = withContext(Dispatchers.IO) {
-        return@withContext true
-    }*/
-
-    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?): MutableList<Movie> =
+    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?,scope: CoroutineScope): MutableList<Movie> =
         suspendCancellableCoroutine { cont ->
 
             val mutex = Mutex()
@@ -72,13 +67,11 @@ object MovieListRepo {
 
             var cnt = 0
             for (i in 1..numberOfPages) {
-                //TODO search this and replace
-                CoroutineScope(Dispatchers.IO).launch {
+                scope.launch(Dispatchers.IO) {
                     val moviesListPage = if (movieName == null)
                         getPage(i)
                     else
                         movieName.value?.let { getPage(i, 0, it) }
-
 
                     withContext(Dispatchers.Default) {
                         mutex.withLock {
@@ -102,8 +95,8 @@ object MovieListRepo {
             }
         }
 
-    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?): MutableList<Movie> {
-        return getMoviesAsync(null, progress)
+    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?,scope: CoroutineScope): MutableList<Movie> {
+        return getMoviesAsync(null, progress,scope)
     }
 
     fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
@@ -145,7 +138,6 @@ object MovieListRepo {
         return imdb.aggregateRating.ratingValue.toString()
     }
 
-    //TODO set to constants and strings
     fun generateQualities(it: Movie): MutableList<String> {
         val qualitiesList = mutableListOf<String>()
         it.torrents.forEach { torrent ->
@@ -167,6 +159,4 @@ object MovieListRepo {
             return false
         }
     }
-
-
 }

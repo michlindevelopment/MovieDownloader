@@ -1,9 +1,6 @@
 package com.michlindev.moviedownloader.main
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
@@ -14,9 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.SharedPreferenceHelper
+import com.michlindev.moviedownloader.data.Constants.IMDB_CODE
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.FragmentMovieListBinding
+import com.michlindev.moviedownloader.dialogs.DialogsBuilder
 import kotlinx.coroutines.launch
 
 
@@ -44,7 +43,7 @@ class MovieListFragment : Fragment() {
             }
             imdbClick.observe(viewLifecycleOwner) {
                 val bundle = Bundle()
-                bundle.putString("imdbCode", it)
+                bundle.putString(IMDB_CODE, it)
                 findNavController().navigate(R.id.action_movieListFragment_to_imdbPage, bundle)
             }
         }
@@ -84,56 +83,18 @@ class MovieListFragment : Fragment() {
             R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
             R.id.action_search -> viewModel.searchVisible.value?.let { viewModel.searchVisible.postValue(!it) }
             R.id.action_clear_db -> {
-
-                //TODO Move this
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage("Are you sure you want to Delete?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes") { dialog, _ ->
-                        // Delete selected note from database
-                        lifecycleScope.launch {
-                            DataBaseHelper.clearDb()
-                        }
-                        dialog.dismiss()
-
+                DialogsBuilder.clearDBDialog(requireContext()) {
+                    lifecycleScope.launch {
+                        DataBaseHelper.clearDb()
                     }
-                    .setNegativeButton("No") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                val alert = builder.create()
-                alert.show()
-
-
-
-
-            }
-            //TODO Move this
-            R.id.action_rss_url -> {
-                val builder = AlertDialog.Builder(requireActivity())
-                builder.setTitle("Rss file url")
-                builder.setMessage(generateRssUrl())
-
-                builder.setPositiveButton("Copy") { _, _ ->
-                    val clipboard: ClipboardManager? = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-                    val clip = ClipData.newPlainText("Rss", generateRssUrl())
-                    clipboard?.setPrimaryClip(clip)
                 }
-
-                builder.setNegativeButton("Close") { dialog, _ ->
-                    dialog.dismiss()
-                }
-
-                builder.show()
             }
-
+            R.id.action_rss_url ->  DialogsBuilder.showRssUrl(requireActivity())
         }
         return true
     }
 
-    private fun generateRssUrl(): String {
-        return "https://firebasestorage.googleapis.com/v0/b/moviedownloader-9661e.appspot.com/o/${SharedPreferenceHelper.uid}.rss?alt=media"
 
-    }
 
 
 }

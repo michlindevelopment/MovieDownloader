@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.SingleLiveEvent
+import com.michlindev.moviedownloader.data.Constants.IMDB_URL
 import com.michlindev.moviedownloader.main.MovieListRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,20 +30,17 @@ class ImdbPageViewModel : ViewModel() {
 
     }
 
-    //TODO combine functions
     fun openImdb() {
-
-        val site = "https://www.imdb.com/${movie.value?.url}"
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
-        imdbClick.postValue(browserIntent)
+        handleLink("$IMDB_URL/${movie.value?.url}")
     }
 
     fun openTrailer() {
+        handleLink("$IMDB_URL/${movie.value?.trailer?.url}")
+    }
 
-        val site = "https://www.imdb.com/${movie.value?.trailer?.url}"
+    private fun handleLink(site:String){
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(site))
         imdbClick.postValue(browserIntent)
-
     }
 
 
