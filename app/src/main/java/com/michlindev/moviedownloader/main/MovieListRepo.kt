@@ -22,6 +22,7 @@ import kotlinx.coroutines.sync.withLock
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 object MovieListRepo {
@@ -52,41 +53,55 @@ object MovieListRepo {
 
                     override fun onError(e: Throwable) {
                         DLog.d("$e")
+                        cont.resumeWithException(e)
                     }
                 })
         )
     }
 
+    //TODO something wrong
     suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?,scope: CoroutineScope): MutableList<Movie> =
         suspendCancellableCoroutine { cont ->
 
             val mutex = Mutex()
             val movies = mutableListOf<Movie>()
-
+            val searchMode = movieName != null
             val numberOfPages = if (movieName == null) SharedPreferenceHelper.pagesNumber else SEARCH_PAGES
 
             var cnt = 0
+            var resumed = false
             for (i in 1..numberOfPages) {
                 scope.launch(Dispatchers.IO) {
-                    val moviesListPage = if (movieName == null)
-                        getPage(i)
-                    else
-                        movieName.value?.let { getPage(i, 0, it) }
+
+                    val moviesListPage = mutableListOf<Movie>()
+                    try {
+                        if (searchMode)
+                            moviesListPage.addAll(getPage(i, 0, movieName?.value!!))
+                        else
+                            moviesListPage.addAll(getPage(i))
+                    } catch (e: Exception) {
+                        DLog.e("Caught $e")
+                    }
 
                     withContext(Dispatchers.Default) {
                         mutex.withLock {
-                            moviesListPage?.let { movies.addAll(it) }
+                            movies.addAll(moviesListPage)
                         }
                     }
 
                     cnt++
+                    DLog.d("Cnt: $cnt")
+
                     withContext(Dispatchers.Main) {
                         progress?.postValue(cnt)
                     }
 
                     if (cnt == numberOfPages) {
-                        if (cont.isActive) {
+                        DLog.d("Resuming $resumed")
+                        if (cont.isActive&&!resumed) {
+                            resumed = true
                             cont.resume(movies)
+                            delay(500)
                         }
                         cont.cancel()
                     }

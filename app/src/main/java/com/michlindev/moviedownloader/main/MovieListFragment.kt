@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -39,13 +40,18 @@ class MovieListFragment : Fragment() {
                 it?.let { binding.adapter?.notifyItemChanged(it) }
             }
             qualitySelectionDialog.observe(viewLifecycleOwner) {
-                it?.let { movie -> createQualityDialog(movie) }
+                it?.let { movie -> DialogsBuilder.createQualityDialog(movie,requireContext(),lifecycleScope) }
             }
             imdbClick.observe(viewLifecycleOwner) {
                 val bundle = Bundle()
                 bundle.putString(IMDB_CODE, it)
                 findNavController().navigate(R.id.action_movieListFragment_to_imdbPage, bundle)
             }
+            showToast.observe(viewLifecycleOwner){
+                Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
+            }
+
+
         }
 
         binding.lifecycleOwner = this
@@ -53,23 +59,6 @@ class MovieListFragment : Fragment() {
 
         setHasOptionsMenu(true)
         return binding.root
-    }
-
-    private fun createQualityDialog(it: Movie) {
-        val qualitiesList = it.let { movie -> MovieListRepo.generateQualities(movie) }
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Select Quality")
-            .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
-                val torrent = it.torrents[which]
-                lifecycleScope.launch {
-                    torrent.let { selectedTorrent ->
-                        SharedPreferenceHelper.uploadRequired = true
-                        DataBaseHelper.addTorrents(it.id, it.title, selectedTorrent) }
-                }
-            }
-
-        val dialog = builder.create()
-        dialog.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

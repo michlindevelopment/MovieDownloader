@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
     var searchVisible = MutableLiveData(false)
     var imdbClick = SingleLiveEvent<String>()
     var notifyAdapter = SingleLiveEvent<Int>()
+    var showToast = SingleLiveEvent<String>()
     var qualitySelectionDialog = SingleLiveEvent<Movie>()
     var searchField = MutableLiveData<String>()
     var maxProgressValue = MutableLiveData(SharedPreferenceHelper.pagesNumber)
@@ -32,7 +34,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         progress.postValue(0)
         itemList.postValue(mutableListOf<Movie>())
         viewModelScope.launch(Dispatchers.IO) {
-            itemList.postValue(MovieListRepo.getMoviesAsync(searchField,progress,this))
+            itemList.postValue(MovieListRepo.getMoviesAsync(searchField, progress, this))
         }
 
     }
@@ -47,7 +49,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            movies.addAll(MovieListRepo.getMoviesAsync(progress,this))
+            movies.addAll(MovieListRepo.getMoviesAsync(progress, this))
             movies = MovieListRepo.applyFilters(movies)
 
             withContext(Dispatchers.Main) {
@@ -55,8 +57,11 @@ class MovieListViewModel : ViewModel(), ItemListener {
                     val max = movies.maxOf { it.id }
                     SharedPreferenceHelper.lastMovie = max
                     itemList.postValue(movies)
-                    isLoading.postValue(false)
+                } else {
+                    showToast.postValue("Error getting movies")
+
                 }
+                isLoading.postValue(false)
             }
         }
 

@@ -3,8 +3,14 @@ package com.michlindev.moviedownloader.dialogs
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.michlindev.moviedownloader.SharedPreferenceHelper
+import com.michlindev.moviedownloader.data.Movie
+import com.michlindev.moviedownloader.database.DataBaseHelper
+import com.michlindev.moviedownloader.main.MovieListRepo
+import kotlinx.coroutines.launch
 
 
 object DialogsBuilder {
@@ -41,6 +47,25 @@ object DialogsBuilder {
         builder.show()
 
     }
+
+    fun createQualityDialog(it: Movie, context: Context, scope: LifecycleCoroutineScope) {
+        val qualitiesList = it.let { movie -> MovieListRepo.generateQualities(movie) }
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Select Quality")
+            .setItems(qualitiesList.toTypedArray()) { _: DialogInterface?, which: Int ->
+
+                it.torrents[which].let { selectedTorrent ->
+                    SharedPreferenceHelper.uploadRequired = true
+                    scope.launch {
+                        DataBaseHelper.addTorrents(it.id, it.title, selectedTorrent) }
+                }
+            }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+
 
     private fun generateRssUrl(): String {
         return "https://firebasestorage.googleapis.com/v0/b/moviedownloader-9661e.appspot.com/o/${SharedPreferenceHelper.uid}.rss?alt=media"
