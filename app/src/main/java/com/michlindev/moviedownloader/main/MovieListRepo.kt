@@ -48,6 +48,7 @@ object MovieListRepo {
                                 retList.add(it)
                             }
                         }
+                        DLog.d("Resuming page $page")
                         cont.resume(retList)
                     }
 
@@ -59,8 +60,44 @@ object MovieListRepo {
         )
     }
 
+    suspend fun getMoviesAsync3(progress: MutableLiveData<Int>) = coroutineScope {
+        val moviesListPage = mutableListOf<Movie>()
+        var prg = 1
+        (1..25).map {
+            async(Dispatchers.IO) {
+                DLog.d("Start: $it")
+                moviesListPage.addAll(getPage(it))
+                progress.postValue(prg++)
+                DLog.d("End: $it")
+            }
+        }.awaitAll()
+
+        moviesListPage
+    }
+
+
+    suspend fun getMoviesAsync2() = coroutineScope {
+        val moviesListPage = mutableListOf<Movie>()
+        awaitAll(
+            async { moviesListPage.addAll(getPage(0)) },
+            async { moviesListPage.addAll(getPage(1)) },
+            async { moviesListPage.addAll(getPage(2)) },
+            async { moviesListPage.addAll(getPage(3)) },
+            async { moviesListPage.addAll(getPage(4)) },
+            async { moviesListPage.addAll(getPage(5)) })
+
+        moviesListPage
+    }
+
+    /*fun main() {
+        runBlocking {
+            println(getMoviesAsync1()) // [false, true]
+        }
+    }*/
+
+
     //TODO something wrong
-    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?,scope: CoroutineScope): MutableList<Movie> =
+    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?, scope: CoroutineScope): MutableList<Movie> =
         suspendCancellableCoroutine { cont ->
 
             val mutex = Mutex()
@@ -98,7 +135,7 @@ object MovieListRepo {
 
                     if (cnt == numberOfPages) {
                         DLog.d("Resuming $resumed")
-                        if (cont.isActive&&!resumed) {
+                        if (cont.isActive && !resumed) {
                             resumed = true
                             cont.resume(movies)
                             delay(500)
@@ -110,8 +147,8 @@ object MovieListRepo {
             }
         }
 
-    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?,scope: CoroutineScope): MutableList<Movie> {
-        return getMoviesAsync(null, progress,scope)
+    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?, scope: CoroutineScope): MutableList<Movie> {
+        return getMoviesAsync(null, progress, scope)
     }
 
     fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
@@ -123,11 +160,11 @@ object MovieListRepo {
         movies.forEach {
 
             var inLanguage = true
-            val inYear: Boolean = it.year >= SharedPreferenceHelper.minYear
+            val minYear: Boolean = it.year >= SharedPreferenceHelper.minYear //TODO year null
             val inContainment: Boolean = !checkContainment(it, genres)
             if (englishOnly) inLanguage = it.language == "en"
 
-            if (inYear && inLanguage && inContainment)
+            if (minYear && inLanguage && inContainment)
                 newMovies.add(it)
         }
 
@@ -136,7 +173,7 @@ object MovieListRepo {
 
     }
 
-   private fun getImdbData(imdbCode: String): Imdb {
+    private fun getImdbData(imdbCode: String): Imdb {
         val url = "$IMDB_URL/title/$imdbCode/"
         val document = Jsoup.connect(url).get()
         val e: Element? = document.select("script").first()

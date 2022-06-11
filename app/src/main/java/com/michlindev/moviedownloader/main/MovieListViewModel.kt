@@ -49,7 +49,10 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            movies.addAll(MovieListRepo.getMoviesAsync(progress, this))
+           /* movies.addAll(MovieListRepo.getMoviesAsync(progress, this))
+            movies = MovieListRepo.applyFilters(movies)*/
+
+            movies.addAll(MovieListRepo.getMoviesAsync3(progress))
             movies = MovieListRepo.applyFilters(movies)
 
             withContext(Dispatchers.Main) {
