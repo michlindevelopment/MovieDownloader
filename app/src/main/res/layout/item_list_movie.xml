@@ -32,7 +32,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:loadWithGlide="@{movie.large_cover_image}"
-            app:srcCompat="@drawable/placeholder" />
+            app:srcCompat="@drawable/placeholder"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -74,11 +75,12 @@
             android:textSize="20sp"
             android:text="@{movie.realRating==null ? movie.ratingString : movie.realRating}"
             android:textColor="@{movie.realRating==null ? @color/yts_rating_color : @color/imdb_rating_color}"
-            tools:textColor="@color/white"
+            tools:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewImdb"
             app:layout_constraintStart_toEndOf="@+id/imageViewImdb"
             app:layout_constraintTop_toTopOf="@+id/imageViewImdb"
-            tools:text="8.9" />
+            tools:text="8.9"
+            />
 
 
         <TextView
@@ -144,6 +146,17 @@
             android:onClick="@{() -> listener.downloadClick(movie)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="2dp"
+            android:visibility="@{movie.dowloaded ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
+            app:layout_constraintTop_toTopOf="@+id/imageViewPoster"
+            app:srcCompat="@drawable/check_downloaded" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import com.michlindev.moviedownloader.data.Constants.IMDB_URL
 import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.data.MoviesResponse
+import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.imdb.Imdb
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -27,12 +28,12 @@ import kotlin.coroutines.suspendCoroutine
 
 object MovieListRepo {
 
-    private suspend fun getPage(page: Int): List<Movie> {
+    private suspend fun getPage(page: Int): List<Movie>? {
         return getPage(page, SharedPreferenceHelper.minRating, "")
     }
 
 
-    private suspend fun getPage(page: Int, minRating: Int, query: String): List<Movie> = suspendCoroutine { cont ->
+    private suspend fun getPage(page: Int, minRating: Int, query: String): List<Movie>? = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
@@ -54,20 +55,33 @@ object MovieListRepo {
 
                     override fun onError(e: Throwable) {
                         DLog.d("$e")
-                        cont.resumeWithException(e)
+                        //cont.resumeWithException(e)
+                        cont.resume(null)
                     }
                 })
         )
     }
 
-    suspend fun getMoviesAsync3(progress: MutableLiveData<Int>) = coroutineScope {
+    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?,progress: MutableLiveData<Int>?) = coroutineScope {
+        val searchMode = movieName != null
+        val numberOfPages = if (searchMode) SEARCH_PAGES else SharedPreferenceHelper.pagesNumber
         val moviesListPage = mutableListOf<Movie>()
+
         var prg = 1
-        (1..25).map {
+        (1..numberOfPages).map {
             async(Dispatchers.IO) {
                 DLog.d("Start: $it")
-                moviesListPage.addAll(getPage(it))
-                progress.postValue(prg++)
+
+                if (searchMode) {
+                    val pageResult = movieName?.value?.let { title -> getPage(it, 0, title) }
+                    pageResult?.let { it1 -> moviesListPage.addAll(it1) }
+                }
+                else
+                    getPage(it)?.let { it1 -> moviesListPage.addAll(it1) }
+
+                //moviesListPage.addAll(getPage(it))
+                progress?.postValue(prg++)
+
                 DLog.d("End: $it")
             }
         }.awaitAll()
@@ -75,80 +89,8 @@ object MovieListRepo {
         moviesListPage
     }
 
-
-    suspend fun getMoviesAsync2() = coroutineScope {
-        val moviesListPage = mutableListOf<Movie>()
-        awaitAll(
-            async { moviesListPage.addAll(getPage(0)) },
-            async { moviesListPage.addAll(getPage(1)) },
-            async { moviesListPage.addAll(getPage(2)) },
-            async { moviesListPage.addAll(getPage(3)) },
-            async { moviesListPage.addAll(getPage(4)) },
-            async { moviesListPage.addAll(getPage(5)) })
-
-        moviesListPage
-    }
-
-    /*fun main() {
-        runBlocking {
-            println(getMoviesAsync1()) // [false, true]
-        }
-    }*/
-
-
-    //TODO something wrong
-    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?, progress: MutableLiveData<Int>?, scope: CoroutineScope): MutableList<Movie> =
-        suspendCancellableCoroutine { cont ->
-
-            val mutex = Mutex()
-            val movies = mutableListOf<Movie>()
-            val searchMode = movieName != null
-            val numberOfPages = if (movieName == null) SharedPreferenceHelper.pagesNumber else SEARCH_PAGES
-
-            var cnt = 0
-            var resumed = false
-            for (i in 1..numberOfPages) {
-                scope.launch(Dispatchers.IO) {
-
-                    val moviesListPage = mutableListOf<Movie>()
-                    try {
-                        if (searchMode)
-                            moviesListPage.addAll(getPage(i, 0, movieName?.value!!))
-                        else
-                            moviesListPage.addAll(getPage(i))
-                    } catch (e: Exception) {
-                        DLog.e("Caught $e")
-                    }
-
-                    withContext(Dispatchers.Default) {
-                        mutex.withLock {
-                            movies.addAll(moviesListPage)
-                        }
-                    }
-
-                    cnt++
-                    DLog.d("Cnt: $cnt")
-
-                    withContext(Dispatchers.Main) {
-                        progress?.postValue(cnt)
-                    }
-
-                    if (cnt == numberOfPages) {
-                        DLog.d("Resuming $resumed")
-                        if (cont.isActive && !resumed) {
-                            resumed = true
-                            cont.resume(movies)
-                            delay(500)
-                        }
-                        cont.cancel()
-                    }
-                }
-
-            }
-        }
-
-    suspend fun getMoviesAsync(progress: MutableLiveData<Int>?, scope: CoroutineScope): MutableList<Movie> {
-        return getMoviesAsync(null, progress, scope)
+    suspend fun getMoviesAsync(progress: MutableLiveData<Int>): MutableList<Movie> {
+        return getMoviesAsync(null, progress)
     }
 
     fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
@@ -210,5 +152,14 @@ object MovieListRepo {
             }
             return false
         }
+    }
+
+    suspend fun markDownloaded(movies: MutableList<Movie>): MutableList<Movie> = coroutineScope {
+            val downloaded = DataBaseHelper.getAllTorrents()
+            movies.forEach { mov->
+                if (downloaded.any { it.id == mov.id })
+                    mov.dowloaded =true
+            }
+           (movies)
     }
 }

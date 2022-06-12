@@ -40,7 +40,7 @@ class DebugFragment : Fragment() {
 
                     lifecycleScope.launch(Dispatchers.IO) {
                         val notificationMovies = mutableListOf<Movie>()
-                        val movies = MovieListRepo.getMoviesAsync(MutableLiveData("Die Hard"), null,this)
+                        val movies = MovieListRepo.getMoviesAsync(MutableLiveData("Die Hard"), null)
                         notificationMovies.add(movies[1])
 
                         withContext(Dispatchers.Main) {
@@ -65,7 +65,7 @@ class DebugFragment : Fragment() {
 
                     lifecycleScope.launch {
                         val notificationMovies = mutableListOf<Movie>()
-                        val movies = MovieListRepo.getMoviesAsync(MutableLiveData("Die Hard"), null,this)
+                        val movies = MovieListRepo.getMoviesAsync(MutableLiveData("Die Hard"), null)
                         notificationMovies.add(movies[1])
                         notificationMovies.add(movies[2])
                         notificationMovies.add(movies[3])

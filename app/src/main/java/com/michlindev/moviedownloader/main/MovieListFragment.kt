@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.R
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.data.Constants.IMDB_CODE
-import com.michlindev.moviedownloader.data.Movie
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.FragmentMovieListBinding
 import com.michlindev.moviedownloader.dialogs.DialogsBuilder
@@ -40,7 +39,11 @@ class MovieListFragment : Fragment() {
                 it?.let { binding.adapter?.notifyItemChanged(it) }
             }
             qualitySelectionDialog.observe(viewLifecycleOwner) {
-                it?.let { movie -> DialogsBuilder.createQualityDialog(movie,requireContext(),lifecycleScope) }
+                it?.let {
+                    DialogsBuilder.createQualityDialog(it,requireContext(),lifecycleScope){
+                        viewModel.updateMovieDownloaded(it)
+                    }
+                }
             }
             imdbClick.observe(viewLifecycleOwner) {
                 val bundle = Bundle()

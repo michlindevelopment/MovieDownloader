@@ -40,6 +40,7 @@ data class Movie(
 
 
     var progressing: Boolean = false
+    var dowloaded: Boolean = false
     var realRating: String? = null
 
 }

@@ -1,13 +1,18 @@
 package com.michlindev.moviedownloader.main
 
-import android.widget.Toast
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
 import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
+import com.michlindev.moviedownloader.data.Torrents
+import com.michlindev.moviedownloader.database.DataBaseHelper
+import com.michlindev.moviedownloader.dialogs.DialogsBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,7 +39,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         progress.postValue(0)
         itemList.postValue(mutableListOf<Movie>())
         viewModelScope.launch(Dispatchers.IO) {
-            itemList.postValue(MovieListRepo.getMoviesAsync(searchField, progress, this))
+            itemList.postValue(MovieListRepo.getMoviesAsync(searchField, progress))
         }
 
     }
@@ -49,25 +54,29 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-           /* movies.addAll(MovieListRepo.getMoviesAsync(progress, this))
-            movies = MovieListRepo.applyFilters(movies)*/
+            movies.addAll(MovieListRepo.getMoviesAsync(progress))
 
-            movies.addAll(MovieListRepo.getMoviesAsync3(progress))
-            movies = MovieListRepo.applyFilters(movies)
 
             withContext(Dispatchers.Main) {
+                movies = MovieListRepo.applyFilters(movies)
+                movies = MovieListRepo.markDownloaded(movies)
+
                 if (movies.isNotEmpty()) {
                     val max = movies.maxOf { it.id }
                     SharedPreferenceHelper.lastMovie = max
                     itemList.postValue(movies)
                 } else {
                     showToast.postValue("Error getting movies")
-
                 }
                 isLoading.postValue(false)
             }
         }
 
+    }
+
+    fun updateMovieDownloaded(item: Movie) {
+            itemList.value?.find { it == item }?.dowloaded = true
+            notifyAdapter.postValue(itemList.value?.indexOf(item))
     }
 
     override fun downloadClick(item: Movie) {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ktx.BuildConfig
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
+import com.michlindev.moviedownloader.data.Constants.WORKER_DEBUG
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
@@ -14,10 +15,6 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private var DEBUG = false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,9 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setContentView(binding.root)
 
-        if (!BuildConfig.DEBUG) {
+        //if (!BuildConfig.DEBUG) {
             scheduleWork()
-        }
+        //}
 
     }
 
@@ -49,10 +46,12 @@ class MainActivity : AppCompatActivity() {
 
         var period = TimeUnit.HOURS
         var duration: Long = 3
+        var workPolicy = ExistingPeriodicWorkPolicy.KEEP
 
-        if (DEBUG) {
+        if (WORKER_DEBUG) {
             period = TimeUnit.SECONDS
             duration = 5
+            workPolicy = ExistingPeriodicWorkPolicy.REPLACE
         }
 
 
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             SyncWorker.TAG,
-            ExistingPeriodicWorkPolicy.REPLACE, refreshCpnWork
+            workPolicy, refreshCpnWork
         )
     }
 }
