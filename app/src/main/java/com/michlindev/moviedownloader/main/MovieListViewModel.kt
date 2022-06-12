@@ -39,7 +39,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         progress.postValue(0)
         itemList.postValue(mutableListOf<Movie>())
         viewModelScope.launch(Dispatchers.IO) {
-            itemList.postValue(MovieListRepo.getMoviesAsync(searchField, progress))
+            itemList.postValue(MovieListRepo.getMoviesAsync(searchField.value, progress,true))
         }
 
     }
@@ -54,7 +54,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            movies.addAll(MovieListRepo.getMoviesAsync(progress))
+            movies.addAll(MovieListRepo.getMoviesAsync("",progress,false))
 
 
             withContext(Dispatchers.Main) {

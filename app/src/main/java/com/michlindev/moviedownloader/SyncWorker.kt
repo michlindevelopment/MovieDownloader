@@ -28,12 +28,12 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
 
         //withContext(Dispatchers.IO) {
         if (WORKER_DEBUG) {
-            movies = MovieListRepo.getMoviesAsync(MutableLiveData("Die Hard"), null)
+            movies = MovieListRepo.getMoviesAsync("Die Hard", null,true) //TODO constucor
             val movie = movies[1]
             movies.clear()
             movies.add(movie)
         } else {
-            movies = MovieListRepo.getMoviesAsync(null, null)
+            movies = MovieListRepo.getMoviesAsync("", null,false)//TODO constucor
             movies = MovieListRepo.applyFilters(movies)
             movies.removeIf { it.id <= SharedPreferenceHelper.lastMovie }
 

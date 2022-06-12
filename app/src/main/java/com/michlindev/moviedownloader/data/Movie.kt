@@ -1,6 +1,7 @@
 package com.michlindev.moviedownloader.data
 
 import com.google.gson.annotations.SerializedName
+import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.main.ListAdapterItem
 import java.io.Serializable
 import java.util.*
@@ -36,12 +37,20 @@ data class Movie(
         get() = rating.toString()
 
     val year: Int
-        get() = tempYear ?: 0
+        get() {
+            DLog.d("Temp Year $tempYear")
+            if (tempYear==null || tempYear!! <1900 || tempYear!!>2022)
+                DLog.d("-----------------------------HERE----------------------------")
+
+            return if (tempYear == null) 0 else tempYear as Int
+        }
 
 
     var progressing: Boolean = false
     var dowloaded: Boolean = false
     var realRating: String? = null
+
+
 
 }
 

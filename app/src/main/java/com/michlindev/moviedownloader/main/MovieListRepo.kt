@@ -18,28 +18,30 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.util.*
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+
 
 object MovieListRepo {
 
-    private suspend fun getPage(page: Int): List<Movie>? {
+   /* private suspend fun getPage(page: Int): List<Movie>? {
         return getPage(page, SharedPreferenceHelper.minRating, "")
-    }
+    }*/
 
 
-    private suspend fun getPage(page: Int, minRating: Int, query: String): List<Movie>? = suspendCoroutine { cont ->
+    private suspend fun getPage(page: Int, query: String?,searchMode: Boolean): List<Movie>? = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
 
+        val quer = query ?: ""
+        val minRnt: Int = if (searchMode) 0 else SharedPreferenceHelper.pagesNumber
+
         mDisposable.add(
-            apiService.getWithParameters(minRating, Constants.PAGE_LIMIT, page, query).subscribeOn(Schedulers.io())
+            apiService.getWithParameters(minRnt, Constants.PAGE_LIMIT, page, quer).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         val res = movies.data.movies
@@ -49,7 +51,7 @@ object MovieListRepo {
                                 retList.add(it)
                             }
                         }
-                        DLog.d("Resuming page $page")
+                        //DLog.d("Resuming page $page")
                         cont.resume(retList)
                     }
 
@@ -62,36 +64,41 @@ object MovieListRepo {
         )
     }
 
-    suspend fun getMoviesAsync(movieName: MutableLiveData<String>?,progress: MutableLiveData<Int>?) = coroutineScope {
-        val searchMode = movieName != null
+    suspend fun getMoviesAsync(movieName:String?,progress: MutableLiveData<Int>?,searchMode:Boolean) = coroutineScope {
+        //val searchMode = movieName != null
         val numberOfPages = if (searchMode) SEARCH_PAGES else SharedPreferenceHelper.pagesNumber
         val moviesListPage = mutableListOf<Movie>()
 
         var prg = 1
         (1..numberOfPages).map {
             async(Dispatchers.IO) {
-                DLog.d("Start: $it")
 
-                if (searchMode) {
+                //val moviesListPage: MutableList<Movie> = Collections.synchronizedList(ArrayList())
+                //synchronized(moviesListPage){
+
+                val pageResult = getPage(it,  movieName,searchMode)
+                synchronized(moviesListPage) {
+                    pageResult?.let { it1 -> moviesListPage.addAll(it1) }
+                }
+
+                /*if (searchMode) {
                     val pageResult = movieName?.value?.let { title -> getPage(it, 0, title) }
                     pageResult?.let { it1 -> moviesListPage.addAll(it1) }
                 }
                 else
-                    getPage(it)?.let { it1 -> moviesListPage.addAll(it1) }
+                    getPage(it)?.let { it1 -> moviesListPage.addAll(it1) }*/
 
-                //moviesListPage.addAll(getPage(it))
+
                 progress?.postValue(prg++)
-
-                DLog.d("End: $it")
             }
         }.awaitAll()
 
         moviesListPage
     }
 
-    suspend fun getMoviesAsync(progress: MutableLiveData<Int>): MutableList<Movie> {
+    /*suspend fun getMoviesAsync(progress: MutableLiveData<Int>): MutableList<Movie> {
         return getMoviesAsync(null, progress)
-    }
+    }*/
 
     fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
 
