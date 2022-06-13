@@ -35,7 +35,7 @@ class DebugFragment : Fragment() {
 
         viewModel.notification.observe(viewLifecycleOwner) {
 
-            when (it){
+            /*when (it){
                 DebugViewModel.NotificationType.SINGLE -> {
 
                     lifecycleScope.launch(Dispatchers.IO) {
@@ -75,7 +75,7 @@ class DebugFragment : Fragment() {
                 }
 
                 else -> {}
-            }
+            }*/
 
         }
 

@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.michlindev.moviedownloader.debug.DebugViewModel" />
     </data>
 
+    <!--TODO investigate buttons-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.createFile()}"
             android:text="Create File"
+            android:textColor="@color/black"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.uploadFile()}"
             android:text="Upload file"
+            android:textColor="@color/black"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -37,6 +39,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.getMovies()}"
             android:text="Get Movies"
+            android:textColor="@color/black"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -45,6 +48,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.notificationSingle()}"
             android:text="Notify Single"
+            android:textColor="@color/black"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -53,6 +57,16 @@
             android:layout_height="wrap_content"
             android:onClick="@{()->viewModel.notificationMultiple()}"
             android:text="Notify Multiple"
+            android:textColor="@color/black"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/button11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.crashTest()}"
+            android:text="Crash test"
+            android:textColor="@color/black"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </layout>

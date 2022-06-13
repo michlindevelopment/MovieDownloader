@@ -33,6 +33,10 @@ class DebugViewModel : ViewModel() {
         notification.postValue(NotificationType.MULTIPLE)
     }
 
+    fun crashTest() {
+        throw RuntimeException("Test Crash")
+    }
+
 
     fun uploadFile() {
 
