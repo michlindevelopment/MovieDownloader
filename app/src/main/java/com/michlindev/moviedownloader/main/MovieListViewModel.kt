@@ -54,7 +54,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            movies.addAll(MovieListRepo.getMoviesAsync("",progress,false))
+            movies.addAll(MovieListRepo.getMoviesAsync(null,progress,false))
 
 
             withContext(Dispatchers.Main) {

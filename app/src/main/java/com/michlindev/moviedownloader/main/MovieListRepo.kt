@@ -27,21 +27,19 @@ import kotlin.coroutines.suspendCoroutine
 
 object MovieListRepo {
 
-   /* private suspend fun getPage(page: Int): List<Movie>? {
-        return getPage(page, SharedPreferenceHelper.minRating, "")
-    }*/
+    /* private suspend fun getPage(page: Int): List<Movie>? {
+         return getPage(page, SharedPreferenceHelper.minRating, "")
+     }*/
 
 
-    private suspend fun getPage(page: Int, query: String?,searchMode: Boolean): List<Movie>? = suspendCoroutine { cont ->
+    private suspend fun getPage(page: Int, query: String?, minRating: Int): List<Movie>? = suspendCoroutine { cont ->
 
         val mDisposable = CompositeDisposable()
         val apiService = ApiClient.getInstance().create(ApiService::class.java)
-
-        val quer = query ?: ""
-        val minRnt: Int = if (searchMode) 0 else SharedPreferenceHelper.pagesNumber
+        val movieName = query ?: ""
 
         mDisposable.add(
-            apiService.getWithParameters(minRnt, Constants.PAGE_LIMIT, page, quer).subscribeOn(Schedulers.io())
+            apiService.getWithParameters(minRating, Constants.PAGE_LIMIT, page, movieName).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
                     override fun onSuccess(movies: MoviesResponse) {
                         val res = movies.data.movies
@@ -51,7 +49,6 @@ object MovieListRepo {
                                 retList.add(it)
                             }
                         }
-                        //DLog.d("Resuming page $page")
                         cont.resume(retList)
                     }
 
@@ -64,30 +61,20 @@ object MovieListRepo {
         )
     }
 
-    suspend fun getMoviesAsync(movieName:String?,progress: MutableLiveData<Int>?,searchMode:Boolean) = coroutineScope {
-        //val searchMode = movieName != null
+    suspend fun getMoviesAsync(movieName: String?, progress: MutableLiveData<Int>?, searchMode: Boolean) = coroutineScope {
         val numberOfPages = if (searchMode) SEARCH_PAGES else SharedPreferenceHelper.pagesNumber
+        val minRating: Int = if (searchMode) 0 else SharedPreferenceHelper.minRating
         val moviesListPage = mutableListOf<Movie>()
+
 
         var prg = 1
         (1..numberOfPages).map {
             async(Dispatchers.IO) {
 
-                //val moviesListPage: MutableList<Movie> = Collections.synchronizedList(ArrayList())
-                //synchronized(moviesListPage){
-
-                val pageResult = getPage(it,  movieName,searchMode)
+                val pageResult = getPage(it, movieName, minRating)
                 synchronized(moviesListPage) {
                     pageResult?.let { it1 -> moviesListPage.addAll(it1) }
                 }
-
-                /*if (searchMode) {
-                    val pageResult = movieName?.value?.let { title -> getPage(it, 0, title) }
-                    pageResult?.let { it1 -> moviesListPage.addAll(it1) }
-                }
-                else
-                    getPage(it)?.let { it1 -> moviesListPage.addAll(it1) }*/
-
 
                 progress?.postValue(prg++)
             }
@@ -96,9 +83,6 @@ object MovieListRepo {
         moviesListPage
     }
 
-    /*suspend fun getMoviesAsync(progress: MutableLiveData<Int>): MutableList<Movie> {
-        return getMoviesAsync(null, progress)
-    }*/
 
     fun applyFilters(movies: MutableList<Movie>): MutableList<Movie> {
 
@@ -162,11 +146,11 @@ object MovieListRepo {
     }
 
     suspend fun markDownloaded(movies: MutableList<Movie>): MutableList<Movie> = coroutineScope {
-            val downloaded = DataBaseHelper.getAllTorrents()
-            movies.forEach { mov->
-                if (downloaded.any { it.id == mov.id })
-                    mov.dowloaded =true
-            }
-           (movies)
+        val downloaded = DataBaseHelper.getAllTorrents()
+        movies.forEach { mov ->
+            if (downloaded.any { it.id == mov.id })
+                mov.dowloaded = true
+        }
+        (movies)
     }
 }

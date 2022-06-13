@@ -33,7 +33,7 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
             movies.clear()
             movies.add(movie)
         } else {
-            movies = MovieListRepo.getMoviesAsync("", null,false)//TODO constucor
+            movies = MovieListRepo.getMoviesAsync(null, null,false)//TODO constucor
             movies = MovieListRepo.applyFilters(movies)
             movies.removeIf { it.id <= SharedPreferenceHelper.lastMovie }
 
