@@ -36,12 +36,17 @@ data class Movie(
     val ratingString: String
         get() = rating.toString()
 
-    val year: Int
+    /*val year: Int
         get() {
             DLog.d("Temp Year $tempYear")
             if (tempYear==null || tempYear!! <1900 || tempYear!!>2022)
                 DLog.d("-----------------------------HERE----------------------------")
 
+            return if (tempYear == null) 0 else tempYear as Int
+        }*/
+
+    val year: Int
+        get() {
             return if (tempYear == null) 0 else tempYear as Int
         }
 
