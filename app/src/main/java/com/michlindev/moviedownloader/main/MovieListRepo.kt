@@ -93,11 +93,12 @@ object MovieListRepo {
         movies.forEach {
 
             var inLanguage = true
-            val minYear: Boolean = it.year >= SharedPreferenceHelper.minYear //TODO year null
+            val minYear: Boolean = it.year >= SharedPreferenceHelper.minYear
+            val minRating: Boolean = it.rating >= SharedPreferenceHelper.minRating //Double checking, although API support it
             val inContainment: Boolean = !checkContainment(it, genres)
             if (englishOnly) inLanguage = it.language == "en"
 
-            if (minYear && inLanguage && inContainment)
+            if (minYear && inLanguage && inContainment && minRating)
                 newMovies.add(it)
         }
 
