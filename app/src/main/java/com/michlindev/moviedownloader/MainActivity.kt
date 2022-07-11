@@ -2,7 +2,6 @@ package com.michlindev.moviedownloader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.ktx.BuildConfig
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.michlindev.moviedownloader.data.Constants.WORKER_DEBUG

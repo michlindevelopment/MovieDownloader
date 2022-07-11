@@ -1,17 +1,14 @@
 package com.michlindev.moviedownloader.main
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.R
-import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.data.Constants.IMDB_CODE
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.databinding.FragmentMovieListBinding

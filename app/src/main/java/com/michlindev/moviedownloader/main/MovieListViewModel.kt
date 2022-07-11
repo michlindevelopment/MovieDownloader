@@ -1,18 +1,12 @@
 package com.michlindev.moviedownloader.main
 
-import android.content.DialogInterface
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
 import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
-import com.michlindev.moviedownloader.data.Torrents
-import com.michlindev.moviedownloader.database.DataBaseHelper
-import com.michlindev.moviedownloader.dialogs.DialogsBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

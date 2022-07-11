@@ -2,63 +2,37 @@ package com.michlindev.moviedownloader.main
 
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.api.ApiClient
-import com.michlindev.moviedownloader.api.ApiService
 import com.michlindev.moviedownloader.data.Constants
 import com.michlindev.moviedownloader.data.Constants.IMDB_URL
 import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
-import com.michlindev.moviedownloader.data.MoviesResponse
 import com.michlindev.moviedownloader.database.DataBaseHelper
 import com.michlindev.moviedownloader.imdb.Imdb
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.util.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
 object MovieListRepo {
 
-    /* private suspend fun getPage(page: Int): List<Movie>? {
-         return getPage(page, SharedPreferenceHelper.minRating, "")
-     }*/
-
-
-    private suspend fun getPage(page: Int, query: String?, minRating: Int): List<Movie>? = suspendCoroutine { cont ->
-
-        val mDisposable = CompositeDisposable()
-        val apiService = ApiClient.getInstance().create(ApiService::class.java)
+    private suspend fun getPage(page: Int, query: String?, minRating: Int): List<Movie>? = withContext(Dispatchers.IO) {
         val movieName = query ?: ""
+        val result = ApiClient.getClient.getWithParameters(minRating, Constants.PAGE_LIMIT, page, movieName)
+        if (result.isSuccessful) {
+            val res = result.body()?.data?.movies
+            val retList = mutableListOf<Movie>()
+            res?.forEach {
+                it?.let {
+                    retList.add(it)
+                }
+            }
+            return@withContext retList
+        } else {
+            return@withContext null
+        }
 
-        mDisposable.add(
-            apiService.getWithParameters(minRating, Constants.PAGE_LIMIT, page, movieName).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<MoviesResponse?>() {
-                    override fun onSuccess(movies: MoviesResponse) {
-                        val res = movies.data.movies
-                        val retList = mutableListOf<Movie>()
-                        res?.forEach {
-                            it?.let {
-                                retList.add(it)
-                            }
-                        }
-                        cont.resume(retList)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        DLog.d("$e")
-                        //cont.resumeWithException(e)
-                        cont.resume(null)
-                    }
-                })
-        )
     }
 
     suspend fun getMoviesAsync(movieName: String?, progress: MutableLiveData<Int>?, searchMode: Boolean) = coroutineScope {

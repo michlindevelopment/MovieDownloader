@@ -1,22 +1,18 @@
-package com.michlindev.moviedownloader.api;
+package com.michlindev.moviedownloader.api
 
+import com.michlindev.moviedownloader.data.Constants
+import com.michlindev.moviedownloader.data.MoviesResponse
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-import com.michlindev.moviedownloader.data.Constants;
-import com.michlindev.moviedownloader.data.MoviesResponse;
-
-import io.reactivex.Single;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
-
-public interface ApiService {
+interface ApiService {
 
     @GET(Constants.JSON_FILE)
-    Single<MoviesResponse> getAllMovies();
-
-    @GET(Constants.JSON_FILE)
-    Single<MoviesResponse> getWithParameters(
-            @Query("minimum_rating") int rating,
-            @Query("limit") int limit,
-            @Query("page") int page,
-            @Query("query_term") String query);
+    suspend fun getWithParameters(
+        @Query("minimum_rating") rating: Int,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("query_term") query: String?
+    ): Response<MoviesResponse>
 }

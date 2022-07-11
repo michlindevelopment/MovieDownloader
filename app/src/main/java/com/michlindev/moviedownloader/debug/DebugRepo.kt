@@ -1,20 +1,11 @@
 package com.michlindev.moviedownloader.debug
 
-import com.michlindev.moviedownloader.DLog
-import com.michlindev.moviedownloader.api.ApiClient
-import com.michlindev.moviedownloader.api.ApiService
-import com.michlindev.moviedownloader.data.Constants
-import com.michlindev.moviedownloader.data.MoviesResponse
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 
 object DebugRepo {
     fun getMovies() {
 
-        val mDisposable = CompositeDisposable()
-        val apiService = ApiClient.getInstance().create(ApiService::class.java)
+        /*val mDisposable = CompositeDisposable()
+        val apiService = ApiClient.instance.create(ApiService::class.java)
 
         mDisposable.add(
             apiService.getWithParameters(6, Constants.PAGE_LIMIT, 2,  "").subscribeOn(Schedulers.io())
@@ -25,10 +16,10 @@ object DebugRepo {
 
                     override fun onError(e: Throwable) {
                         DLog.d("")
-                        /* Log.e(MainActivity.TAG, String.format("onError: %s", e.message), e)
-                         setEnabledBar(true)*/
+                        *//* Log.e(MainActivity.TAG, String.format("onError: %s", e.message), e)
+                         setEnabledBar(true)*//*
                     }
                 })
-        )
+        )*/
     }
 }

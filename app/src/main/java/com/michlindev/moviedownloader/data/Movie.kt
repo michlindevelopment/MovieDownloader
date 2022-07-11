@@ -1,7 +1,6 @@
 package com.michlindev.moviedownloader.data
 
 import com.google.gson.annotations.SerializedName
-import com.michlindev.moviedownloader.DLog
 import com.michlindev.moviedownloader.main.ListAdapterItem
 import java.io.Serializable
 import java.util.*

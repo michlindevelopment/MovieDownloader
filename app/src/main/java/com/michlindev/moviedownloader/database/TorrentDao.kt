@@ -1,7 +1,6 @@
 package com.michlindev.moviedownloader.database
 
 import androidx.room.*
-import com.michlindev.moviedownloader.database.TorrentEntity
 
 
 @Dao
