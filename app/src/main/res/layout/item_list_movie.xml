@@ -24,11 +24,9 @@
             android:layout_height="225dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:background="#FFFFFF"
-            android:padding="3dp"
             android:onClick="@{() -> listener.posterClick(movie.imdb_code)}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:loadWithGlide="@{movie.large_cover_image}"
@@ -135,16 +133,15 @@
         <!--TODO Investigate AppCompatButton-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonAdd"
+            style="@style/CustomButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="26dp"
             android:layout_marginStart="5dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/black"
-            style="@style/CustomButtonStyle"
-            android:text="@string/download_button"
-            android:textSize="11sp"
             android:onClick="@{() -> listener.downloadClick(movie)}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/download_button"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewPoster"
             app:layout_constraintStart_toEndOf="@+id/imageViewPoster" />
 
         <ImageView
@@ -153,11 +150,49 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="2dp"
-            android:visibility="@{movie.dowloaded ? View.VISIBLE : View.GONE}"
+            android:visibility="@{movie.downloaded ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/imageViewPoster"
             app:layout_constraintTop_toTopOf="@+id/imageViewPoster"
             app:srcCompat="@drawable/check_downloaded" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:visibility="@{movie.expanded ? View.VISIBLE : View.GONE}"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewPoster">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{movie.summary}"
+                tools:text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage." />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/red"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="@{movie.expanded ? 180 : 0}"
+
+            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:srcCompat="@drawable/ic_arrow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

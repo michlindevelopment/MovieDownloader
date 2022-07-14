@@ -124,7 +124,7 @@ object MovieListRepo {
         val downloaded = DataBaseHelper.getAllTorrents()
         movies.forEach { mov ->
             if (downloaded.any { it.id == mov.id })
-                mov.dowloaded = true
+                mov.downloaded = true
         }
         (movies)
     }

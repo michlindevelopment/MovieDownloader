@@ -1,10 +1,13 @@
 package com.michlindev.moviedownloader.main
 
+import android.view.View
+import android.widget.LinearLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michlindev.moviedownloader.SharedPreferenceHelper
 import com.michlindev.moviedownloader.SingleLiveEvent
+import com.michlindev.moviedownloader.animations.Animations
 import com.michlindev.moviedownloader.data.Constants.SEARCH_PAGES
 import com.michlindev.moviedownloader.data.Movie
 import kotlinx.coroutines.Dispatchers
@@ -69,7 +72,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
     }
 
     fun updateMovieDownloaded(item: Movie) {
-            itemList.value?.find { it == item }?.dowloaded = true
+            itemList.value?.find { it == item }?.downloaded = true
             notifyAdapter.postValue(itemList.value?.indexOf(item))
     }
 
@@ -99,5 +102,21 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     override fun posterClick(item: String) {
         imdbClick.postValue(item)
+    }
+
+   /* override fun expandClick() {
+        //toggleLayout(!personList.get(i).isExpanded(), v, holder.bi.layoutExpand);
+        toggleLayout(false, v, holder.bi.layoutExpand);
+
+    }*/
+
+    private fun toggleLayout(isExpanded: Boolean, v: View, layoutExpand: LinearLayout): Boolean {
+        Animations.toggleArrow(v, isExpanded)
+        if (isExpanded) {
+            Animations.expand(layoutExpand)
+        } else {
+            Animations.collapse(layoutExpand)
+        }
+        return isExpanded
     }
 }

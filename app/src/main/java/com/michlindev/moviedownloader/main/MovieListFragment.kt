@@ -29,15 +29,12 @@ class MovieListFragment : Fragment() {
 
 
         with(viewModel) {
-            itemList.observe(viewLifecycleOwner) {
-                binding.adapter?.notifyDataSetChanged()
-            }
             notifyAdapter.observe(viewLifecycleOwner) {
                 it?.let { binding.adapter?.notifyItemChanged(it) }
             }
             qualitySelectionDialog.observe(viewLifecycleOwner) {
                 it?.let {
-                    DialogsBuilder.createQualityDialog(it,requireContext(),lifecycleScope){
+                    DialogsBuilder.createQualityDialog(it, requireContext(), lifecycleScope) {
                         viewModel.updateMovieDownloaded(it)
                     }
                 }
@@ -47,8 +44,8 @@ class MovieListFragment : Fragment() {
                 bundle.putString(IMDB_CODE, it)
                 findNavController().navigate(R.id.action_movieListFragment_to_imdbPage, bundle)
             }
-            showToast.observe(viewLifecycleOwner){
-                Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
+            showToast.observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
             }
 
 
@@ -78,12 +75,10 @@ class MovieListFragment : Fragment() {
                     }
                 }
             }
-            R.id.action_rss_url ->  DialogsBuilder.showRssUrl(requireActivity())
+            R.id.action_rss_url -> DialogsBuilder.showRssUrl(requireActivity())
         }
         return true
     }
-
-
 
 
 }
