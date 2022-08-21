@@ -1,5 +1,6 @@
 package com.michlindev.moviedownloader.main
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.michlindev.moviedownloader.SharedPreferenceHelper
@@ -81,21 +82,28 @@ object MovieListRepo {
 
     }
 
-    private fun getImdbData(imdbCode: String): Imdb {
+    private fun getImdbData(imdbCode: String): Imdb? {
         val url = "$IMDB_URL/title/$imdbCode/"
         val document = Jsoup.connect(url).get()
-        val e: Element? = document.select("script").first()
-        return Gson().fromJson(e?.html(), Imdb::class.java)
+        val e: Element? = document.select("script")[1]
+
+        var imdb:Imdb? = null
+        try {
+            imdb = Gson().fromJson(e?.html(), Imdb::class.java)
+        } catch (e: Exception) {
+            Log.e("DTAG","Error: $e")
+        }
+
+        return imdb
     }
 
-    fun getImdbPage(imdbCode: String): Imdb {
+    fun getImdbPage(imdbCode: String): Imdb? {
         return getImdbData(imdbCode)
     }
 
 
-    fun getRealRating(imdbCode: String): String {
-        val imdb = getImdbData(imdbCode)
-        return imdb.aggregateRating.ratingValue.toString()
+    fun getRealRating(imdbCode: String): String? {
+        return getImdbData(imdbCode)?.aggregateRating?.ratingValue?.toString()
     }
 
     fun generateQualities(it: Movie): MutableList<String> {

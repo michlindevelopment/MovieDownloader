@@ -33,7 +33,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
         progress.postValue(0)
         itemList.postValue(mutableListOf<Movie>())
         viewModelScope.launch(Dispatchers.IO) {
-            itemList.postValue(MovieListRepo.getMoviesAsync(searchField.value, progress,true))
+            itemList.postValue(MovieListRepo.getMoviesAsync(searchField.value, progress, true))
         }
 
     }
@@ -48,7 +48,7 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            movies.addAll(MovieListRepo.getMoviesAsync(null,progress,false))
+            movies.addAll(MovieListRepo.getMoviesAsync(null, progress, false))
 
 
             withContext(Dispatchers.Main) {
@@ -69,8 +69,8 @@ class MovieListViewModel : ViewModel(), ItemListener {
     }
 
     fun updateMovieDownloaded(item: Movie) {
-            itemList.value?.find { it == item }?.dowloaded = true
-            notifyAdapter.postValue(itemList.value?.indexOf(item))
+        itemList.value?.find { it == item }?.dowloaded = true
+        notifyAdapter.postValue(itemList.value?.indexOf(item))
     }
 
     override fun downloadClick(item: Movie) {
@@ -80,19 +80,24 @@ class MovieListViewModel : ViewModel(), ItemListener {
 
     override fun imdbLogoClick(item: Movie) {
         val itemIndex = itemList.value?.indexOf(item)
-        itemIndex?.let { itemList.value?.get(it)?.progressing = true }
+        itemIndex?.let { itemList.value?.get(it)?.progressing = true
+            notifyAdapter.postValue(it)
+        }
 
         viewModelScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                itemIndex?.let { notifyAdapter.postValue(it) }
-            }
 
-            val rt = MovieListRepo.getRealRating(item.imdb_code)
+            val realRating = MovieListRepo.getRealRating(item.imdb_code)
+            if (realRating == null)
+                showToast.postValue("Error in IMDb")
 
             withContext(Dispatchers.Main) {
-                itemIndex?.let { itemList.value?.get(it)?.realRating = rt }
-                itemIndex?.let { itemList.value?.get(it)?.progressing = false }
-                itemIndex?.let { notifyAdapter.postValue(it) }
+                itemIndex?.let {
+                    realRating?.let { rating ->
+                        itemList.value?.get(it)?.realRating = rating
+                    }
+                    itemList.value?.get(it)?.progressing = false
+                    notifyAdapter.postValue(it)
+                }
             }
         }
     }
