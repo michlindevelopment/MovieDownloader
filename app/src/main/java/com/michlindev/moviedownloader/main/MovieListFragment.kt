@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.michlindev.moviedownloader.R
@@ -37,7 +40,7 @@ class MovieListFragment : Fragment() {
             }
             qualitySelectionDialog.observe(viewLifecycleOwner) {
                 it?.let {
-                    DialogsBuilder.createQualityDialog(it,requireContext(),lifecycleScope){
+                    DialogsBuilder.createQualityDialog(it, requireContext(), lifecycleScope) {
                         viewModel.updateMovieDownloaded(it)
                     }
                 }
@@ -47,8 +50,8 @@ class MovieListFragment : Fragment() {
                 bundle.putString(IMDB_CODE, it)
                 findNavController().navigate(R.id.action_movieListFragment_to_imdbPage, bundle)
             }
-            showToast.observe(viewLifecycleOwner){
-                Toast.makeText(requireActivity(),it, Toast.LENGTH_SHORT).show()
+            showToast.observe(viewLifecycleOwner) {
+                Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
             }
 
 
@@ -56,34 +59,46 @@ class MovieListFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        setHasOptionsMenu(true)
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.app_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_debug_menu -> findNavController().navigate(R.id.action_movieListFragment_to_debugFragment)
-            R.id.action_app_settings -> findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
-            R.id.action_search -> viewModel.searchVisible.value?.let { viewModel.searchVisible.postValue(!it) }
-            R.id.action_clear_db -> {
-                DialogsBuilder.clearDBDialog(requireContext()) {
-                    lifecycleScope.launch {
-                        DataBaseHelper.clearDb()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.app_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_debug_menu -> {
+                        findNavController().navigate(R.id.action_movieListFragment_to_debugFragment)
+                        true
                     }
+                    R.id.action_app_settings -> {
+                        findNavController().navigate(R.id.action_movieListFragment_to_menuFragment)
+                        true
+                    }
+                    R.id.action_search -> {
+                        viewModel.searchVisible.value?.let { viewModel.searchVisible.postValue(!it) }
+                        true
+                    }
+                    R.id.action_clear_db -> {
+                        DialogsBuilder.clearDBDialog(requireContext()) {
+                            lifecycleScope.launch {
+                                DataBaseHelper.clearDb()
+                            }
+                        }
+                        true
+                    }
+                    R.id.action_rss_url -> {
+                        DialogsBuilder.showRssUrl(requireActivity())
+                        true
+                    }
+                    else -> false
                 }
             }
-            R.id.action_rss_url ->  DialogsBuilder.showRssUrl(requireActivity())
-        }
-        return true
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
-
-
-
 }

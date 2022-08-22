@@ -19,12 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setContentView(binding.root)
-
-        //if (!BuildConfig.DEBUG) {
-            scheduleWork()
-        //}
-
+        scheduleWork()
     }
 
     override fun onPause() {

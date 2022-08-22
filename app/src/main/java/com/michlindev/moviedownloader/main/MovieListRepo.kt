@@ -14,6 +14,7 @@ import com.michlindev.moviedownloader.imdb.Imdb
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 
 object MovieListRepo {
@@ -85,16 +86,22 @@ object MovieListRepo {
     private fun getImdbData(imdbCode: String): Imdb? {
         val url = "$IMDB_URL/title/$imdbCode/"
         val document = Jsoup.connect(url).get()
-        val e: Element? = document.select("script")[1]
+        val e: Elements? = document.select("script")
 
-        var imdb:Imdb? = null
-        try {
-            imdb = Gson().fromJson(e?.html(), Imdb::class.java)
-        } catch (e: Exception) {
-            Log.e("DTAG","Error: $e")
-        }
-
-        return imdb
+        if (e != null) {
+            for (script in e) {
+                if (script.attr("type") == "application/ld+json") {
+                    var imdb: Imdb? = null
+                    try {
+                        imdb = Gson().fromJson(script.html(), Imdb::class.java)
+                    } catch (e: Exception) {
+                        Log.e("DTAG", "Error: $e")
+                    }
+                    return imdb
+                }
+            }
+        } else return null
+        return null
     }
 
     fun getImdbPage(imdbCode: String): Imdb? {
