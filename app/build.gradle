@@ -14,7 +14,7 @@ android {
             keyAlias 'movie_downloader'
             storePassword 'w9sswv3n'
             keyPassword 'w9sswv3n'
-            storeFile file('G:\\My Drive\\Android Dev Backups\\Keys\\MdEvKey.jks')
+            storeFile file('I:\\My Drive\\Android Dev Backups\\Keys\\MdEvKey.jks')
         }
     }
 

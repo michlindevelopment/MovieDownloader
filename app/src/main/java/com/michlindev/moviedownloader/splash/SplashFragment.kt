@@ -11,7 +11,9 @@ import com.michlindev.moviedownloader.databinding.FragmentSplashBinding
 
 //TODO
 /*
-Go over to dos
+More generic key usage
+Notification permission
+Button colors and theme
 */
 
 class SplashFragment : Fragment() {
