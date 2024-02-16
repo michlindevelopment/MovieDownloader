@@ -1,6 +1,8 @@
 package com.michlindev.moviedownloader
 
+import android.graphics.drawable.Drawable
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,7 +11,10 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.google.android.gms.common.SignInButton
@@ -42,6 +47,7 @@ fun RecyclerView.submitList(list: List<ListAdapterItem>?) {
 @BindingAdapter("loadWithGlide")
 fun ImageView.loadUrlWithGlide(url: String?) {
     val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
+    Log.d("DTAG", "loadUrlWithGlide: $url")
 
     Glide.with(this)
         .setDefaultRequestOptions(RequestOptions().placeholder(R.drawable.placeholder))
@@ -49,6 +55,7 @@ fun ImageView.loadUrlWithGlide(url: String?) {
         .transition(DrawableTransitionOptions.withCrossFade(factory))
         .into(this)
 }
+
 
 @BindingAdapter("stringArray")
 fun TextView.stringArray(list: List<String>) {

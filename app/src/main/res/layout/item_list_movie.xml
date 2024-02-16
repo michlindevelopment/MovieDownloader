@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:loadWithGlide="@{movie.large_cover_image}"
+            app:loadWithGlide="@{movie.medium_cover_image}"
             app:srcCompat="@drawable/placeholder"
             tools:ignore="ContentDescription" />
 

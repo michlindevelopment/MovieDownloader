@@ -11,6 +11,8 @@ data class Movie(
     @SerializedName("title") var title: String,
     @SerializedName("url") var url: String,
     @SerializedName("torrents") var torrents: List<Torrents>,
+    @SerializedName("small_cover_image") var small_cover_image: String,
+    @SerializedName("medium_cover_image") var medium_cover_image: String,
     @SerializedName("large_cover_image") var large_cover_image: String,
     @SerializedName("imdb_code") var imdb_code: String,
     @SerializedName("year") private var tempYear: Int?,
@@ -35,14 +37,9 @@ data class Movie(
     val ratingString: String
         get() = rating.toString()
 
-    /*val year: Int
-        get() {
-            DLog.d("Temp Year $tempYear")
-            if (tempYear==null || tempYear!! <1900 || tempYear!!>2022)
-                DLog.d("-----------------------------HERE----------------------------")
-
-            return if (tempYear == null) 0 else tempYear as Int
-        }*/
+    //TODO Load other if large fails
+    val coverImages: List<String>
+        get() = listOf(large_cover_image, medium_cover_image, small_cover_image)
 
     val year: Int
         get() {
